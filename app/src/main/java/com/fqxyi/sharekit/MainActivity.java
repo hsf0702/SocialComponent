@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.fqxyi.library.IShareConfig;
 import com.fqxyi.library.ShareBean;
 import com.fqxyi.library.ShareDialog;
 
@@ -22,14 +23,20 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //初始化假数据
         originShareBean = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            ShareBean shareBean = new ShareBean();
-            shareBean.shareIcon = "android.resource://" + getPackageName() + "/" + R.drawable.share_icon_wechat;
-            shareBean.shareName = i+"";
-            originShareBean.add(shareBean);
-        }
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_WECHAT));
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_WECHATMOMENTS));
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_SHORTMESSAGE));
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_COPY));
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_REFRESH));
+//        originShareBean.add(new ShareBean(IShareConfig.SHARE_CUSTOM));
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_QQ));
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_SINA));
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_WXMINIPROGRAM));
+//        originShareBean.add(new ShareBean(IShareConfig.SHARE_ALIPAYMINPROGRAM));
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_COLLECTION));
+        originShareBean.add(new ShareBean(IShareConfig.SHARE_SHOW_ALL));
     }
 
     /**

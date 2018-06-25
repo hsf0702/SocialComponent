@@ -16,6 +16,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.fqxyi.library.util.LogUtil;
+import com.fqxyi.library.util.ShareUtil;
 
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class ShareDialog extends Dialog {
         shareAdapter.setItemClickListener(new ShareAdapter.ItemClickListener() {
             @Override
             public void click(ShareBean shareBean, int position) {
-                Toast.makeText(context, "点击了" + shareBean.shareName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "点击了" + ShareUtil.getName(shareBean.type), Toast.LENGTH_SHORT).show();
             }
         });
         //share cancel 点击事件

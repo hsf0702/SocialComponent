@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fqxyi.library.util.ShareUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +43,15 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         }
         final ShareBean shareBean = shareBeans.get(position);
         //View展示
-        if (!TextUtils.isEmpty(shareBean.shareIcon)) {
-            holder.shareItemIcon.setImageURI(Uri.parse(shareBean.shareIcon));
+        if (shareBean.type != 5) {
+            holder.shareItemIcon.setImageResource(ShareUtil.getIcon(shareBean.type));
+            holder.shareItemName.setText(ShareUtil.getName(shareBean.type));
+        } else {
+            if (!TextUtils.isEmpty(shareBean.shareIcon)) { //网络图片，目前无法显示
+                holder.shareItemIcon.setImageURI(Uri.parse(shareBean.shareIcon));
+            }
+            holder.shareItemName.setText(shareBean.shareName);
         }
-        holder.shareItemName.setText(shareBean.shareName);
         //点击事件
         holder.shareItem.setOnClickListener(new View.OnClickListener() {
             @Override
