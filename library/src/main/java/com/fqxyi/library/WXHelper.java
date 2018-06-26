@@ -6,13 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
 import com.fqxyi.library.bean.ShareDataBean;
 import com.fqxyi.library.bean.ShareWXDataBean;
 import com.fqxyi.library.callback.IShareCallback;
-import com.fqxyi.library.util.LogUtil;
 import com.fqxyi.library.util.ShareUtil;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
@@ -88,11 +86,11 @@ public class WXHelper {
         WXMediaMessage msg = new WXMediaMessage();
         boolean success = false;
         switch (shareDataBean.type) {
-            case ShareWXDataBean.TYPE_TEXT:
-                success = addText(req, msg, shareDataBean.shareDesc);
-                break;
             case ShareWXDataBean.TYPE_IMAGE:
                 success = addImage(req, msg, shareDataBean.shareImage);
+                break;
+            case ShareWXDataBean.TYPE_TEXT:
+                success = addText(req, msg, shareDataBean.shareDesc);
                 break;
             case ShareWXDataBean.TYPE_WEB:
                 success = addWeb(req, msg, shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage);
@@ -121,12 +119,7 @@ public class WXHelper {
         imgObj.imagePath = imageUrl;
         msg.mediaObject = imgObj;
 
-        Bitmap bitmap = null;
-        try {
-            bitmap = BitmapFactory.decodeFile(imageUrl);
-        } catch (Exception e) {
-            LogUtil.e(e);
-        }
+        Bitmap bitmap = ShareUtil.getImageBitmap(imageUrl);
         if (bitmap == null) {
             return false;
         }
@@ -151,12 +144,7 @@ public class WXHelper {
         msg.title = title;
         msg.description = desc;
 
-        Bitmap bitmap = null;
-        try {
-            bitmap = BitmapFactory.decodeFile(imageUrl);
-        } catch (Exception e) {
-            LogUtil.e(e);
-        }
+        Bitmap bitmap = ShareUtil.getImageBitmap(imageUrl);
         if (bitmap == null) {
             return true;
         }

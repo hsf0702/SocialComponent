@@ -4,17 +4,61 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 
-import com.fqxyi.library.dialog.IShareType;
 import com.fqxyi.library.R;
+import com.fqxyi.library.dialog.IShareType;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.List;
 
 /**
  * 分享工具类
  */
 public class ShareUtil {
+
+    public static Bitmap getImageBitmap(String imageUrl) {
+        if (TextUtils.isEmpty(imageUrl)) {
+            return null;
+        }
+        if (imageUrl.startsWith("http")) {
+            Bitmap bitmap = null;
+            InputStream in = null;
+            BufferedOutputStream out = null;
+            try {
+                in = new BufferedInputStream(new URL(imageUrl).openStream(), 1024);
+                final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+                out = new BufferedOutputStream(dataStream, 1024);
+                copy(in, out);
+                out.flush();
+                byte[] data = dataStream.toByteArray();
+                bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                data = null;
+                return bitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
+            return BitmapFactory.decodeFile(imageUrl);
+        }
+    }
+
+    private static void copy(InputStream in, OutputStream out)
+            throws IOException {
+        byte[] b = new byte[1024];
+        int read;
+        while ((read = in.read(b)) != -1) {
+            out.write(b, 0, read);
+        }
+    }
 
     public static String buildTransaction(String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();

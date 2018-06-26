@@ -3,13 +3,11 @@ package com.fqxyi.library;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
 import com.fqxyi.library.bean.ShareDataBean;
 import com.fqxyi.library.bean.ShareWBDataBean;
 import com.fqxyi.library.callback.IShareCallback;
-import com.fqxyi.library.util.LogUtil;
 import com.fqxyi.library.util.ShareUtil;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.BaseMediaObject;
@@ -115,12 +113,7 @@ public class WBHelper {
     private boolean addTitleSummaryAndThumb(BaseMediaObject msg, String title, String desc, String imageUrl) {
         msg.title = title;
         msg.description = desc;
-        Bitmap bitmap = null;
-        try {
-            bitmap = BitmapFactory.decodeFile(imageUrl);
-        } catch (Exception e) {
-            LogUtil.e(e);
-        }
+        Bitmap bitmap = ShareUtil.getImageBitmap(imageUrl);
         if (bitmap == null) {
             return true;
         }

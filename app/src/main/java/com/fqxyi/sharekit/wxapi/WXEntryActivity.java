@@ -22,7 +22,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String wxAppId = "wx49f25cc1d77c9dd3";
+        String wxAppId = SocialUtil.getInstance().shareHelper().getBuilder().getWxAppId();
         wxapi = WXAPIFactory.createWXAPI(this, wxAppId, true);
         wxapi.registerApp(wxAppId);
 

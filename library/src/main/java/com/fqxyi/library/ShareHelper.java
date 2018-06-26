@@ -7,10 +7,15 @@ import android.content.Intent;
 import com.fqxyi.library.bean.ShareDataBean;
 import com.fqxyi.library.callback.IShareCallback;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * 分享入口类
  */
 public class ShareHelper {
+
+    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
 
     private Builder builder;
 
@@ -33,25 +38,49 @@ public class ShareHelper {
         qqHelper.share(shareDataBean, shareCallback);
     }
 
-    public void shareWX(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
-        if (wxHelper == null) {
-            wxHelper = new WXHelper(activity, builder.getWxAppId(), builder.getWxAppSecret());
+    public void shareWX(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+        if (fixedThreadPool.isShutdown()) {
+            return;
         }
-        wxHelper.share(shareDataBean, shareCallback);
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (wxHelper == null) {
+                    wxHelper = new WXHelper(activity, builder.getWxAppId(), builder.getWxAppSecret());
+                }
+                wxHelper.share(shareDataBean, shareCallback);
+            }
+        });
     }
 
-    public void shareWxMoment(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
-        if (wxHelper == null) {
-            wxHelper = new WXHelper(activity, builder.getWxMomentAppId(), builder.getWxMomentAppSecret());
+    public void shareWxMoment(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+        if (fixedThreadPool.isShutdown()) {
+            return;
         }
-        wxHelper.shareMoment(shareDataBean, shareCallback);
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (wxHelper == null) {
+                    wxHelper = new WXHelper(activity, builder.getWxMomentAppId(), builder.getWxMomentAppSecret());
+                }
+                wxHelper.shareMoment(shareDataBean, shareCallback);
+            }
+        });
     }
 
-    public void shareWB(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
-        if (wbHelper == null) {
-            wbHelper = new WBHelper(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
+    public void shareWB(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+        if (fixedThreadPool.isShutdown()) {
+            return;
         }
-        wbHelper.share(shareDataBean, shareCallback);
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (wbHelper == null) {
+                    wbHelper = new WBHelper(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
+                }
+                wbHelper.share(shareDataBean, shareCallback);
+            }
+        });
     }
 
     /**
