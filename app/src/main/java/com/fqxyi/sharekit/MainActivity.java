@@ -14,6 +14,7 @@ import com.fqxyi.library.dialog.IShareType;
 import com.fqxyi.library.dialog.ShareDialog;
 import com.fqxyi.library.dialog.ShareTypeBean;
 import com.fqxyi.library.util.LogUtil;
+import com.fqxyi.sharekit.util.SocialUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +59,7 @@ public class MainActivity extends Activity {
         shareDataBean.shareMiniAppId = "小程序的原始ID";
         shareDataBean.shareMiniPage = "小程序页面地址";
         //
-        shareHelper = new ShareHelper.Builder()
-                .setQqAppId("1104746610")
-                .setWbAppId("2291580382")
-                .setWbRedirectUrl("http://www.mamahao.com/")
-                .build();
+        shareHelper = SocialUtil.getInstance().shareHelper();
     }
 
     /**
@@ -163,6 +160,10 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         shareDialog = null;
+        if (shareHelper != null) {
+            shareHelper.onDestroy();
+            shareHelper = null;
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.fqxyi.library;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import com.fqxyi.library.bean.ShareDataBean;
@@ -14,6 +15,7 @@ public class ShareHelper {
     private Builder builder;
 
     private QQHelper qqHelper;
+    private WXHelper wxHelper;
     private WBHelper wbHelper;
 
     public ShareHelper(Builder builder) {
@@ -29,6 +31,13 @@ public class ShareHelper {
             qqHelper = new QQHelper(activity, builder.getQqAppId());
         }
         qqHelper.share(shareDataBean, shareCallback);
+    }
+
+    public void shareWX(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+        if (wxHelper == null) {
+            wxHelper = new WXHelper(activity, builder.getWxAppId(), builder.getWxAppSecret());
+        }
+        wxHelper.share(shareDataBean, shareCallback);
     }
 
     public void shareWB(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
@@ -59,10 +68,25 @@ public class ShareHelper {
         }
     }
 
+    /**
+     * 微信分享，在微信回调到WXEntryActivity的onResp方法中调用
+     *
+     * @param success 表示是否分享成功
+     */
+    public void sendShareBackBroadcast(Context context, boolean success) {
+        Intent intent = new Intent(WXHelper.WX_SHARE_RECEIVER_ACTION);
+        intent.putExtra(WXHelper.KEY_WX_SHARE_CALL_BACK, success);
+        context.sendBroadcast(intent);
+    }
+
     public void onDestroy() {
         if (qqHelper != null) {
             qqHelper.onDestroy();
             qqHelper = null;
+        }
+        if (wxHelper != null) {
+            wxHelper.onDestroy();
+            wxHelper = null;
         }
         if (wbHelper != null) {
             wbHelper.onDestroy();

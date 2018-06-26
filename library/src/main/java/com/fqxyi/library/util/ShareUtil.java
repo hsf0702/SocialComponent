@@ -16,6 +16,10 @@ import java.util.List;
  */
 public class ShareUtil {
 
+    public static String buildTransaction(String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
+
     public static byte[] bmpToByteArray(final Bitmap bmp, boolean needThumb) {
         Bitmap newBmp;
         if (needThumb) {
