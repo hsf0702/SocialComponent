@@ -1,10 +1,18 @@
 package com.fqxyi.library.bean;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+
 /**
  * 分享数据 数据结构
  */
 public class ShareDataBean {
 
+    public static final int TYPE_IMAGE_TEXT = 0; //图文分享
+    public static final int TYPE_IMAGE = 1; //纯图片分享
+
+    //应用名
+    public String appName;
     //分享标题
     public String shareTitle;
     //分享描述
@@ -17,6 +25,32 @@ public class ShareDataBean {
     public String shareMiniAppId;
     //小程序页面地址
     public String shareMiniPage;
+
+    public int type;
+
+    public Bundle params;
+
+    public ShareDataBean() {
+        params = new Bundle();
+    }
+
+    public Bundle getParams() {
+        return params;
+    }
+
+    protected static void addParams(Bundle params, String key, String value) {
+        if (params == null || TextUtils.isEmpty(key) || TextUtils.isEmpty(value)) {
+            return;
+        }
+        params.putString(key, value);
+    }
+
+    protected static void addParams(Bundle params, String key, int value) {
+        if (params == null || TextUtils.isEmpty(key)) {
+            return;
+        }
+        params.putInt(key, value);
+    }
 
     @Override
     public String toString() {

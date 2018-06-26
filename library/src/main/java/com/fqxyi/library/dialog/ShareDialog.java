@@ -13,8 +13,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.fqxyi.library.R;
+import com.fqxyi.library.ShareHelper;
 import com.fqxyi.library.ShareKit;
 import com.fqxyi.library.bean.ShareDataBean;
+import com.fqxyi.library.callback.ItemClickListener;
 import com.fqxyi.library.util.LogUtil;
 
 import java.util.ArrayList;
@@ -36,8 +38,8 @@ public class ShareDialog extends Dialog {
     ShareAdapter shareAdapter;
     //数据源-分享类型
     List<ShareTypeBean> shareTypeBeans;
-    //数据源-分享数据
-    ShareDataBean shareDataBean;
+    //点击事件回调
+    ItemClickListener itemClickListener;
 
     public ShareDialog(Context context) {
         super(context, R.style.ShareDialogStyle);
@@ -71,10 +73,12 @@ public class ShareDialog extends Dialog {
 
     private void initEvent() {
         //share item icon 点击事件
-        shareAdapter.setItemClickListener(new ShareAdapter.ItemClickListener() {
+        shareAdapter.setItemClickListener(new ItemClickListener() {
             @Override
             public void click(ShareTypeBean shareTypeBean, int position) {
-                initItemClick(shareTypeBean);
+                if (itemClickListener != null) {
+                    itemClickListener.click(shareTypeBean, position);
+                }
             }
         });
         //share cancel 点击事件
@@ -99,54 +103,10 @@ public class ShareDialog extends Dialog {
     }
 
     /**
-     * 初始化分享数据
+     * 设置点击事件回调
      */
-    public void initShareData(ShareDataBean shareDataBean) {
-        this.shareDataBean = shareDataBean;
-    }
-
-    /**
-     * 具体的item点击逻辑
-     */
-    private void initItemClick(ShareTypeBean shareTypeBean) {
-        if (shareTypeBean == null) {
-            return;
-        }
-        switch (shareTypeBean.type) {
-            case IShareType.SHARE_WECHAT: //微信
-                ShareKit.shareWechat(shareDataBean);
-                break;
-            case IShareType.SHARE_WECHATMOMENTS: //朋友圈
-                ShareKit.shareWechatMoments(shareDataBean);
-                break;
-            case IShareType.SHARE_SHORTMESSAGE: //短信
-                ShareKit.shareShortMessage(shareDataBean);
-                break;
-            case IShareType.SHARE_COPY: //复制
-                ShareKit.shareCopy(shareDataBean);
-                break;
-            case IShareType.SHARE_REFRESH: //刷新
-                ShareKit.shareRefresh(shareDataBean);
-                break;
-            case IShareType.SHARE_QQ: //QQ
-                ShareKit.shareQQ(shareDataBean);
-                break;
-            case IShareType.SHARE_SINA: //新浪微博
-                ShareKit.shareSina(shareDataBean);
-                break;
-            case IShareType.SHARE_WXMINIPROGRAM: //微信小程序
-                ShareKit.shareWxMiniProgram(shareDataBean);
-                break;
-            case IShareType.SHARE_ALIPAYMINPROGRAM: //支付宝小程序
-                ShareKit.shareAlipayMiniProgram(shareDataBean);
-                break;
-            case IShareType.SHARE_COLLECTION: //收藏
-                ShareKit.shareCollection(shareDataBean);
-                break;
-            case IShareType.SHARE_SHOW_ALL: //查看全部
-                ShareKit.shareShowAll(shareDataBean);
-                break;
-        }
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     /**

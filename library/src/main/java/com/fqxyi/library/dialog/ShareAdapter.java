@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fqxyi.library.R;
+import com.fqxyi.library.callback.ItemClickListener;
 import com.fqxyi.library.util.ShareUtil;
 
 import java.util.ArrayList;
@@ -90,10 +91,6 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
      */
     public void setItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener {
-        void click(ShareTypeBean shareTypeBean, int position);
     }
 
     class ShareViewHolder extends RecyclerView.ViewHolder {

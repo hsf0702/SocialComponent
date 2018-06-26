@@ -1,12 +1,35 @@
 package com.fqxyi.library.util;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
 import com.fqxyi.library.dialog.IShareType;
 import com.fqxyi.library.R;
+
+import java.util.List;
 
 /**
  * 分享工具类
  */
 public class ShareUtil {
+
+    /**
+     * 是否安装qq
+     */
+    public static boolean isQQInstalled(Context context) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> packageInfo = packageManager.getInstalledPackages(0);
+        if (packageInfo != null) {
+            for (int i = 0; i < packageInfo.size(); i++) {
+                String pn = packageInfo.get(i).packageName;
+                if (pn.equals("com.tencent.mobileqq")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public static int getIcon(int type) {
         switch (type) {

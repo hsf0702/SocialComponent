@@ -1,13 +1,20 @@
 package com.fqxyi.sharekit;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.fqxyi.library.ShareHelper;
+import com.fqxyi.library.ShareKit;
 import com.fqxyi.library.bean.ShareDataBean;
+import com.fqxyi.library.bean.ShareQQDataBean;
+import com.fqxyi.library.callback.IShareCallback;
+import com.fqxyi.library.callback.ItemClickListener;
 import com.fqxyi.library.dialog.IShareType;
 import com.fqxyi.library.dialog.ShareTypeBean;
 import com.fqxyi.library.dialog.ShareDialog;
+import com.fqxyi.library.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +28,8 @@ public class MainActivity extends Activity {
     List<ShareTypeBean> shareTypeBeans;
     //数据源-分享数据
     ShareDataBean shareDataBean;
+
+    ShareHelper shareHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,10 @@ public class MainActivity extends Activity {
         shareDataBean.shareUrl = "https://www.baidu.com/";
         shareDataBean.shareMiniAppId = "小程序的原始ID";
         shareDataBean.shareMiniPage = "小程序页面地址";
+        //
+        shareHelper = new ShareHelper.Builder()
+                .setQqAppId("1104746610")
+                .build();
     }
 
     /**
@@ -58,8 +71,82 @@ public class MainActivity extends Activity {
             shareDialog = new ShareDialog(this);
         }
         shareDialog.initShareType(shareTypeBeans);
-        shareDialog.initShareData(shareDataBean);
+        shareDialog.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void click(ShareTypeBean shareTypeBean, int position) {
+                initItemClick(shareTypeBean, shareCallback);
+            }
+        });
         shareDialog.show();
+    }
+
+    IShareCallback shareCallback = new IShareCallback() {
+        @Override
+        public void onSuccess() {
+            LogUtil.d(TAG, "onSuccess");
+        }
+
+        @Override
+        public void onError(String msg) {
+            LogUtil.d(TAG, "onError");
+        }
+
+        @Override
+        public void onCancel() {
+            LogUtil.d(TAG, "onCancel");
+        }
+    };
+
+    /**
+     * 具体的item点击逻辑
+     */
+    private void initItemClick(ShareTypeBean shareTypeBean, IShareCallback shareCallback) {
+        if (shareTypeBean == null) {
+            return;
+        }
+        switch (shareTypeBean.type) {
+            case IShareType.SHARE_WECHAT: //微信
+                ShareKit.shareWechat(shareDataBean);
+                break;
+            case IShareType.SHARE_WECHATMOMENTS: //朋友圈
+                ShareKit.shareWechatMoments(shareDataBean);
+                break;
+            case IShareType.SHARE_SHORTMESSAGE: //短信
+                ShareKit.shareShortMessage(shareDataBean);
+                break;
+            case IShareType.SHARE_COPY: //复制
+                ShareKit.shareCopy(shareDataBean);
+                break;
+            case IShareType.SHARE_REFRESH: //刷新
+                ShareKit.shareRefresh(shareDataBean);
+                break;
+            case IShareType.SHARE_QQ: //QQ
+                shareHelper.shareQQ(this, ShareDataBean.TYPE_IMAGE_TEXT, shareDataBean, shareCallback);
+                break;
+            case IShareType.SHARE_SINA: //新浪微博
+                ShareKit.shareSina(shareDataBean);
+                break;
+            case IShareType.SHARE_WXMINIPROGRAM: //微信小程序
+                ShareKit.shareWxMiniProgram(shareDataBean);
+                break;
+            case IShareType.SHARE_ALIPAYMINPROGRAM: //支付宝小程序
+                ShareKit.shareAlipayMiniProgram(shareDataBean);
+                break;
+            case IShareType.SHARE_COLLECTION: //收藏
+                ShareKit.shareCollection(shareDataBean);
+                break;
+            case IShareType.SHARE_SHOW_ALL: //查看全部
+                ShareKit.shareShowAll(shareDataBean);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (shareHelper != null) {
+            shareHelper.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
