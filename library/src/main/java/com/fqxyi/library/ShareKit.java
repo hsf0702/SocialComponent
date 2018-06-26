@@ -1,6 +1,7 @@
 package com.fqxyi.library;
 
 import com.fqxyi.library.bean.ShareDataBean;
+import com.fqxyi.library.util.LogUtil;
 
 /**
  * 分享操作类
@@ -14,6 +15,7 @@ public class ShareKit {
      */
     public static void shareWechat(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareWechat, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -21,6 +23,7 @@ public class ShareKit {
      */
     public static void shareWechatMoments(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareWechatMoments, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -28,6 +31,7 @@ public class ShareKit {
      */
     public static void shareShortMessage(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareShortMessage, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -35,6 +39,7 @@ public class ShareKit {
      */
     public static void shareCopy(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareCopy, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -42,6 +47,7 @@ public class ShareKit {
      */
     public static void shareRefresh(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareRefresh, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -49,6 +55,7 @@ public class ShareKit {
      */
     public static void shareQQ(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareQQ, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -56,6 +63,7 @@ public class ShareKit {
      */
     public static void shareSina(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareSina, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -63,6 +71,7 @@ public class ShareKit {
      */
     public static void shareWxMiniProgram(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareWxMiniProgram, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -70,6 +79,7 @@ public class ShareKit {
      */
     public static void shareAlipayMiniProgram(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareAlipayMiniProgram, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -77,6 +87,7 @@ public class ShareKit {
      */
     public static void shareCollection(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareCollection, shareDataBean = " + shareDataBean.toString());
     }
 
     /**
@@ -84,6 +95,7 @@ public class ShareKit {
      */
     public static void shareShowAll(ShareDataBean shareDataBean) {
 
+        LogUtil.d(TAG, "shareShowAll, shareDataBean = " + shareDataBean.toString());
     }
 
 }

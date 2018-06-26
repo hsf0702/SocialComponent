@@ -18,4 +18,15 @@ public class ShareDataBean {
     //小程序页面地址
     public String shareMiniPage;
 
+    @Override
+    public String toString() {
+        return "ShareDataBean{" +
+                "shareTitle='" + shareTitle + '\'' +
+                ", shareDesc='" + shareDesc + '\'' +
+                ", shareImage='" + shareImage + '\'' +
+                ", shareUrl='" + shareUrl + '\'' +
+                ", shareMiniAppId='" + shareMiniAppId + '\'' +
+                ", shareMiniPage='" + shareMiniPage + '\'' +
+                '}';
+    }
 }
