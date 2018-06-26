@@ -40,6 +40,13 @@ public class ShareHelper {
         wxHelper.share(shareDataBean, shareCallback);
     }
 
+    public void shareWxMoment(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+        if (wxHelper == null) {
+            wxHelper = new WXHelper(activity, builder.getWxMomentAppId(), builder.getWxMomentAppSecret());
+        }
+        wxHelper.shareMoment(shareDataBean, shareCallback);
+    }
+
     public void shareWB(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
         if (wbHelper == null) {
             wbHelper = new WBHelper(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
@@ -100,6 +107,9 @@ public class ShareHelper {
         private String wxAppId;
         private String wxAppSecret;
 
+        private String wxMomentAppId;
+        private String wxMomentAppSecret;
+
         private String wbAppId;
         private String wbRedirectUrl;
 
@@ -127,6 +137,24 @@ public class ShareHelper {
 
         public Builder setWxAppSecret(String wxAppSecret) {
             this.wxAppSecret = wxAppSecret;
+            return this;
+        }
+
+        public String getWxMomentAppId() {
+            return wxMomentAppId;
+        }
+
+        public Builder setWxMomentAppId(String wxMomentAppId) {
+            this.wxMomentAppId = wxMomentAppId;
+            return this;
+        }
+
+        public String getWxMomentAppSecret() {
+            return wxMomentAppSecret;
+        }
+
+        public Builder setWxMomentAppSecret(String wxMomentAppSecret) {
+            this.wxMomentAppSecret = wxMomentAppSecret;
             return this;
         }
 

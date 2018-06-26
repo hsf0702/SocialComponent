@@ -105,10 +105,10 @@ public class MainActivity extends Activity {
         }
         switch (shareTypeBean.type) {
             case IShareType.SHARE_WECHAT: //微信
-                ShareKit.shareWechat(shareDataBean);
+                shareHelper.shareWX(this, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_WECHATMOMENTS: //朋友圈
-                ShareKit.shareWechatMoments(shareDataBean);
+                shareHelper.shareWxMoment(this, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_SHORTMESSAGE: //短信
                 ShareKit.shareShortMessage(shareDataBean);

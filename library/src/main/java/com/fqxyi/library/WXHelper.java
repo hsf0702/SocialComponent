@@ -64,6 +64,26 @@ public class WXHelper {
         wxapi.sendReq(req);
     }
 
+    public void shareMoment(ShareDataBean shareDataBean, IShareCallback shareCallback) {
+        this.shareCallback = shareCallback;
+        if (!wxapi.isWXAppInstalled()) {
+            if (shareCallback != null) {
+                shareCallback.onError(activity.getString(R.string.share_wx_uninstall));
+            }
+            return;
+        }
+
+        activity.registerReceiver(broadcastReceiver, new IntentFilter(WXHelper.WX_SHARE_RECEIVER_ACTION));
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.message = createMessage(req, shareDataBean);
+        if (req.message == null) {
+            return;
+        }
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        wxapi.sendReq(req);
+    }
+
     private WXMediaMessage createMessage(SendMessageToWX.Req req, ShareDataBean shareDataBean) {
         WXMediaMessage msg = new WXMediaMessage();
         boolean success = false;
