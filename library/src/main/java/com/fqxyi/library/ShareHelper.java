@@ -14,6 +14,7 @@ public class ShareHelper {
     private Builder builder;
 
     private QQHelper qqHelper;
+    private WBHelper wbHelper;
 
     public ShareHelper(Builder builder) {
         this.builder = builder;
@@ -23,16 +24,38 @@ public class ShareHelper {
         return builder;
     }
 
-    public void shareQQ(Activity activity, int type, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void shareQQ(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
         if (qqHelper == null) {
             qqHelper = new QQHelper(activity, builder.getQqAppId());
         }
-        qqHelper.share(type, shareDataBean, shareCallback);
+        qqHelper.share(shareDataBean, shareCallback);
     }
 
+    public void shareWB(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+        if (wbHelper == null) {
+            wbHelper = new WBHelper(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
+        }
+        wbHelper.share(shareDataBean, shareCallback);
+    }
+
+    /**
+     * qq登录和分享以及微博登录都需要在其当前的activity的onActivityResult中调用该方法
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (qqHelper != null) {
             qqHelper.onActivityResult(requestCode, resultCode, data);
+        }
+        if (wbHelper != null) {
+            wbHelper.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    /**
+     * 微博分享需要在其当前的activity中的onNewIntent中调用该方法
+     */
+    public void onNewIntent(Intent intent) {
+        if (wbHelper != null) {
+            wbHelper.onNewIntent(intent);
         }
     }
 
@@ -40,6 +63,10 @@ public class ShareHelper {
         if (qqHelper != null) {
             qqHelper.onDestroy();
             qqHelper = null;
+        }
+        if (wbHelper != null) {
+            wbHelper.onDestroy();
+            wbHelper = null;
         }
     }
 

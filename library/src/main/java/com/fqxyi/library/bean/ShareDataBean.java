@@ -8,9 +8,6 @@ import android.text.TextUtils;
  */
 public class ShareDataBean {
 
-    public static final int TYPE_IMAGE_TEXT = 0; //图文分享
-    public static final int TYPE_IMAGE = 1; //纯图片分享
-
     //应用名
     public String appName;
     //分享标题

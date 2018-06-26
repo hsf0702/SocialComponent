@@ -2,6 +2,7 @@ package com.fqxyi.library;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.fqxyi.library.bean.ShareDataBean;
@@ -27,7 +28,7 @@ public class QQHelper {
         tencent = Tencent.createInstance(appId, activity.getApplicationContext());
     }
 
-    public void share(int type, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void share(ShareDataBean shareDataBean, IShareCallback shareCallback) {
         this.shareCallback = shareCallback;
         if (!ShareUtil.isQQInstalled(activity)) {
             if (shareCallback != null) {
@@ -35,24 +36,32 @@ public class QQHelper {
             }
             return;
         }
-        switch (type) {
-            case ShareDataBean.TYPE_IMAGE_TEXT:
-                shareDataBean = ShareQQDataBean.createImageTextData(
+        tencent.shareToQQ(activity, getShareData(shareDataBean), iUiListener);
+    }
+
+    private Bundle getShareData(ShareDataBean shareDataBean) {
+        switch (shareDataBean.type) {
+            case ShareQQDataBean.TYPE_IMAGE_TEXT:
+                return ShareQQDataBean.createImageTextData(
                         shareDataBean.appName,
                         shareDataBean.shareTitle,
                         shareDataBean.shareDesc,
                         shareDataBean.shareImage,
                         shareDataBean.shareUrl
-                );
-            break;
-            case ShareDataBean.TYPE_IMAGE:
-                shareDataBean = ShareQQDataBean.createImageData(
+                ).getParams();
+            case ShareQQDataBean.TYPE_IMAGE:
+                return ShareQQDataBean.createImageData(
                         shareDataBean.appName,
                         shareDataBean.shareImage
-                );
-                break;
+                ).getParams();
         }
-        tencent.shareToQQ(activity, shareDataBean.getParams(), iUiListener);
+        return ShareQQDataBean.createImageTextData(
+                shareDataBean.appName,
+                shareDataBean.shareTitle,
+                shareDataBean.shareDesc,
+                shareDataBean.shareImage,
+                shareDataBean.shareUrl
+        ).getParams();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

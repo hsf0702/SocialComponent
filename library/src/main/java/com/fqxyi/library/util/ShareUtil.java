@@ -3,16 +3,49 @@ package com.fqxyi.library.util;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 
 import com.fqxyi.library.dialog.IShareType;
 import com.fqxyi.library.R;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
  * 分享工具类
  */
 public class ShareUtil {
+
+    public static byte[] bmpToByteArray(final Bitmap bmp, boolean needThumb) {
+        Bitmap newBmp;
+        if (needThumb) {
+            int width = bmp.getWidth();
+            int height = bmp.getHeight();
+            if (width > height) {
+                height = height * 150 / width;
+                width = 150;
+            } else {
+                width = width * 150 / height;
+                height = 150;
+            }
+            newBmp = Bitmap.createScaledBitmap(bmp, width, height, true);
+            bmp.recycle();
+        } else {
+            newBmp = bmp;
+        }
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        newBmp.compress(Bitmap.CompressFormat.JPEG, 100, output);
+        newBmp.recycle();
+
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
     /**
      * 是否安装qq

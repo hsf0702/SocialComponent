@@ -7,6 +7,9 @@ import com.tencent.connect.share.QQShare;
  */
 public class ShareQQDataBean extends ShareDataBean {
 
+    public static final int TYPE_IMAGE_TEXT = 0; //图文分享
+    public static final int TYPE_IMAGE = 1; //纯图片分享
+
     /**
      * 创建分享图文类型到qq
      *
