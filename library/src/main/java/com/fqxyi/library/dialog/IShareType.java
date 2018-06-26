@@ -1,6 +1,9 @@
-package com.fqxyi.library;
+package com.fqxyi.library.dialog;
 
-public interface IShareConfig {
+/**
+ * 分享类型 静态常量
+ */
+public interface IShareType {
 
     int SHARE_WECHAT = 0; //微信好友
     int SHARE_WECHATMOMENTS = 1;// 微信朋友圈

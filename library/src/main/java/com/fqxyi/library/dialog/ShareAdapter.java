@@ -1,4 +1,4 @@
-package com.fqxyi.library;
+package com.fqxyi.library.dialog;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,17 +11,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fqxyi.library.R;
 import com.fqxyi.library.util.ShareUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 分享弹框的适配器
+ */
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHolder> {
 
     //上下文
     Context context;
     //数据源
-    List<ShareBean> shareBeans;
+    List<ShareTypeBean> shareTypeBeans;
     //点击事件回调
     ItemClickListener itemClickListener;
 
@@ -38,26 +42,26 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
     @Override
     public void onBindViewHolder(@NonNull ShareViewHolder holder, final int position) {
         //数据处理
-        if (shareBeans == null || shareBeans.get(position) == null) {
+        if (shareTypeBeans == null || shareTypeBeans.get(position) == null) {
             return;
         }
-        final ShareBean shareBean = shareBeans.get(position);
+        final ShareTypeBean shareTypeBean = shareTypeBeans.get(position);
         //View展示
-        if (shareBean.type != 5) {
-            holder.shareItemIcon.setImageResource(ShareUtil.getIcon(shareBean.type));
-            holder.shareItemName.setText(ShareUtil.getName(shareBean.type));
+        if (shareTypeBean.type != 5) {
+            holder.shareItemIcon.setImageResource(ShareUtil.getIcon(shareTypeBean.type));
+            holder.shareItemName.setText(ShareUtil.getName(shareTypeBean.type));
         } else {
-            if (!TextUtils.isEmpty(shareBean.shareIcon)) { //网络图片，目前无法显示
-                holder.shareItemIcon.setImageURI(Uri.parse(shareBean.shareIcon));
+            if (!TextUtils.isEmpty(shareTypeBean.shareIcon)) { // todo 网络图片，目前无法显示
+                holder.shareItemIcon.setImageURI(Uri.parse(shareTypeBean.shareIcon));
             }
-            holder.shareItemName.setText(shareBean.shareName);
+            holder.shareItemName.setText(shareTypeBean.shareName);
         }
         //点击事件
         holder.shareItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (itemClickListener != null) {
-                    itemClickListener.click(shareBean, position);
+                    itemClickListener.click(shareTypeBean, position);
                 }
             }
         });
@@ -65,19 +69,19 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
 
     @Override
     public int getItemCount() {
-        return shareBeans == null ? 0 : shareBeans.size();
+        return shareTypeBeans == null ? 0 : shareTypeBeans.size();
     }
 
     /**
      * 更新数据
      */
-    public void updateData(List<ShareBean> list) {
-        if (shareBeans == null) {
-            shareBeans = new ArrayList<>();
+    public void updateData(List<ShareTypeBean> list) {
+        if (shareTypeBeans == null) {
+            shareTypeBeans = new ArrayList<>();
         } else {
-            shareBeans.clear();
+            shareTypeBeans.clear();
         }
-        shareBeans.addAll(list);
+        shareTypeBeans.addAll(list);
         notifyDataSetChanged();
     }
 
@@ -89,7 +93,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
     }
 
     public interface ItemClickListener {
-        void click(ShareBean shareBean, int position);
+        void click(ShareTypeBean shareTypeBean, int position);
     }
 
     class ShareViewHolder extends RecyclerView.ViewHolder {

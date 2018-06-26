@@ -1,4 +1,4 @@
-package com.fqxyi.library;
+package com.fqxyi.library.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,14 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.Toast;
 
+import com.fqxyi.library.R;
+import com.fqxyi.library.ShareKit;
+import com.fqxyi.library.bean.ShareDataBean;
 import com.fqxyi.library.util.LogUtil;
-import com.fqxyi.library.util.ShareUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,8 +34,10 @@ public class ShareDialog extends Dialog {
     private Button shareCancel;
     //adapter
     ShareAdapter shareAdapter;
-    //数据源
-    List<ShareBean> shareBeans;
+    //数据源-分享类型
+    List<ShareTypeBean> shareTypeBeans;
+    //数据源-分享数据
+    ShareDataBean shareDataBean;
 
     public ShareDialog(Context context) {
         super(context, R.style.ShareDialogStyle);
@@ -63,7 +65,7 @@ public class ShareDialog extends Dialog {
     private void initRecyclerView() {
         shareRecyclerView.setLayoutManager(new GridLayoutManager(context, 4));
         shareAdapter = new ShareAdapter(context);
-        shareAdapter.updateData(shareBeans);
+        shareAdapter.updateData(shareTypeBeans);
         shareRecyclerView.setAdapter(shareAdapter);
     }
 
@@ -71,8 +73,8 @@ public class ShareDialog extends Dialog {
         //share item icon 点击事件
         shareAdapter.setItemClickListener(new ShareAdapter.ItemClickListener() {
             @Override
-            public void click(ShareBean shareBean, int position) {
-                Toast.makeText(context, "点击了" + ShareUtil.getName(shareBean.type), Toast.LENGTH_SHORT).show();
+            public void click(ShareTypeBean shareTypeBean, int position) {
+                initItemClick(shareTypeBean);
             }
         });
         //share cancel 点击事件
@@ -85,10 +87,66 @@ public class ShareDialog extends Dialog {
     }
 
     /**
-     * 初始化数据
+     * 初始化分享类型
      */
-    public void initData(List<ShareBean> list) {
-        this.shareBeans = list;
+    public void initShareType(List<ShareTypeBean> list) {
+        if (shareTypeBeans == null) {
+            shareTypeBeans = new ArrayList<>();
+        } else {
+            shareTypeBeans.clear();
+        }
+        shareTypeBeans.addAll(list);
+    }
+
+    /**
+     * 初始化分享数据
+     */
+    public void initShareData(ShareDataBean shareDataBean) {
+        this.shareDataBean = shareDataBean;
+    }
+
+    /**
+     * 具体的item点击逻辑
+     */
+    private void initItemClick(ShareTypeBean shareTypeBean) {
+        if (shareTypeBean == null) {
+            return;
+        }
+        switch (shareTypeBean.type) {
+            case IShareType.SHARE_WECHAT: //微信
+                ShareKit.shareWechat(shareDataBean);
+                break;
+            case IShareType.SHARE_WECHATMOMENTS: //朋友圈
+                ShareKit.shareWechatMoments(shareDataBean);
+                break;
+            case IShareType.SHARE_SHORTMESSAGE: //短信
+                ShareKit.shareShortMessage(shareDataBean);
+                break;
+            case IShareType.SHARE_COPY: //复制
+                ShareKit.shareCopy(shareDataBean);
+                break;
+            case IShareType.SHARE_REFRESH: //刷新
+                ShareKit.shareRefresh(shareDataBean);
+                break;
+            case IShareType.SHARE_QQ: //QQ
+                ShareKit.shareQQ(shareDataBean);
+                break;
+            case IShareType.SHARE_SINA: //新浪微博
+                ShareKit.shareSina(shareDataBean);
+                break;
+            case IShareType.SHARE_WXMINIPROGRAM: //微信小程序
+                ShareKit.shareWxMiniProgram(shareDataBean);
+                break;
+            case IShareType.SHARE_ALIPAYMINPROGRAM: //支付宝小程序
+                ShareKit.shareAlipayMiniProgram(shareDataBean);
+                break;
+            case IShareType.SHARE_COLLECTION: //收藏
+                ShareKit.shareCollection(shareDataBean);
+                break;
+            case IShareType.SHARE_SHOW_ALL: //查看全部
+                ShareKit.shareShowAll(shareDataBean);
+                break;
+        }
     }
 
     /**

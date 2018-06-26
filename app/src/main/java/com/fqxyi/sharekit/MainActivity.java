@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.fqxyi.library.IShareConfig;
-import com.fqxyi.library.ShareBean;
-import com.fqxyi.library.ShareDialog;
+import com.fqxyi.library.bean.ShareDataBean;
+import com.fqxyi.library.dialog.IShareType;
+import com.fqxyi.library.dialog.ShareTypeBean;
+import com.fqxyi.library.dialog.ShareDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,29 +15,39 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
-
+    //分享弹框
     ShareDialog shareDialog;
-
-    List<ShareBean> originShareBean;
+    //数据源-分享类型
+    List<ShareTypeBean> shareTypeBeans;
+    //数据源-分享数据
+    ShareDataBean shareDataBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //初始化假数据
-        originShareBean = new ArrayList<>();
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_WECHAT));
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_WECHATMOMENTS));
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_SHORTMESSAGE));
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_COPY));
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_REFRESH));
-//        originShareBean.add(new ShareBean(IShareConfig.SHARE_CUSTOM));
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_QQ));
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_SINA));
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_WXMINIPROGRAM));
-//        originShareBean.add(new ShareBean(IShareConfig.SHARE_ALIPAYMINPROGRAM));
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_COLLECTION));
-        originShareBean.add(new ShareBean(IShareConfig.SHARE_SHOW_ALL));
+        //初始化分享类型
+        shareTypeBeans = new ArrayList<>();
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_WECHAT));
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_WECHATMOMENTS));
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_SHORTMESSAGE));
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_COPY));
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_REFRESH));
+//        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_CUSTOM));
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_QQ));
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_SINA));
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_WXMINIPROGRAM));
+//        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_ALIPAYMINPROGRAM));
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_COLLECTION));
+        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_SHOW_ALL));
+        //初始化分享数据
+        shareDataBean = new ShareDataBean();
+        shareDataBean.shareTitle = "百度一下，你就知道";
+        shareDataBean.shareDesc = "全球最大的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求。百度超过千亿的中文网页数据库，可以瞬间找到相关的搜索结果。";
+        shareDataBean.shareImage = "https://www.baidu.com/img/bd_logo1.png";
+        shareDataBean.shareUrl = "https://www.baidu.com/";
+        shareDataBean.shareMiniAppId = "小程序的原始ID";
+        shareDataBean.shareMiniPage = "小程序页面地址";
     }
 
     /**
@@ -46,7 +57,8 @@ public class MainActivity extends Activity {
         if (shareDialog == null) {
             shareDialog = new ShareDialog(this);
         }
-        shareDialog.initData(originShareBean);
+        shareDialog.initShareType(shareTypeBeans);
+        shareDialog.initShareData(shareDataBean);
         shareDialog.show();
     }
 

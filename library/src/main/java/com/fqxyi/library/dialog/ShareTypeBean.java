@@ -1,6 +1,9 @@
-package com.fqxyi.library;
+package com.fqxyi.library.dialog;
 
-public class ShareBean {
+/**
+ * 分享类型 数据结构
+ */
+public class ShareTypeBean {
 
     /***
      * 0.微信 1.朋友圈 2.短信 3.复制 4.刷新 5.自定义 6 QQ 7 微博 8 微信小程序 9 支付宝小程序
@@ -15,11 +18,11 @@ public class ShareBean {
      */
     public String shareName;
 
-    public ShareBean() {
+    public ShareTypeBean() {
 
     }
 
-    public ShareBean(int type) {
+    public ShareTypeBean(int type) {
         this.type = type;
     }
 
