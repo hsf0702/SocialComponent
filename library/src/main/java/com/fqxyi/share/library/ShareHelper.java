@@ -21,7 +21,7 @@ public class ShareHelper {
 
     private QQShareHelper qqShareHelper;
     private WXHelper wxHelper;
-    private WBHelper wbHelper;
+    private WBShareHelper wbShareHelper;
 
     public ShareHelper(Builder builder) {
         this.builder = builder;
@@ -60,10 +60,10 @@ public class ShareHelper {
         fixedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
-                if (wbHelper == null) {
-                    wbHelper = new WBHelper(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
+                if (wbShareHelper == null) {
+                    wbShareHelper = new WBShareHelper(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
                 }
-                wbHelper.share(shareDataBean, shareCallback);
+                wbShareHelper.share(shareDataBean, shareCallback);
             }
         });
     }
@@ -75,17 +75,14 @@ public class ShareHelper {
         if (qqShareHelper != null) {
             qqShareHelper.onActivityResult(requestCode, resultCode, data);
         }
-        if (wbHelper != null) {
-            wbHelper.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     /**
      * 微博分享需要在其当前的activity中的onNewIntent中调用该方法
      */
     public void onNewIntent(Intent intent) {
-        if (wbHelper != null) {
-            wbHelper.onNewIntent(intent);
+        if (wbShareHelper != null) {
+            wbShareHelper.onNewIntent(intent);
         }
     }
 
@@ -109,9 +106,9 @@ public class ShareHelper {
             wxHelper.onDestroy();
             wxHelper = null;
         }
-        if (wbHelper != null) {
-            wbHelper.onDestroy();
-            wbHelper = null;
+        if (wbShareHelper != null) {
+            wbShareHelper.onDestroy();
+            wbShareHelper = null;
         }
     }
 
@@ -151,24 +148,6 @@ public class ShareHelper {
 
         public Builder setWxAppSecret(String wxAppSecret) {
             this.wxAppSecret = wxAppSecret;
-            return this;
-        }
-
-        public String getWxMomentAppId() {
-            return wxMomentAppId;
-        }
-
-        public Builder setWxMomentAppId(String wxMomentAppId) {
-            this.wxMomentAppId = wxMomentAppId;
-            return this;
-        }
-
-        public String getWxMomentAppSecret() {
-            return wxMomentAppSecret;
-        }
-
-        public Builder setWxMomentAppSecret(String wxMomentAppSecret) {
-            this.wxMomentAppSecret = wxMomentAppSecret;
             return this;
         }
 

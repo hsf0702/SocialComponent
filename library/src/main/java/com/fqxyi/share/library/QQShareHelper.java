@@ -94,7 +94,7 @@ public class QQShareHelper {
                 bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, shareDataBean.shareDesc);
                 bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareDataBean.shareImage);
                 bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareDataBean.shareUrl);
-                bundle.putString(QQShare.SHARE_TO_QQ_AUDIO_URL, shareDataBean.musicUrl);
+                bundle.putString(QQShare.SHARE_TO_QQ_AUDIO_URL, shareDataBean.shareMusicUrl);
                 break;
             case QQShareHelper.TYPE_APP:
                 bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_APP);

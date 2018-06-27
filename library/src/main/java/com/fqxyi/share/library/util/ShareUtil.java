@@ -24,6 +24,23 @@ import java.util.List;
  */
 public class ShareUtil {
 
+    /**
+     * 判断是网络图片还是本地图片，true为网络图片
+     */
+    public boolean isNetImage(String imageUrl) {
+        if (TextUtils.isEmpty(imageUrl)) {
+            return false;
+        }
+        if (imageUrl.startsWith("http")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 将图片（网络图片或本地图片）转换为Bitmap，需要在子线程中工作，否则会抛出Crash
+     */
     public static Bitmap getImageBitmap(String imageUrl) {
         if (TextUtils.isEmpty(imageUrl)) {
             return null;
@@ -64,6 +81,9 @@ public class ShareUtil {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
+    /**
+     * 将bitmap转换为byte[]
+     */
     public static byte[] bmpToByteArray(final Bitmap bmp, boolean needThumb) {
         Bitmap newBmp;
         if (needThumb) {
