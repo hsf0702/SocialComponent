@@ -9,7 +9,7 @@ public class SocialUtil {
 
     private SocialUtil() {
         shareHelper = new ShareHelper.Builder()
-                .setQqAppId("1105607794")
+                .setQqAppId("1107001192")
                 .setWxAppId("")
                 .setWxAppSecret("")
                 .setWbAppId("2474483531")
