@@ -1,4 +1,4 @@
-package com.fqxyi.sharekit.wxapi;
+package com.fqxyi.share.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.fqxyi.sharekit.util.SocialUtil;
+import com.fqxyi.share.util.SocialUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;

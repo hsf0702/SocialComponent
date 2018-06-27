@@ -1,14 +1,14 @@
-package com.fqxyi.library;
+package com.fqxyi.share.library;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.fqxyi.library.bean.ShareDataBean;
-import com.fqxyi.library.bean.ShareQQDataBean;
-import com.fqxyi.library.callback.IShareCallback;
-import com.fqxyi.library.util.ShareUtil;
+import com.fqxyi.share.library.bean.ShareDataBean;
+import com.fqxyi.share.library.bean.ShareQQDataBean;
+import com.fqxyi.share.library.callback.IShareCallback;
+import com.fqxyi.share.library.util.ShareUtil;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;

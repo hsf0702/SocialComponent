@@ -1,4 +1,4 @@
-package com.fqxyi.library.dialog;
+package com.fqxyi.share.library.dialog;
 
 /**
  * 分享类型 静态常量

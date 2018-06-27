@@ -1,6 +1,6 @@
-package com.fqxyi.sharekit.util;
+package com.fqxyi.share.util;
 
-import com.fqxyi.library.ShareHelper;
+import com.fqxyi.share.library.ShareHelper;
 
 /**
  * Created by arvinljw on 17/11/27 17:33

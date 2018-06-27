@@ -1,4 +1,4 @@
-package com.fqxyi.library;
+package com.fqxyi.share.library;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -8,10 +8,10 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
-import com.fqxyi.library.bean.ShareDataBean;
-import com.fqxyi.library.bean.ShareWXDataBean;
-import com.fqxyi.library.callback.IShareCallback;
-import com.fqxyi.library.util.ShareUtil;
+import com.fqxyi.share.library.bean.ShareDataBean;
+import com.fqxyi.share.library.bean.ShareWXDataBean;
+import com.fqxyi.share.library.callback.IShareCallback;
+import com.fqxyi.share.library.util.ShareUtil;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;

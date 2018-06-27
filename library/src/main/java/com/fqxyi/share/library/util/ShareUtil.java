@@ -1,4 +1,4 @@
-package com.fqxyi.library.util;
+package com.fqxyi.share.library.util;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -7,8 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
-import com.fqxyi.library.R;
-import com.fqxyi.library.dialog.IShareType;
+import com.fqxyi.share.library.R;
+import com.fqxyi.share.library.dialog.IShareType;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

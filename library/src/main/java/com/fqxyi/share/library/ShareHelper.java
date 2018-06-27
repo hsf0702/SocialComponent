@@ -1,11 +1,11 @@
-package com.fqxyi.library;
+package com.fqxyi.share.library;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.fqxyi.library.bean.ShareDataBean;
-import com.fqxyi.library.callback.IShareCallback;
+import com.fqxyi.share.library.bean.ShareDataBean;
+import com.fqxyi.share.library.callback.IShareCallback;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

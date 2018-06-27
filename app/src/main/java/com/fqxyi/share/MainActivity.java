@@ -1,20 +1,20 @@
-package com.fqxyi.sharekit;
+package com.fqxyi.share;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.fqxyi.library.ShareHelper;
-import com.fqxyi.library.ShareKit;
-import com.fqxyi.library.bean.ShareQQDataBean;
-import com.fqxyi.library.callback.IShareCallback;
-import com.fqxyi.library.callback.ItemClickListener;
-import com.fqxyi.library.dialog.IShareType;
-import com.fqxyi.library.dialog.ShareDialog;
-import com.fqxyi.library.dialog.ShareTypeBean;
-import com.fqxyi.library.util.LogUtil;
-import com.fqxyi.sharekit.util.SocialUtil;
+import com.fqxyi.share.library.ShareHelper;
+import com.fqxyi.share.library.ShareKit;
+import com.fqxyi.share.library.bean.ShareQQDataBean;
+import com.fqxyi.share.library.callback.IShareCallback;
+import com.fqxyi.share.library.callback.ItemClickListener;
+import com.fqxyi.share.library.dialog.IShareType;
+import com.fqxyi.share.library.dialog.ShareDialog;
+import com.fqxyi.share.library.dialog.ShareTypeBean;
+import com.fqxyi.share.library.util.LogUtil;
+import com.fqxyi.share.util.SocialUtil;
 
 import java.util.ArrayList;
 import java.util.List;

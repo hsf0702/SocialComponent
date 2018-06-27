@@ -1,7 +1,7 @@
-package com.fqxyi.library;
+package com.fqxyi.share.library;
 
-import com.fqxyi.library.bean.ShareDataBean;
-import com.fqxyi.library.util.LogUtil;
+import com.fqxyi.share.library.bean.ShareDataBean;
+import com.fqxyi.share.library.util.LogUtil;
 
 /**
  * 分享操作类

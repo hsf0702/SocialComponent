@@ -1,4 +1,4 @@
-package com.fqxyi.library.dialog;
+package com.fqxyi.share.library.dialog;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fqxyi.library.R;
-import com.fqxyi.library.callback.ItemClickListener;
-import com.fqxyi.library.util.ShareUtil;
+import com.fqxyi.share.library.R;
+import com.fqxyi.share.library.callback.ItemClickListener;
+import com.fqxyi.share.library.util.ShareUtil;
 
 import java.util.ArrayList;
 import java.util.List;

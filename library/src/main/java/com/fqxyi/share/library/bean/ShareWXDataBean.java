@@ -1,4 +1,4 @@
-package com.fqxyi.library.bean;
+package com.fqxyi.share.library.bean;
 
 public class ShareWXDataBean extends ShareDataBean {
 

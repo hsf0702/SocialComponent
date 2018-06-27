@@ -1,4 +1,4 @@
-package com.fqxyi.library.dialog;
+package com.fqxyi.share.library.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -12,12 +12,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.fqxyi.library.R;
-import com.fqxyi.library.ShareHelper;
-import com.fqxyi.library.ShareKit;
-import com.fqxyi.library.bean.ShareDataBean;
-import com.fqxyi.library.callback.ItemClickListener;
-import com.fqxyi.library.util.LogUtil;
+import com.fqxyi.share.library.R;
+import com.fqxyi.share.library.callback.ItemClickListener;
+import com.fqxyi.share.library.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
