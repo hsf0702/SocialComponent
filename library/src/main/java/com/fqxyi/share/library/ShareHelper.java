@@ -19,7 +19,7 @@ public class ShareHelper {
 
     private Builder builder;
 
-    private QQHelper qqHelper;
+    private QQShareHelper qqShareHelper;
     private WXHelper wxHelper;
     private WBHelper wbHelper;
 
@@ -32,10 +32,10 @@ public class ShareHelper {
     }
 
     public void shareQQ(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
-        if (qqHelper == null) {
-            qqHelper = new QQHelper(activity, builder.getQqAppId());
+        if (qqShareHelper == null) {
+            qqShareHelper = new QQShareHelper(activity, builder.getQqAppId());
         }
-        qqHelper.share(shareDataBean, shareCallback);
+        qqShareHelper.share(shareDataBean, shareCallback);
     }
 
     public void shareWX(final Activity activity, final boolean isTimeLine, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
@@ -72,8 +72,8 @@ public class ShareHelper {
      * qq登录和分享以及微博登录都需要在其当前的activity的onActivityResult中调用该方法
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (qqHelper != null) {
-            qqHelper.onActivityResult(requestCode, resultCode, data);
+        if (qqShareHelper != null) {
+            qqShareHelper.onActivityResult(requestCode, resultCode, data);
         }
         if (wbHelper != null) {
             wbHelper.onActivityResult(requestCode, resultCode, data);
@@ -101,9 +101,9 @@ public class ShareHelper {
     }
 
     public void onDestroy() {
-        if (qqHelper != null) {
-            qqHelper.onDestroy();
-            qqHelper = null;
+        if (qqShareHelper != null) {
+            qqShareHelper.onDestroy();
+            qqShareHelper = null;
         }
         if (wxHelper != null) {
             wxHelper.onDestroy();

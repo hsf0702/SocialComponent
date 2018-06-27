@@ -18,6 +18,8 @@ public class ShareDataBean {
     public String shareImage;
     //分享地址
     public String shareUrl;
+    //分享音乐地址
+    public String musicUrl;
     //小程序的原始ID
     public String shareMiniAppId;
     //小程序页面地址

@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.fqxyi.share.library.QQShareHelper;
 import com.fqxyi.share.library.ShareHelper;
 import com.fqxyi.share.library.ShareKit;
-import com.fqxyi.share.library.bean.ShareQQDataBean;
+import com.fqxyi.share.library.bean.ShareDataBean;
 import com.fqxyi.share.library.callback.IShareCallback;
 import com.fqxyi.share.library.callback.ItemClickListener;
 import com.fqxyi.share.library.dialog.IShareType;
@@ -27,7 +28,7 @@ public class MainActivity extends Activity {
     //数据源-分享类型
     List<ShareTypeBean> shareTypeBeans;
     //数据源-分享数据
-    ShareQQDataBean shareDataBean;
+    ShareDataBean shareDataBean;
 
     ShareHelper shareHelper;
 
@@ -50,8 +51,8 @@ public class MainActivity extends Activity {
         shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_COLLECTION));
         shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_SHOW_ALL));
         //初始化分享数据
-        shareDataBean = new ShareQQDataBean();
-        shareDataBean.type = ShareQQDataBean.TYPE_IMAGE_TEXT;
+        shareDataBean = new ShareDataBean();
+        shareDataBean.type = QQShareHelper.TYPE_IMAGE_TEXT;
         shareDataBean.shareTitle = "百度一下，你就知道";
         shareDataBean.shareDesc = "全球最大的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求。百度超过千亿的中文网页数据库，可以瞬间找到相关的搜索结果。";
         shareDataBean.shareImage = "https://www.baidu.com/img/bd_logo1.png";
