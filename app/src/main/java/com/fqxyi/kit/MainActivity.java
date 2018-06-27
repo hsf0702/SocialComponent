@@ -15,7 +15,6 @@ import com.fqxyi.kit.library.share.ShareDataBean;
 import com.fqxyi.kit.library.share.ShareHelper;
 import com.fqxyi.kit.library.share.ShareKit;
 import com.fqxyi.kit.util.SocialUtil;
-import com.fqxyi.share.R;
 import com.sina.weibo.sdk.utils.LogUtil;
 
 import java.util.ArrayList;
