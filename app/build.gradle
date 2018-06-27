@@ -15,6 +15,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //签名文件配置
+    signingConfigs {
+        //测试签名
+        debugConfig {
+            keyAlias 'sign_debug'
+            keyPassword '123456'
+            storeFile file('app/sign_debug.jks')
+            storePassword '123456'
+        }
+    }
 }
 
 dependencies {

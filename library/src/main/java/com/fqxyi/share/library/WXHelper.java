@@ -42,11 +42,18 @@ public class WXHelper {
         wxapi.registerApp(appId);
     }
 
-    public void share(ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void share(boolean isTimeLine, ShareDataBean shareDataBean, IShareCallback shareCallback) {
         this.shareCallback = shareCallback;
         if (!wxapi.isWXAppInstalled()) {
             if (shareCallback != null) {
                 shareCallback.onError(activity.getString(R.string.share_wx_uninstall));
+            }
+            return;
+        }
+        //是否分享到朋友圈，微信4.2以下不支持朋友圈
+        if (isTimeLine && wxapi.getWXAppSupportAPI() < 0x21020001) {
+            if (shareCallback != null) {
+                shareCallback.onError(activity.getString(R.string.share_wx_version_low_error));
             }
             return;
         }
@@ -58,27 +65,7 @@ public class WXHelper {
         if (req.message == null) {
             return;
         }
-        req.scene = SendMessageToWX.Req.WXSceneSession;
-        wxapi.sendReq(req);
-    }
-
-    public void shareMoment(ShareDataBean shareDataBean, IShareCallback shareCallback) {
-        this.shareCallback = shareCallback;
-        if (!wxapi.isWXAppInstalled()) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wx_uninstall));
-            }
-            return;
-        }
-
-        activity.registerReceiver(broadcastReceiver, new IntentFilter(WXHelper.WX_SHARE_RECEIVER_ACTION));
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.message = createMessage(req, shareDataBean);
-        if (req.message == null) {
-            return;
-        }
-        req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        req.scene = isTimeLine ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;
         wxapi.sendReq(req);
     }
 

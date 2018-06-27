@@ -38,7 +38,7 @@ public class ShareHelper {
         qqHelper.share(shareDataBean, shareCallback);
     }
 
-    public void shareWX(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+    public void shareWX(final Activity activity, final boolean isTimeLine, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
         if (fixedThreadPool.isShutdown()) {
             return;
         }
@@ -48,22 +48,7 @@ public class ShareHelper {
                 if (wxHelper == null) {
                     wxHelper = new WXHelper(activity, builder.getWxAppId(), builder.getWxAppSecret());
                 }
-                wxHelper.share(shareDataBean, shareCallback);
-            }
-        });
-    }
-
-    public void shareWxMoment(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
-        if (fixedThreadPool.isShutdown()) {
-            return;
-        }
-        fixedThreadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (wxHelper == null) {
-                    wxHelper = new WXHelper(activity, builder.getWxMomentAppId(), builder.getWxMomentAppSecret());
-                }
-                wxHelper.shareMoment(shareDataBean, shareCallback);
+                wxHelper.share(isTimeLine, shareDataBean, shareCallback);
             }
         });
     }
