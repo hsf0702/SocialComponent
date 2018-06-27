@@ -10,7 +10,7 @@ import com.fqxyi.share.library.ShareHelper;
 import com.fqxyi.share.library.ShareKit;
 import com.fqxyi.share.library.bean.ShareDataBean;
 import com.fqxyi.share.library.callback.IShareCallback;
-import com.fqxyi.share.library.callback.ItemClickListener;
+import com.fqxyi.share.library.dialog.ItemClickListener;
 import com.fqxyi.share.library.dialog.IShareType;
 import com.fqxyi.share.library.dialog.ShareDialog;
 import com.fqxyi.share.library.dialog.ShareTypeBean;

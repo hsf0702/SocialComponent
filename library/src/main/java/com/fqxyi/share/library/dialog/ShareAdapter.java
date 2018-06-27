@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fqxyi.share.library.R;
-import com.fqxyi.share.library.callback.ItemClickListener;
 import com.fqxyi.share.library.util.ShareUtil;
 
 import java.util.ArrayList;

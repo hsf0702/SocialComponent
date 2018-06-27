@@ -101,25 +101,27 @@ public class WBShareHelper {
         BaseMediaObject mediaObject = null;
         switch (shareDataBean.type) {
             case WBShareHelper.TYPE_TEXT:
-                mediaObject = getTextObj(shareDataBean.shareDesc);
+                msg.textObject = getTextObj(shareDataBean.shareDesc);
+                mediaObject = msg.textObject;
                 break;
             case WBShareHelper.TYPE_IMAGE:
-                mediaObject = getImageObj(shareDataBean.shareImage);
+                msg.imageObject = getImageObj(shareDataBean.shareImage);
+                mediaObject = msg.imageObject;
                 break;
             case WBShareHelper.TYPE_IMAGE_MULTI:
-                mediaObject = getMultiImgObj(shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage, shareDataBean.shareImageList);
+                msg.multiImageObject = getMultiImgObj(shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage, shareDataBean.shareImageList);
+                mediaObject = msg.multiImageObject;
                 break;
             case WBShareHelper.TYPE_VIDEO:
-                mediaObject = getVideoObj(shareDataBean.shareImage, shareDataBean.shareVideoUrl);
+                msg.videoSourceObject = getVideoObj(shareDataBean.shareImage, shareDataBean.shareVideoUrl);
+                mediaObject = msg.videoSourceObject;
                 break;
             case WBShareHelper.TYPE_WEB:
-                mediaObject = getWebPageObj(shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage);
+                msg.mediaObject = getWebPageObj(shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage);
+                mediaObject = msg.mediaObject;
                 break;
         }
         if (mediaObject == null) {
-            if (shareCallback != null) {
-                shareCallback.onError("mediaObject == null");
-            }
             return null;
         }
         return msg;

@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.fqxyi.share.library.R;
-import com.fqxyi.share.library.callback.ItemClickListener;
 import com.fqxyi.share.library.util.LogUtil;
 
 import java.util.ArrayList;

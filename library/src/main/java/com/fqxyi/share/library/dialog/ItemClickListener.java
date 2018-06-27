@@ -1,6 +1,4 @@
-package com.fqxyi.share.library.callback;
-
-import com.fqxyi.share.library.dialog.ShareTypeBean;
+package com.fqxyi.share.library.dialog;
 
 public interface ItemClickListener {
 

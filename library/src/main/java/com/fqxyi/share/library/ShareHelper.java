@@ -92,8 +92,8 @@ public class ShareHelper {
      * @param success 表示是否分享成功
      */
     public void sendShareBackBroadcast(Context context, boolean success) {
-        Intent intent = new Intent(WXHelper.WX_SHARE_RECEIVER_ACTION);
-        intent.putExtra(WXHelper.KEY_WX_SHARE_CALL_BACK, success);
+        Intent intent = new Intent(WXHelper.ACTION_WX_SHARE_RECEIVER);
+        intent.putExtra(WXHelper.KEY_WX_SHARE_CALLBACK, success);
         context.sendBroadcast(intent);
     }
 
@@ -117,9 +117,6 @@ public class ShareHelper {
 
         private String wxAppId;
         private String wxAppSecret;
-
-        private String wxMomentAppId;
-        private String wxMomentAppSecret;
 
         private String wbAppId;
         private String wbRedirectUrl;
