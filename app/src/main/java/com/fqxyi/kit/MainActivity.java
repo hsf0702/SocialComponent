@@ -1,21 +1,22 @@
-package com.fqxyi.share;
+package com.fqxyi.kit;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.fqxyi.share.library.QQShareHelper;
-import com.fqxyi.share.library.ShareHelper;
-import com.fqxyi.share.library.ShareKit;
-import com.fqxyi.share.library.bean.ShareDataBean;
-import com.fqxyi.share.library.callback.IShareCallback;
-import com.fqxyi.share.library.dialog.ItemClickListener;
-import com.fqxyi.share.library.dialog.IShareType;
-import com.fqxyi.share.library.dialog.ShareDialog;
-import com.fqxyi.share.library.dialog.ShareTypeBean;
-import com.fqxyi.share.library.util.LogUtil;
-import com.fqxyi.share.util.SocialUtil;
+import com.fqxyi.kit.library.dialog.IShareType;
+import com.fqxyi.kit.library.dialog.ItemClickListener;
+import com.fqxyi.kit.library.dialog.ShareDialog;
+import com.fqxyi.kit.library.dialog.ShareTypeBean;
+import com.fqxyi.kit.library.share.IShareCallback;
+import com.fqxyi.kit.library.share.QQShareHelper;
+import com.fqxyi.kit.library.share.ShareDataBean;
+import com.fqxyi.kit.library.share.ShareHelper;
+import com.fqxyi.kit.library.share.ShareKit;
+import com.fqxyi.kit.util.SocialUtil;
+import com.fqxyi.share.R;
+import com.sina.weibo.sdk.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.fqxyi.share.library.callback;
+package com.fqxyi.kit.library.share;
 
 /**
  * 分享结果回调

@@ -1,4 +1,4 @@
-package com.fqxyi.share.library.bean;
+package com.fqxyi.kit.library.share;
 
 import android.os.Bundle;
 import android.text.TextUtils;

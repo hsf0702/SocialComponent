@@ -1,10 +1,10 @@
-package com.fqxyi.share.library.util;
+package com.fqxyi.kit.util;
 
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.fqxyi.share.library.BuildConfig;
+import com.fqxyi.kit.library.BuildConfig;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

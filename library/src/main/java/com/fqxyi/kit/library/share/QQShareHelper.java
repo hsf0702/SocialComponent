@@ -1,13 +1,11 @@
-package com.fqxyi.share.library;
+package com.fqxyi.kit.library.share;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.fqxyi.share.library.bean.ShareDataBean;
-import com.fqxyi.share.library.callback.IShareCallback;
-import com.fqxyi.share.library.util.ShareUtil;
+import com.fqxyi.kit.library.R;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;

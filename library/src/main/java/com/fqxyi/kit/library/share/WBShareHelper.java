@@ -1,4 +1,4 @@
-package com.fqxyi.share.library;
+package com.fqxyi.kit.library.share;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,9 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.fqxyi.share.library.bean.ShareDataBean;
-import com.fqxyi.share.library.callback.IShareCallback;
-import com.fqxyi.share.library.util.ShareUtil;
+import com.fqxyi.kit.library.R;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.BaseMediaObject;
 import com.sina.weibo.sdk.api.ImageObject;

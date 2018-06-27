@@ -1,6 +1,6 @@
-package com.fqxyi.share.util;
+package com.fqxyi.kit.util;
 
-import com.fqxyi.share.library.ShareHelper;
+import com.fqxyi.kit.library.share.ShareHelper;
 
 public class SocialUtil {
     private static SocialUtil sInstance = new SocialUtil();

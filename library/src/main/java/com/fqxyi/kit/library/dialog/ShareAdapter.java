@@ -1,4 +1,4 @@
-package com.fqxyi.share.library.dialog;
+package com.fqxyi.kit.library.dialog;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,8 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fqxyi.share.library.R;
-import com.fqxyi.share.library.util.ShareUtil;
+import com.fqxyi.kit.library.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +47,8 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         final ShareTypeBean shareTypeBean = shareTypeBeans.get(position);
         //View展示
         if (shareTypeBean.type != 5) {
-            holder.shareItemIcon.setImageResource(ShareUtil.getIcon(shareTypeBean.type));
-            holder.shareItemName.setText(ShareUtil.getName(shareTypeBean.type));
+            holder.shareItemIcon.setImageResource(ShareDialogUtil.getIcon(shareTypeBean.type));
+            holder.shareItemName.setText(ShareDialogUtil.getName(shareTypeBean.type));
         } else {
             if (!TextUtils.isEmpty(shareTypeBean.shareIcon)) { // todo 网络图片，目前无法显示
                 holder.shareItemIcon.setImageURI(Uri.parse(shareTypeBean.shareIcon));
