@@ -13,9 +13,8 @@ import com.fqxyi.kit.library.share.IShareCallback;
 import com.fqxyi.kit.library.share.QQShareHelper;
 import com.fqxyi.kit.library.share.ShareDataBean;
 import com.fqxyi.kit.library.share.ShareHelper;
-import com.fqxyi.kit.library.share.ShareKit;
+import com.fqxyi.kit.util.LogUtil;
 import com.fqxyi.kit.util.SocialUtil;
-import com.sina.weibo.sdk.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,13 +111,13 @@ public class MainActivity extends Activity {
                 shareHelper.shareWX(this, true, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_SHORTMESSAGE: //短信
-                ShareKit.shareShortMessage(shareDataBean);
+                shareHelper.shareShortMessage(this, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_COPY: //复制
-                ShareKit.shareCopy(shareDataBean);
+                shareHelper.shareCopy(this, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_REFRESH: //刷新
-                ShareKit.shareRefresh(shareDataBean);
+                shareHelper.shareRefresh(this, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_QQ: //QQ
                 shareHelper.shareQQ(this, shareDataBean, shareCallback);
@@ -127,16 +126,16 @@ public class MainActivity extends Activity {
                 shareHelper.shareWB(this, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_WXMINIPROGRAM: //微信小程序
-                ShareKit.shareWxMiniProgram(shareDataBean);
+                shareHelper.shareWxMiniProgram(this, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_ALIPAYMINPROGRAM: //支付宝小程序
-                ShareKit.shareAlipayMiniProgram(shareDataBean);
+                shareHelper.shareAlipayMiniProgram(this, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_COLLECTION: //收藏
-                ShareKit.shareCollection(shareDataBean);
+                shareHelper.shareCollection(this, shareDataBean, shareCallback);
                 break;
             case IShareType.SHARE_SHOW_ALL: //查看全部
-                ShareKit.shareShowAll(shareDataBean);
+                shareHelper.shareShowAll(this, shareDataBean, shareCallback);
                 break;
         }
     }

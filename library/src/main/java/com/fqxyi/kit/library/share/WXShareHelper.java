@@ -22,7 +22,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 /**
  * 微信分享帮助类
  */
-public class WXHelper {
+public class WXShareHelper {
 
     //分享文本
     public static final int TYPE_TEXT = 0;
@@ -49,7 +49,7 @@ public class WXHelper {
     /**
      * 初始化微信
      */
-    public WXHelper(Activity activity, String appId, String appSecret) {
+    public WXShareHelper(Activity activity, String appId, String appSecret) {
         this.activity = activity;
         if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(appSecret)) {
             throw new RuntimeException("Wechat's appId or appSecret is empty!");
@@ -57,7 +57,7 @@ public class WXHelper {
         wxapi = WXAPIFactory.createWXAPI(activity, appId, true);
         wxapi.registerApp(appId);
         //
-        activity.registerReceiver(broadcastReceiver, new IntentFilter(WXHelper.ACTION_WX_SHARE_RECEIVER));
+        activity.registerReceiver(broadcastReceiver, new IntentFilter(WXShareHelper.ACTION_WX_SHARE_RECEIVER));
     }
 
     /**
@@ -108,19 +108,19 @@ public class WXHelper {
         WXMediaMessage msg = new WXMediaMessage();
         boolean success = false;
         switch (shareDataBean.type) {
-            case WXHelper.TYPE_TEXT:
+            case WXShareHelper.TYPE_TEXT:
                 success = addText(req, msg, shareDataBean.shareDesc);
                 break;
-            case WXHelper.TYPE_IMAGE:
+            case WXShareHelper.TYPE_IMAGE:
                 success = addImage(req, msg, shareDataBean.shareImage);
                 break;
-            case WXHelper.TYPE_MUSIC:
+            case WXShareHelper.TYPE_MUSIC:
                 success = addMusic(req, msg, shareDataBean.shareMusicUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage);
                 break;
-            case WXHelper.TYPE_VIDEO:
+            case WXShareHelper.TYPE_VIDEO:
                 success = addVideo(req, msg, shareDataBean.shareVideoUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage);
                 break;
-            case WXHelper.TYPE_WEB:
+            case WXShareHelper.TYPE_WEB:
                 success = addWeb(req, msg, shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage);
                 break;
         }
@@ -219,7 +219,7 @@ public class WXHelper {
     public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean shareSuccess = intent.getBooleanExtra(WXHelper.KEY_WX_SHARE_CALLBACK, false);
+            boolean shareSuccess = intent.getBooleanExtra(WXShareHelper.KEY_WX_SHARE_CALLBACK, false);
             if (shareCallback != null) {
                 if (shareSuccess) {
                     shareCallback.onSuccess();
