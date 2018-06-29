@@ -9,6 +9,7 @@ import com.fqxyi.kit.util.LogUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,15 +88,15 @@ public class ImageUtil {
      * @param imageUrl 图片地址
      * @return Bitmap
      */
-    public static Bitmap getImageBitmap(String imageUrl) {
+    public static Bitmap getImageBitmap(String imageUrl, long maxSize) {
         if (TextUtils.isEmpty(imageUrl)) {
             return null;
         }
         if (!imageUrl.startsWith("http")) {
-            return compressBitmapGetBitmap(imageUrl, null);
+            return compressBitmapGetBitmap(imageUrl, null, imageUrl, maxSize);
         }
         try {
-            return compressBitmapGetBitmap(null, new URL(imageUrl));
+            return compressBitmapGetBitmap(null, new URL(imageUrl), imageUrl, maxSize);
         } catch (IOException e) {
             LogUtil.e(e);
         }
@@ -107,15 +108,15 @@ public class ImageUtil {
      * @param imageUrl 图片地址
      * @return byte[]
      */
-    public static byte[] getImageByte(String imageUrl) {
+    public static byte[] getImageByte(String imageUrl, long maxSize) {
         if (TextUtils.isEmpty(imageUrl)) {
             return null;
         }
         if (!imageUrl.startsWith("http")) {
-            return compressBitmapGetByte(imageUrl, null);
+            return compressBitmapGetByte(imageUrl, null, imageUrl, maxSize);
         }
         try {
-            return compressBitmapGetByte(null, new URL(imageUrl));
+            return compressBitmapGetByte(null, new URL(imageUrl), imageUrl, maxSize);
         } catch (IOException e) {
             LogUtil.e(e);
         }
@@ -127,8 +128,8 @@ public class ImageUtil {
      * @param url 图片地址
      * @return Bitmap
      */
-    public static Bitmap compressBitmapGetBitmap(String localFilePath, URL url) {
-        return compressBitmapQualityGetBitmap(compressBitmapSize(localFilePath, url), 32);
+    public static Bitmap compressBitmapGetBitmap(String localFilePath, URL url, String imageUrl, long maxSize) {
+        return compressBitmapQualityGetBitmap(compressBitmapSize(localFilePath, url), maxSize, imageUrl);
     }
 
     /**
@@ -136,8 +137,8 @@ public class ImageUtil {
      * @param url 图片地址
      * @return byte[]
      */
-    public static byte[] compressBitmapGetByte(String localFilePath, URL url) {
-        return compressBitmapQualityGetByte(compressBitmapSize(localFilePath, url), 32);
+    public static byte[] compressBitmapGetByte(String localFilePath, URL url, String imageUrl, long maxSize) {
+        return compressBitmapQualityGetByte(compressBitmapSize(localFilePath, url), maxSize, imageUrl);
     }
 
     /**
@@ -197,12 +198,12 @@ public class ImageUtil {
         }
     }
 
-    public static Bitmap compressBitmapQualityGetBitmap(Bitmap bitmap, long maxSize) {
-        return BitmapFactory.decodeStream(new ByteArrayInputStream(compressBitmapQuality(bitmap, maxSize).toByteArray()));
+    public static Bitmap compressBitmapQualityGetBitmap(Bitmap bitmap, long maxSize, String imageUrl) {
+        return BitmapFactory.decodeStream(new ByteArrayInputStream(compressBitmapQuality(bitmap, maxSize, imageUrl).toByteArray()));
     }
 
-    public static byte[] compressBitmapQualityGetByte(Bitmap bitmap, long maxSize) {
-        return compressBitmapQuality(bitmap, maxSize).toByteArray();
+    public static byte[] compressBitmapQualityGetByte(Bitmap bitmap, long maxSize, String imageUrl) {
+        return compressBitmapQuality(bitmap, maxSize, imageUrl).toByteArray();
     }
 
     /**
@@ -210,15 +211,16 @@ public class ImageUtil {
      * @param maxSize Bitmap被允许占有的最大大小，单位为KB
      * @return Bitmap
      */
-    private static ByteArrayOutputStream compressBitmapQuality(Bitmap bitmap, long maxSize) {
+    private static ByteArrayOutputStream compressBitmapQuality(Bitmap bitmap, long maxSize, String imageUrl) {
         // Bitmap默认质量为100，表示从未被压缩过
         int quality = 100;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-        while (baos.toByteArray().length / 1024 > maxSize && quality > 0) {
+        Bitmap.CompressFormat format = getBmpFormat(imageUrl);
+        bitmap.compress(format, quality, baos);
+        while (baos.toByteArray().length * 1024 > maxSize && quality > 20) {
             baos.reset();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+            bitmap.compress(format, quality, baos);
             quality -= 10;
         }
         bitmap.recycle();
@@ -230,6 +232,90 @@ public class ImageUtil {
         }
 
         return baos;
+    }
+
+    public static Bitmap.CompressFormat getBmpFormat(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return Bitmap.CompressFormat.JPEG;
+        }
+        String pathLower = filePath.toLowerCase();
+        Bitmap.CompressFormat format;
+        if (!pathLower.endsWith("png") && !pathLower.endsWith("gif")) {
+            if (!pathLower.endsWith("jpg") && !pathLower.endsWith("jpeg") && !pathLower.endsWith("bmp") && !pathLower.endsWith("tif")) {
+                String mime = getMime(filePath);
+                if (!mime.endsWith("png") && !mime.endsWith("gif")) {
+                    format = Bitmap.CompressFormat.JPEG;
+                } else {
+                    format = Bitmap.CompressFormat.PNG;
+                }
+            } else {
+                format = Bitmap.CompressFormat.JPEG;
+            }
+        } else {
+            format = Bitmap.CompressFormat.PNG;
+        }
+
+        return format;
+    }
+
+    public static String getMime(String file) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            byte[] bytes = new byte[8];
+            fis.read(bytes);
+            fis.close();
+            return getMime(bytes);
+        } catch (Exception e) {
+            LogUtil.e(e);
+            return "";
+        }
+    }
+
+    private static String getMime(byte[] bytes) {
+        byte[] jpeg = new byte[]{-1, -40, -1, -32};
+        byte[] jpeg2 = new byte[]{-1, -40, -1, -31};
+        if (!bytesStartWith(bytes, jpeg) && !bytesStartWith(bytes, jpeg2)) {
+            byte[] png = new byte[]{-119, 80, 78, 71};
+            if (bytesStartWith(bytes, png)) {
+                return "png";
+            } else {
+                byte[] gif = "GIF".getBytes();
+                if (bytesStartWith(bytes, gif)) {
+                    return "gif";
+                } else {
+                    byte[] bmp = "BM".getBytes();
+                    if (bytesStartWith(bytes, bmp)) {
+                        return "bmp";
+                    } else {
+                        byte[] tiff = new byte[]{73, 73, 42};
+                        byte[] tiff2 = new byte[]{77, 77, 42};
+                        return !bytesStartWith(bytes, tiff) && !bytesStartWith(bytes, tiff2) ? "" : "tif";
+                    }
+                }
+            }
+        } else {
+            return "jpg";
+        }
+    }
+
+    private static boolean bytesStartWith(byte[] target, byte[] prefix) {
+        if (target == prefix) {
+            return true;
+        } else if (target != null && prefix != null) {
+            if (target.length < prefix.length) {
+                return false;
+            } else {
+                for(int i = 0; i < prefix.length; ++i) {
+                    if (target[i] != prefix[i]) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 
 }

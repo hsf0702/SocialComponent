@@ -142,10 +142,17 @@ public class WXShareHelper {
 
     private boolean addImage(SendMessageToWX.Req req, WXMediaMessage msg, String image) {
         WXImageObject imageObject = new WXImageObject();
-        imageObject.imageData = ImageUtil.getImageByte(image);
-
+        byte[] imageData = ImageUtil.getImageByte(image, 10485760);
+        if (imageData == null) {
+            return false;
+        }
+        imageObject.imageData = imageData;
         msg.mediaObject = imageObject;
-        msg.thumbData = imageObject.imageData;
+        byte[] thumbData = ImageUtil.getImageByte(image, 32768);
+        if (thumbData == null) {
+            return false;
+        }
+        msg.thumbData = thumbData;
 
         req.transaction = buildTransaction("image");
         return true;
@@ -190,7 +197,11 @@ public class WXShareHelper {
     private boolean addTitleSummaryAndThumb(WXMediaMessage msg, String title, String desc, String image) {
         msg.title = title;
         msg.description = desc;
-        msg.thumbData = ImageUtil.getImageByte(image);
+        byte[] thumbData = ImageUtil.getImageByte(image, 32768);
+        if (thumbData == null) {
+            return true;
+        }
+        msg.thumbData = thumbData;
         return false;
     }
 

@@ -2,7 +2,6 @@ package com.fqxyi.kit.library.share;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -132,13 +131,12 @@ public class WBShareHelper {
     }
 
     private ImageObject getImageObj(String image) {
-        Bitmap bitmap = ImageUtil.getImageBitmap(image);
-        if (bitmap == null) {
+        byte[] imageData = ImageUtil.getImageByte(image, 2097152);
+        if (imageData == null) {
             return null;
         }
         ImageObject imageObject = new ImageObject();
-        imageObject.setImageObject(bitmap);
-        bitmap.recycle();
+        imageObject.imageData = imageData;
         return imageObject;
     }
 
@@ -193,7 +191,11 @@ public class WBShareHelper {
     private boolean addTitleSummaryAndThumb(BaseMediaObject msg, String title, String desc, String image) {
         msg.title = title;
         msg.description = desc;
-        msg.thumbData = ImageUtil.getImageByte(image);
+        byte[] imageData = ImageUtil.getImageByte(image, 32768);
+        if (imageData == null) {
+            return true;
+        }
+        msg.thumbData = imageData;
         return false;
     }
 
