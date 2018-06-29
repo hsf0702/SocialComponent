@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fqxyi.kit.library.dialog.IShareType;
 import com.fqxyi.kit.library.dialog.ItemClickListener;
@@ -13,7 +14,6 @@ import com.fqxyi.kit.library.share.IShareCallback;
 import com.fqxyi.kit.library.share.ShareDataBean;
 import com.fqxyi.kit.library.share.ShareHelper;
 import com.fqxyi.kit.library.share.WBShareHelper;
-import com.fqxyi.kit.library.util.LogUtil;
 import com.fqxyi.kit.library.util.SocialUtil;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
     List<ShareTypeBean> shareTypeBeans;
     //数据源-分享数据
     ShareDataBean shareDataBean;
-
+    //分享入口类
     ShareHelper shareHelper;
 
     @Override
@@ -58,8 +58,14 @@ public class MainActivity extends Activity {
         shareDataBean.shareUrl = "https://www.baidu.com/";
         shareDataBean.shareMiniAppId = "小程序的原始ID";
         shareDataBean.shareMiniPage = "小程序页面地址";
-        //
-        shareHelper = SocialUtil.getInstance().shareHelper();
+        //初始化数据
+        SocialUtil.get().setQqAppId("1107001192")
+                .setWxAppId("")
+                .setWxAppSecret("")
+                .setWbAppId("2474483531")
+                .setWbRedirectUrl("https://www.fqxyi.com/");
+        //创建分享入口类
+        shareHelper = SocialUtil.get().getShareHelper();
     }
 
     /**
@@ -82,17 +88,17 @@ public class MainActivity extends Activity {
     IShareCallback shareCallback = new IShareCallback() {
         @Override
         public void onSuccess() {
-            LogUtil.d(TAG, "onSuccess");
+            Toast.makeText(MainActivity.this, "onSuccess", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(String msg) {
-            LogUtil.d(TAG, "onError, msg = " + msg);
+            Toast.makeText(MainActivity.this, "onError, msg = " + msg, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel() {
-            LogUtil.d(TAG, "onCancel");
+            Toast.makeText(MainActivity.this, "onCancel", Toast.LENGTH_SHORT).show();
         }
     };
 

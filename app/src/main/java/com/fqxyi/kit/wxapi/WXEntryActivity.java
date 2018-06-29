@@ -22,7 +22,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String wxAppId = SocialUtil.getInstance().shareHelper().getBuilder().getWxAppId();
+        String wxAppId = SocialUtil.get().getWxAppId();
         wxapi = WXAPIFactory.createWXAPI(this, wxAppId, true);
         wxapi.registerApp(wxAppId);
 
@@ -46,9 +46,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         Log.d("WXEntryActivity", baseResp.errCode + baseResp.errStr);
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                SocialUtil.getInstance().shareHelper().sendShareBackBroadcast(this, true);
+                SocialUtil.get().getShareHelper().sendShareBackBroadcast(this, true);
             } else {
-                SocialUtil.getInstance().shareHelper().sendShareBackBroadcast(this, false);
+                SocialUtil.get().getShareHelper().sendShareBackBroadcast(this, false);
             }
         }
         onBackPressed();

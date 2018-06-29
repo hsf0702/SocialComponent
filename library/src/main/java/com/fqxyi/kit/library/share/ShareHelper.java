@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 
+import com.fqxyi.kit.library.util.SocialUtil;
+
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,8 +21,6 @@ public class ShareHelper {
 
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
 
-    private Builder builder;
-
     private WXShareHelper wxShareHelper;
     private SMShareHelper smShareHelper;
     private QQShareHelper qqShareHelper;
@@ -29,16 +29,11 @@ public class ShareHelper {
     //图片缓存的父目录
     private File parentDir;
 
-    public ShareHelper(Builder builder) {
-        this.builder = builder;
+    public ShareHelper() {
         parentDir = new File(Environment.getExternalStorageDirectory(), "kit" + File.separator + "share");
         if (!parentDir.exists()) {
             parentDir.mkdirs();
         }
-    }
-
-    public Builder getBuilder() {
-        return builder;
     }
 
     /**
@@ -53,7 +48,7 @@ public class ShareHelper {
             @Override
             public void run() {
                 if (wxShareHelper == null) {
-                    wxShareHelper = new WXShareHelper(activity, builder.getWxAppId(), builder.getWxAppSecret(), parentDir);
+                    wxShareHelper = new WXShareHelper(activity, SocialUtil.get().getWxAppId(), SocialUtil.get().getWxAppSecret(), parentDir);
                 }
                 wxShareHelper.share(isTimeLine, shareDataBean, shareCallback);
             }
@@ -114,7 +109,7 @@ public class ShareHelper {
             @Override
             public void run() {
                 if (qqShareHelper == null) {
-                    qqShareHelper = new QQShareHelper(activity, builder.getQqAppId(), parentDir);
+                    qqShareHelper = new QQShareHelper(activity, SocialUtil.get().getQqAppId(), parentDir);
                 }
                 qqShareHelper.share(shareDataBean, shareCallback);
             }
@@ -132,7 +127,7 @@ public class ShareHelper {
             @Override
             public void run() {
                 if (wbShareHelper == null) {
-                    wbShareHelper = new WBShareHelper(activity, builder.getWbAppId(), builder.getWbRedirectUrl(), parentDir);
+                    wbShareHelper = new WBShareHelper(activity, SocialUtil.get().getWbAppId(), SocialUtil.get().getWbRedirectUrl(), parentDir);
                 }
                 wbShareHelper.share(shareDataBean, shareCallback);
             }
@@ -211,65 +206,6 @@ public class ShareHelper {
         if (wbShareHelper != null) {
             wbShareHelper.onDestroy();
             wbShareHelper = null;
-        }
-    }
-
-    public static final class Builder {
-        private String qqAppId;
-
-        private String wxAppId;
-        private String wxAppSecret;
-
-        private String wbAppId;
-        private String wbRedirectUrl;
-
-        public String getQqAppId() {
-            return qqAppId;
-        }
-
-        public Builder setQqAppId(String qqAppId) {
-            this.qqAppId = qqAppId;
-            return this;
-        }
-
-        public String getWxAppId() {
-            return wxAppId;
-        }
-
-        public Builder setWxAppId(String wxAppId) {
-            this.wxAppId = wxAppId;
-            return this;
-        }
-
-        public String getWxAppSecret() {
-            return wxAppSecret;
-        }
-
-        public Builder setWxAppSecret(String wxAppSecret) {
-            this.wxAppSecret = wxAppSecret;
-            return this;
-        }
-
-        public String getWbAppId() {
-            return wbAppId;
-        }
-
-        public Builder setWbAppId(String wbAppId) {
-            this.wbAppId = wbAppId;
-            return this;
-        }
-
-        public String getWbRedirectUrl() {
-            return wbRedirectUrl;
-        }
-
-        public Builder setWbRedirectUrl(String wbRedirectUrl) {
-            this.wbRedirectUrl = wbRedirectUrl;
-            return this;
-        }
-
-        public ShareHelper build() {
-            return new ShareHelper(this);
         }
     }
 
