@@ -31,7 +31,7 @@ public class WBShareHelper {
     //分享文本
     public static final int TYPE_TEXT = 0;
     //分享图片（单张）
-    public static final int TYPE_IMAGE = 1;
+    public static final int TYPE_IMAGE_TEXT = 1;
     //分享图片（多张）
     public static final int TYPE_IMAGE_MULTI = 2;
     //分享视频
@@ -45,12 +45,15 @@ public class WBShareHelper {
     private WbShareHandler wbShareHandler;
     //分享结果回调
     private IShareCallback shareCallback;
+    //图片缓存的父目录
+    private File parentDir;
 
     /**
      * 初始化新浪微博
      */
-    public WBShareHelper(Activity activity, String appId, String redirectUrl) {
+    public WBShareHelper(Activity activity, String appId, String redirectUrl, File parentDir) {
         this.activity = activity;
+        this.parentDir = parentDir;
         if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(redirectUrl)) {
             throw new RuntimeException("WeBo's appId or redirectUrl is empty!");
         }
@@ -101,19 +104,23 @@ public class WBShareHelper {
                 msg.textObject = getTextObj(shareDataBean.shareDesc);
                 mediaObject = msg.textObject;
                 break;
-            case WBShareHelper.TYPE_IMAGE:
+            case WBShareHelper.TYPE_IMAGE_TEXT:
+                msg.textObject = getTextObj(shareDataBean.shareDesc);
                 msg.imageObject = getImageObj(shareDataBean.shareImage);
                 mediaObject = msg.imageObject;
                 break;
             case WBShareHelper.TYPE_IMAGE_MULTI:
+                msg.textObject = getTextObj(shareDataBean.shareDesc);
                 msg.multiImageObject = getMultiImgObj(shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage, shareDataBean.shareImageList);
                 mediaObject = msg.multiImageObject;
                 break;
             case WBShareHelper.TYPE_VIDEO:
+                msg.textObject = getTextObj(shareDataBean.shareDesc);
                 msg.videoSourceObject = getVideoObj(shareDataBean.shareImage, shareDataBean.shareVideoUrl);
                 mediaObject = msg.videoSourceObject;
                 break;
             case WBShareHelper.TYPE_WEB:
+                msg.textObject = getTextObj(shareDataBean.shareDesc);
                 msg.mediaObject = getWebPageObj(shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage);
                 mediaObject = msg.mediaObject;
                 break;
@@ -131,12 +138,16 @@ public class WBShareHelper {
     }
 
     private ImageObject getImageObj(String image) {
-        byte[] imageData = ImageUtil.getImageByte(image, 2097152);
-        if (imageData == null) {
+        String imagePath = ImageUtil.getLocalImagePath(parentDir, image);
+        if (TextUtils.isEmpty(imagePath) || imagePath.length() > 512) {
+            return null;
+        }
+        File file = new File(imagePath);
+        if (!file.exists() || file.length() == 0L || file.length() > 10485760L) {
             return null;
         }
         ImageObject imageObject = new ImageObject();
-        imageObject.imageData = imageData;
+        imageObject.imagePath = imagePath;
         return imageObject;
     }
 

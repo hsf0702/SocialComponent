@@ -22,6 +22,27 @@ import java.net.URL;
  */
 public class ImageUtil {
 
+    public static String getLocalImagePath(File parentDir, String image) {
+        if (TextUtils.isEmpty(image)) {
+            return null;
+        }
+        if (image.startsWith("http")) {
+            String fileName = image.substring(image.lastIndexOf("/") + 1);
+            if (TextUtils.isEmpty(fileName) || parentDir == null) {
+                return null;
+            }
+            final File file = new File(parentDir, fileName);
+            boolean success = downloadImage(file, image);
+            if (success) {
+                return file.getAbsolutePath();
+            } else {
+                return null;
+            }
+        } else {
+            return image;
+        }
+    }
+
     /**
      * 下载图片
      * @param file 图片存放位置

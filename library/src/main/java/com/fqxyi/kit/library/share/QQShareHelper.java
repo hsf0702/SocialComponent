@@ -98,7 +98,7 @@ public class QQShareHelper {
             case QQShareHelper.TYPE_IMAGE:
                 bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE);
                 bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, shareDataBean.appName);
-                bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, getLocalImagePath(shareDataBean.shareImage));
+                bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, ImageUtil.getLocalImagePath(parentDir, shareDataBean.shareImage));
                 break;
             case QQShareHelper.TYPE_MUSIC:
                 bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_AUDIO);
@@ -118,27 +118,6 @@ public class QQShareHelper {
                 break;
         }
         return bundle;
-    }
-
-    private String getLocalImagePath(String image) {
-        if (TextUtils.isEmpty(image)) {
-            return null;
-        }
-        if (image.startsWith("http")) {
-            String fileName = image.substring(image.lastIndexOf("/") + 1);
-            if (TextUtils.isEmpty(fileName) || parentDir == null) {
-                return null;
-            }
-            final File file = new File(parentDir, fileName);
-            boolean success = ImageUtil.downloadImage(file, image);
-            if (success) {
-                return file.getAbsolutePath();
-            } else {
-                return null;
-            }
-        } else {
-            return image;
-        }
     }
 
     /**

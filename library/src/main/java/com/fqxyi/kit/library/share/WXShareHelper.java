@@ -18,6 +18,8 @@ import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import java.io.File;
+
 /**
  * 微信分享帮助类
  */
@@ -44,12 +46,15 @@ public class WXShareHelper {
     private IWXAPI wxapi;
     //分享结果回调
     private IShareCallback shareCallback;
+    //图片缓存的父目录
+    private File parentDir;
 
     /**
      * 初始化微信
      */
-    public WXShareHelper(Activity activity, String appId, String appSecret) {
+    public WXShareHelper(Activity activity, String appId, String appSecret, File parentDir) {
         this.activity = activity;
+        this.parentDir = parentDir;
         if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(appSecret)) {
             throw new RuntimeException("Wechat's appId or appSecret is empty!");
         }
@@ -141,14 +146,18 @@ public class WXShareHelper {
     }
 
     private boolean addImage(SendMessageToWX.Req req, WXMediaMessage msg, String image) {
-        WXImageObject imageObject = new WXImageObject();
-        byte[] imageData = ImageUtil.getImageByte(image, 10485760);
-        if (imageData == null) {
+        String imagePath = ImageUtil.getLocalImagePath(parentDir, image);
+        if (TextUtils.isEmpty(imagePath) || imagePath.length() > 512) {
             return false;
         }
-        imageObject.imageData = imageData;
+        File file = new File(imagePath);
+        if (!file.exists() || file.length() == 0L || file.length() > 10485760L) {
+            return false;
+        }
+        WXImageObject imageObject = new WXImageObject();
+        imageObject.imagePath = imagePath;
         msg.mediaObject = imageObject;
-        byte[] thumbData = ImageUtil.getImageByte(image, 32768);
+        byte[] thumbData = ImageUtil.getImageByte(imagePath, 32768);
         if (thumbData == null) {
             return false;
         }

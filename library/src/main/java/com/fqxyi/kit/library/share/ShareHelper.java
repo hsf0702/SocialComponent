@@ -53,7 +53,7 @@ public class ShareHelper {
             @Override
             public void run() {
                 if (wxShareHelper == null) {
-                    wxShareHelper = new WXShareHelper(activity, builder.getWxAppId(), builder.getWxAppSecret());
+                    wxShareHelper = new WXShareHelper(activity, builder.getWxAppId(), builder.getWxAppSecret(), parentDir);
                 }
                 wxShareHelper.share(isTimeLine, shareDataBean, shareCallback);
             }
@@ -132,7 +132,7 @@ public class ShareHelper {
             @Override
             public void run() {
                 if (wbShareHelper == null) {
-                    wbShareHelper = new WBShareHelper(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
+                    wbShareHelper = new WBShareHelper(activity, builder.getWbAppId(), builder.getWbRedirectUrl(), parentDir);
                 }
                 wbShareHelper.share(shareDataBean, shareCallback);
             }
