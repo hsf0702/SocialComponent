@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.fqxyi.kit.library.R;
-import com.fqxyi.kit.util.LogUtil;
+import com.fqxyi.kit.library.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -13,8 +13,8 @@ import com.fqxyi.kit.library.share.IShareCallback;
 import com.fqxyi.kit.library.share.ShareDataBean;
 import com.fqxyi.kit.library.share.ShareHelper;
 import com.fqxyi.kit.library.share.WBShareHelper;
-import com.fqxyi.kit.util.LogUtil;
-import com.fqxyi.kit.util.SocialUtil;
+import com.fqxyi.kit.library.util.LogUtil;
+import com.fqxyi.kit.library.util.SocialUtil;
 
 import java.util.ArrayList;
 import java.util.List;

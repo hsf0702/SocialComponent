@@ -1,4 +1,4 @@
-package com.fqxyi.kit.util;
+package com.fqxyi.kit.library.util;
 
 import android.os.Looper;
 import android.text.TextUtils;
