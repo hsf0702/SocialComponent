@@ -56,7 +56,7 @@ public class QQShareHelper {
             return;
         }
         //判断是否安装QQ
-        if (!ShareUtil.isQQInstalled(activity)) {
+        if (!tencent.isQQInstalled(activity)) {
             if (shareCallback != null) {
                 shareCallback.onError(activity.getString(R.string.share_qq_uninstall));
             }

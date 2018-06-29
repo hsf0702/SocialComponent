@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import com.fqxyi.kit.library.R;
@@ -137,22 +136,18 @@ public class WXShareHelper {
         msg.mediaObject = textObj;
         msg.description = textObj.text;
 
-        req.transaction = ShareUtil.buildTransaction("text");
+        req.transaction = buildTransaction("text");
         return true;
     }
 
-    private boolean addImage(SendMessageToWX.Req req, WXMediaMessage msg, String imageUrl) {
-        Bitmap bitmap = ShareUtil.getImageBitmap(imageUrl);
-        if (bitmap == null) {
-            return false;
-        }
+    private boolean addImage(SendMessageToWX.Req req, WXMediaMessage msg, String image) {
         WXImageObject imageObject = new WXImageObject();
-        imageObject.imageData = ShareUtil.bmpToByteArray(bitmap, true);
+        imageObject.imageData = ImageUtil.getImageByte(image);
 
         msg.mediaObject = imageObject;
         msg.thumbData = imageObject.imageData;
 
-        req.transaction = ShareUtil.buildTransaction("image");
+        req.transaction = buildTransaction("image");
         return true;
     }
 
@@ -163,7 +158,7 @@ public class WXShareHelper {
         msg.mediaObject = musicObject;
         if (addTitleSummaryAndThumb(msg, title, desc, image)) return false;
 
-        req.transaction = ShareUtil.buildTransaction("music");
+        req.transaction = buildTransaction("music");
         return true;
     }
 
@@ -174,7 +169,7 @@ public class WXShareHelper {
         msg.mediaObject = videoObject;
         if (addTitleSummaryAndThumb(msg, title, desc, image)) return false;
 
-        req.transaction = ShareUtil.buildTransaction("video");
+        req.transaction = buildTransaction("video");
         return true;
     }
 
@@ -185,7 +180,7 @@ public class WXShareHelper {
         msg.mediaObject = webpageObject;
         if (addTitleSummaryAndThumb(msg, title, desc, image)) return false;
 
-        req.transaction = ShareUtil.buildTransaction("webpage");
+        req.transaction = buildTransaction("webpage");
         return true;
     }
 
@@ -195,12 +190,7 @@ public class WXShareHelper {
     private boolean addTitleSummaryAndThumb(WXMediaMessage msg, String title, String desc, String image) {
         msg.title = title;
         msg.description = desc;
-
-        Bitmap bitmap = ShareUtil.getImageBitmap(image);
-        if (bitmap == null) {
-            return true;
-        }
-        msg.thumbData = ShareUtil.bmpToByteArray(bitmap, true);
+        msg.thumbData = ImageUtil.getImageByte(image);
         return false;
     }
 
@@ -214,6 +204,13 @@ public class WXShareHelper {
             }
             activity = null;
         }
+    }
+
+    /**
+     * 用于唯一标识一个请求
+     */
+    private String buildTransaction(String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
     public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

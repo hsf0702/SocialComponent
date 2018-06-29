@@ -6,11 +6,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.fqxyi.kit.util.DownloadUtil;
-
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * 短信分享帮助类
@@ -50,38 +46,23 @@ public class SMShareHelper {
         //分享到短信或彩信
         if (TextUtils.isEmpty(shareDataBean.shareImage)) {
             shareSms(shareDataBean);
-        } else {
-            if (shareDataBean.shareImage.startsWith("http")) {
-                String fileName = shareDataBean.shareImage.substring(shareDataBean.shareImage.lastIndexOf("/") + 1);
-                final File file = new File(parentDir, fileName);
-                if (file.exists()) {
+            return;
+        }
+        if (shareDataBean.shareImage.startsWith("http")) {
+            String fileName = shareDataBean.shareImage.substring(shareDataBean.shareImage.lastIndexOf("/") + 1);
+            final File file = new File(parentDir, fileName);
+            if (file.exists()) {
+                shareMms(shareDataBean, "file://" + file.getAbsolutePath());
+            } else {
+                boolean success = ImageUtil.downloadImage(file, shareDataBean.shareImage);
+                if (success) {
                     shareMms(shareDataBean, "file://" + file.getAbsolutePath());
                 } else {
-                    new DownloadUtil(activity, parentDir, shareDataBean.shareImage, new DownloadUtil.DownloadStateListener() {
-                        @Override
-                        public void onStart() {
-
-                        }
-
-                        @Override
-                        public void onFailure(List<Integer> failureIndexs) {
-                            shareSms(shareDataBean);
-                        }
-
-                        @Override
-                        public void onAllSucceed(String fileDownloadDir) {
-                            shareMms(shareDataBean, "file://" + file.getAbsolutePath());
-                        }
-
-                        @Override
-                        public void onError(IOException e) {
-                            shareSms(shareDataBean);
-                        }
-                    }).startDownload();
+                    shareSms(shareDataBean);
                 }
-            } else {
-                shareMms(shareDataBean, shareDataBean.shareImage);
             }
+        } else {
+            shareMms(shareDataBean, shareDataBean.shareImage);
         }
     }
 

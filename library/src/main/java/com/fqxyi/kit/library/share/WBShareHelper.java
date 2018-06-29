@@ -132,7 +132,7 @@ public class WBShareHelper {
     }
 
     private ImageObject getImageObj(String image) {
-        Bitmap bitmap = ShareUtil.getImageBitmap(image);
+        Bitmap bitmap = ImageUtil.getImageBitmap(image);
         if (bitmap == null) {
             return null;
         }
@@ -177,11 +177,11 @@ public class WBShareHelper {
         return videoSourceObject;
     }
 
-    private WebpageObject getWebPageObj(String url, String title, String desc, String imageUrl) {
+    private WebpageObject getWebPageObj(String url, String title, String desc, String image) {
         WebpageObject webpageObject = new WebpageObject();
         webpageObject.identify = Utility.generateGUID();
         webpageObject.actionUrl = url;
-        if (addTitleSummaryAndThumb(webpageObject, title, desc, imageUrl)) {
+        if (addTitleSummaryAndThumb(webpageObject, title, desc, image)) {
             return null;
         }
         return webpageObject;
@@ -190,15 +190,10 @@ public class WBShareHelper {
     /**
      * 当有设置缩略图但是找不到的时候阻止分享
      */
-    private boolean addTitleSummaryAndThumb(BaseMediaObject msg, String title, String desc, String imageUrl) {
+    private boolean addTitleSummaryAndThumb(BaseMediaObject msg, String title, String desc, String image) {
         msg.title = title;
         msg.description = desc;
-        Bitmap bitmap = ShareUtil.getImageBitmap(imageUrl);
-        if (bitmap == null) {
-            return true;
-        }
-        msg.thumbData = ShareUtil.bmpToByteArray(bitmap, true);
-        bitmap.recycle();
+        msg.thumbData = ImageUtil.getImageByte(image);
         return false;
     }
 

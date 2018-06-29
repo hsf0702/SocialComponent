@@ -10,9 +10,9 @@ import com.fqxyi.kit.library.dialog.ItemClickListener;
 import com.fqxyi.kit.library.dialog.ShareDialog;
 import com.fqxyi.kit.library.dialog.ShareTypeBean;
 import com.fqxyi.kit.library.share.IShareCallback;
-import com.fqxyi.kit.library.share.QQShareHelper;
 import com.fqxyi.kit.library.share.ShareDataBean;
 import com.fqxyi.kit.library.share.ShareHelper;
+import com.fqxyi.kit.library.share.WBShareHelper;
 import com.fqxyi.kit.util.LogUtil;
 import com.fqxyi.kit.util.SocialUtil;
 
@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
         shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_SHOW_ALL));
         //初始化分享数据
         shareDataBean = new ShareDataBean();
-        shareDataBean.type = QQShareHelper.TYPE_IMAGE_TEXT;
+        shareDataBean.type = WBShareHelper.TYPE_IMAGE;
         shareDataBean.shareTitle = "百度一下，你就知道";
         shareDataBean.shareDesc = "全球最大的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求。百度超过千亿的中文网页数据库，可以瞬间找到相关的搜索结果。";
         shareDataBean.shareImage = "https://www.baidu.com/img/bd_logo1.png";
