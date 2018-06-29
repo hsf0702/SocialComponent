@@ -3,7 +3,6 @@ package com.fqxyi.kit.library.share;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -23,12 +22,9 @@ public class SMShareHelper {
     /**
      * 初始化短信
      */
-    public SMShareHelper(Activity activity) {
+    public SMShareHelper(Activity activity, File parentDir) {
         this.activity = activity;
-        parentDir = new File(Environment.getExternalStorageDirectory(), "kit" + File.separator + "share");
-        if (!parentDir.exists()) {
-            parentDir.mkdirs();
-        }
+        this.parentDir = parentDir;
     }
 
     /**
@@ -50,6 +46,10 @@ public class SMShareHelper {
         }
         if (shareDataBean.shareImage.startsWith("http")) {
             String fileName = shareDataBean.shareImage.substring(shareDataBean.shareImage.lastIndexOf("/") + 1);
+            if (TextUtils.isEmpty(fileName) || parentDir == null) {
+                shareSms(shareDataBean);
+                return;
+            }
             final File file = new File(parentDir, fileName);
             if (file.exists()) {
                 shareMms(shareDataBean, "file://" + file.getAbsolutePath());

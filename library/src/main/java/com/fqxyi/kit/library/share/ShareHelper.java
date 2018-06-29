@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,8 +26,15 @@ public class ShareHelper {
     private QQShareHelper qqShareHelper;
     private WBShareHelper wbShareHelper;
 
+    //图片缓存的父目录
+    private File parentDir;
+
     public ShareHelper(Builder builder) {
         this.builder = builder;
+        parentDir = new File(Environment.getExternalStorageDirectory(), "kit" + File.separator + "share");
+        if (!parentDir.exists()) {
+            parentDir.mkdirs();
+        }
     }
 
     public Builder getBuilder() {
@@ -62,7 +71,7 @@ public class ShareHelper {
             @Override
             public void run() {
                 if (smShareHelper == null) {
-                    smShareHelper = new SMShareHelper(activity);
+                    smShareHelper = new SMShareHelper(activity, parentDir);
                 }
                 smShareHelper.share(shareDataBean, shareCallback);
             }
@@ -97,11 +106,19 @@ public class ShareHelper {
     /**
      * 分享到QQ
      */
-    public void shareQQ(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
-        if (qqShareHelper == null) {
-            qqShareHelper = new QQShareHelper(activity, builder.getQqAppId());
+    public void shareQQ(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+        if (fixedThreadPool.isShutdown()) {
+            return;
         }
-        qqShareHelper.share(shareDataBean, shareCallback);
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (qqShareHelper == null) {
+                    qqShareHelper = new QQShareHelper(activity, builder.getQqAppId(), parentDir);
+                }
+                qqShareHelper.share(shareDataBean, shareCallback);
+            }
+        });
     }
 
     /**

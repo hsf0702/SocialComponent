@@ -11,6 +11,8 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import java.io.File;
+
 /**
  * QQ分享帮助类
  */
@@ -31,12 +33,15 @@ public class QQShareHelper {
     private Tencent tencent;
     //分享结果回调
     private IShareCallback shareCallback;
+    //图片缓存的父目录
+    private File parentDir;
 
     /**
      * 初始化QQ
      */
-    public QQShareHelper(Activity activity, String appId) {
+    public QQShareHelper(Activity activity, String appId, File parentDir) {
         this.activity = activity;
+        this.parentDir = parentDir;
         if (TextUtils.isEmpty(appId)) {
             throw new RuntimeException("QQ's appId is empty!");
         }
@@ -62,8 +67,18 @@ public class QQShareHelper {
             }
             return;
         }
+        Bundle bundle = getShareData(shareDataBean);
+        //特殊处理
+        if (shareDataBean.type == QQShareHelper.TYPE_IMAGE) {
+            if (TextUtils.isEmpty(bundle.getString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL))) {
+                if (shareCallback != null) {
+                    shareCallback.onError(activity.getString(R.string.share_img_not_found));
+                }
+                return;
+            }
+        }
         //分享到QQ
-        tencent.shareToQQ(activity, getShareData(shareDataBean), shareListener);
+        tencent.shareToQQ(activity, bundle, shareListener);
     }
 
     /**
@@ -83,7 +98,7 @@ public class QQShareHelper {
             case QQShareHelper.TYPE_IMAGE:
                 bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE);
                 bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, shareDataBean.appName);
-                bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, shareDataBean.shareImage);
+                bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, getLocalImagePath(shareDataBean.shareImage));
                 break;
             case QQShareHelper.TYPE_MUSIC:
                 bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_AUDIO);
@@ -103,6 +118,27 @@ public class QQShareHelper {
                 break;
         }
         return bundle;
+    }
+
+    private String getLocalImagePath(String image) {
+        if (TextUtils.isEmpty(image)) {
+            return null;
+        }
+        if (image.startsWith("http")) {
+            String fileName = image.substring(image.lastIndexOf("/") + 1);
+            if (TextUtils.isEmpty(fileName) || parentDir == null) {
+                return null;
+            }
+            final File file = new File(parentDir, fileName);
+            boolean success = ImageUtil.downloadImage(file, image);
+            if (success) {
+                return file.getAbsolutePath();
+            } else {
+                return null;
+            }
+        } else {
+            return image;
+        }
     }
 
     /**
