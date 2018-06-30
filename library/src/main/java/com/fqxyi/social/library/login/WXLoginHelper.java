@@ -28,4 +28,8 @@ public class WXLoginHelper {
     public void login(ILoginCallback loginCallback) {
 
     }
+
+    public void onDestroy() {
+
+    }
 }

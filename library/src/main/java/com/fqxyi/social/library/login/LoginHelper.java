@@ -51,14 +51,23 @@ public class LoginHelper {
         if (qqLoginHelper != null) {
             qqLoginHelper.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    public void onNewIntent(Intent intent) {
-
+        if (wbLoginHelper != null) {
+            wbLoginHelper.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     public void onDestroy() {
-
-
+        if (wxLoginHelper != null) {
+            wxLoginHelper.onDestroy();
+            wxLoginHelper = null;
+        }
+        if (qqLoginHelper != null) {
+            qqLoginHelper.onDestroy();
+            qqLoginHelper = null;
+        }
+        if (wbLoginHelper != null) {
+            wbLoginHelper.onDestroy();
+            wbLoginHelper = null;
+        }
     }
 }

@@ -52,20 +52,29 @@ public class QQLoginHelper {
     }
 
     /**
+     * 销毁
+     */
+    public void onDestroy() {
+        if (activity != null) {
+            activity = null;
+        }
+    }
+
+    /**
      * QQ的登录监听器
      */
     private IUiListener loginListener = new IUiListener() {
         @Override
         public void onComplete(Object o) {
             if (loginCallback != null) {
-                loginCallback.onSuccess(activity.getString(R.string.share_qq_success), o.toString());
+                loginCallback.onSuccess(activity.getString(R.string.login_qq_success), o.toString());
             }
         }
 
         @Override
         public void onError(UiError uiError) {
             if (loginCallback != null && uiError != null) {
-                loginCallback.onError(activity.getString(R.string.share_qq_error)
+                loginCallback.onError(activity.getString(R.string.login_qq_error)
                         + ", 错误码：" + uiError.errorCode
                         + ", 错误信息：" + uiError.errorMessage
                         + ", 错误详情：" + uiError.errorDetail);
@@ -75,7 +84,7 @@ public class QQLoginHelper {
         @Override
         public void onCancel() {
             if (loginCallback != null) {
-                loginCallback.onCancel(activity.getString(R.string.share_qq_cancel));
+                loginCallback.onCancel(activity.getString(R.string.login_qq_cancel));
             }
         }
     };
