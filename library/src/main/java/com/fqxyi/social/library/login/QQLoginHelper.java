@@ -21,6 +21,9 @@ public class QQLoginHelper {
     //登录结果回调
     private ILoginCallback loginCallback;
 
+    /**
+     * 初始化QQ
+     */
     public QQLoginHelper(Activity activity, String appId) {
         this.activity = activity;
         if (TextUtils.isEmpty(appId)) {
@@ -29,6 +32,9 @@ public class QQLoginHelper {
         tencent = Tencent.createInstance(appId, activity.getApplicationContext());
     }
 
+    /**
+     * 具体的登录逻辑
+     */
     public void login(ILoginCallback loginCallback) {
         this.loginCallback = loginCallback;
         //判断是否安装QQ

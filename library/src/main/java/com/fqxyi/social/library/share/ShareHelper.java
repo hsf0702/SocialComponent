@@ -185,7 +185,7 @@ public class ShareHelper {
      *
      * @param success 表示是否分享成功
      */
-    public void sendShareBackBroadcast(Context context, boolean success) {
+    public void sendShareBroadcast(Context context, boolean success) {
         Intent intent = new Intent(WXShareHelper.ACTION_WX_SHARE_RECEIVER);
         intent.putExtra(WXShareHelper.KEY_WX_SHARE_CALLBACK, success);
         context.sendBroadcast(intent);

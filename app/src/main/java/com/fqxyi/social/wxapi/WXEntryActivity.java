@@ -10,6 +10,7 @@ import com.fqxyi.social.library.util.SocialUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -44,11 +45,21 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp baseResp) {
         Log.d("WXEntryActivity", baseResp.errCode + baseResp.errStr);
+        //微信登录
+        if (baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+            if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
+                String code = ((SendAuth.Resp) baseResp).code;
+                SocialUtil.get().getLoginHelper().sendLoginBroadcast(this, code);
+            } else {
+                SocialUtil.get().getLoginHelper().sendLoginBroadcast(this, null);
+            }
+        }
+        //微信分享
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                SocialUtil.get().getShareHelper().sendShareBackBroadcast(this, true);
+                SocialUtil.get().getShareHelper().sendShareBroadcast(this, true);
             } else {
-                SocialUtil.get().getShareHelper().sendShareBackBroadcast(this, false);
+                SocialUtil.get().getShareHelper().sendShareBroadcast(this, false);
             }
         }
         onBackPressed();

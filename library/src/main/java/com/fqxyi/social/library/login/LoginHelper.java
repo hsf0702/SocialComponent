@@ -1,7 +1,9 @@
 package com.fqxyi.social.library.login;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.fqxyi.social.library.util.SocialUtil;
 
@@ -42,6 +44,20 @@ public class LoginHelper {
             wbLoginHelper = new WBLoginHelper(activity, SocialUtil.get().getWbAppId(), SocialUtil.get().getWbRedirectUrl());
         }
         wbLoginHelper.login(loginCallback);
+    }
+
+    /**
+     * 微信登录，在微信回调到WXEntryActivity的onResp方法中调用
+     *
+     * @param code 空表示失败，正常就是有值的
+     */
+    public void sendLoginBroadcast(Context context, String code) {
+        Intent intent = new Intent(WXLoginHelper.ACTION_WX_LOGIN_RECEIVER);
+        if (TextUtils.isEmpty(code)) {
+            code = WXLoginHelper.KEY_WX_LOGIN_CODE_CANCEL;
+        }
+        intent.putExtra(WXLoginHelper.KEY_WX_LOGIN_CODE, code);
+        context.sendBroadcast(intent);
     }
 
     /**

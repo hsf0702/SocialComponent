@@ -25,6 +25,9 @@ public class WBLoginHelper {
     //登录结果回调
     private ILoginCallback loginCallback;
 
+    /**
+     * 初始化微博
+     */
     public WBLoginHelper(Activity activity, String appId, String redirectUrl) {
         this.activity = activity;
         if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(redirectUrl)) {
@@ -33,6 +36,9 @@ public class WBLoginHelper {
         WbSdk.install(activity.getApplicationContext(), new AuthInfo(activity.getApplicationContext(), appId, redirectUrl, ""));
     }
 
+    /**
+     * 具体的登录逻辑
+     */
     public void login(ILoginCallback loginCallback) {
         this.loginCallback = loginCallback;
         //判断是否安装新浪微博
@@ -42,6 +48,7 @@ public class WBLoginHelper {
             }
             return;
         }
+        //登录到微博
         if (ssoHandler == null) {
             ssoHandler = new SsoHandler(activity);
         }
@@ -66,6 +73,9 @@ public class WBLoginHelper {
         }
     }
 
+    /**
+     * 微博的登录监听器
+     */
     private WbAuthListener wbAuthCallback = new WbAuthListener() {
         @Override
         public void onSuccess(Oauth2AccessToken oauth2AccessToken) {

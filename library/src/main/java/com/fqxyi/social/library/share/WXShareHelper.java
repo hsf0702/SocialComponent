@@ -61,7 +61,7 @@ public class WXShareHelper {
         wxapi = WXAPIFactory.createWXAPI(activity, appId, true);
         wxapi.registerApp(appId);
         //
-        activity.registerReceiver(broadcastReceiver, new IntentFilter(WXShareHelper.ACTION_WX_SHARE_RECEIVER));
+        activity.registerReceiver(wxShareReceiver, new IntentFilter(WXShareHelper.ACTION_WX_SHARE_RECEIVER));
     }
 
     /**
@@ -219,8 +219,8 @@ public class WXShareHelper {
      */
     public void onDestroy() {
         if (activity != null) {
-            if (broadcastReceiver != null) {
-                activity.unregisterReceiver(broadcastReceiver);
+            if (wxShareReceiver != null) {
+                activity.unregisterReceiver(wxShareReceiver);
             }
             activity = null;
         }
@@ -233,7 +233,10 @@ public class WXShareHelper {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
-    public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    /**
+     * 微信的分享监听器
+     */
+    public BroadcastReceiver wxShareReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             boolean shareSuccess = intent.getBooleanExtra(WXShareHelper.KEY_WX_SHARE_CALLBACK, false);
