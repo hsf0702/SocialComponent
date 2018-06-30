@@ -28,6 +28,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //support-v4 - QQ登录需要
+    api 'com.android.support:support-v4:27.1.1'
     //recyclerView
     api 'com.android.support:recyclerview-v7:27.1.1'
     //微信sdk https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=1417751808&token=&lang=zh_CN
