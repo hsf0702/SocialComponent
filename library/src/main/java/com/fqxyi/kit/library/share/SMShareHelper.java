@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.fqxyi.kit.library.R;
+
 import java.io.File;
 
 /**
@@ -35,7 +37,7 @@ public class SMShareHelper {
         //判断数据源是否为空
         if (shareDataBean == null) {
             if (shareCallback != null) {
-                shareCallback.onError("shareDataBean == null");
+                shareCallback.onError(activity.getString(R.string.share_sms_error_data));
             }
             return;
         }

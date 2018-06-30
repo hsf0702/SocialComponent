@@ -73,21 +73,21 @@ public class WXShareHelper {
         //判断数据源是否为空
         if (shareDataBean == null) {
             if (shareCallback != null) {
-                shareCallback.onError("shareDataBean == null");
+                shareCallback.onError(activity.getString(R.string.share_wx_error_data));
             }
             return;
         }
         //判断是否安装微信
         if (!wxapi.isWXAppInstalled()) {
             if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wx_uninstall));
+                shareCallback.onError(activity.getString(R.string.share_wx_error_uninstall));
             }
             return;
         }
         //是否分享到朋友圈，微信4.2以下不支持朋友圈
         if (isTimeLine && wxapi.getWXAppSupportAPI() < 0x21020001) {
             if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wx_version_low_error));
+                shareCallback.onError(activity.getString(R.string.share_wx_error_version_low));
             }
             return;
         }
@@ -96,7 +96,7 @@ public class WXShareHelper {
         req.message = getShareMessage(req, shareDataBean);
         if (req.message == null) {
             if (shareCallback != null) {
-                shareCallback.onError("req.message == null");
+                shareCallback.onError(activity.getString(R.string.share_wx_error_data));
             }
             return;
         }
@@ -239,9 +239,9 @@ public class WXShareHelper {
             boolean shareSuccess = intent.getBooleanExtra(WXShareHelper.KEY_WX_SHARE_CALLBACK, false);
             if (shareCallback != null) {
                 if (shareSuccess) {
-                    shareCallback.onSuccess();
+                    shareCallback.onSuccess(activity.getString(R.string.share_wx_success), null);
                 } else {
-                    shareCallback.onError(activity.getString(R.string.share_cancel));
+                    shareCallback.onError(activity.getString(R.string.share_wx_error));
                 }
             }
         }

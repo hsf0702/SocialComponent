@@ -70,14 +70,14 @@ public class WBShareHelper {
         //判断数据源是否为空
         if (shareDataBean == null) {
             if (shareCallback != null) {
-                shareCallback.onError("shareDataBean == null");
+                shareCallback.onError(activity.getString(R.string.share_wb_error_data));
             }
             return;
         }
         //判断是否安装新浪微博
         if (!WbSdk.isWbInstall(activity)) {
             if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wb_uninstall));
+                shareCallback.onError(activity.getString(R.string.share_wb_error_uninstall));
             }
             return;
         }
@@ -85,7 +85,7 @@ public class WBShareHelper {
         WeiboMultiMessage weiboMultiMessage = getShareMessage(shareDataBean);
         if (weiboMultiMessage == null) {
             if (shareCallback != null) {
-                shareCallback.onError("weiboMultiMessage == null");
+                shareCallback.onError(activity.getString(R.string.share_wb_error_data));
             }
             return;
         }
@@ -235,21 +235,21 @@ public class WBShareHelper {
         @Override
         public void onWbShareSuccess() {
             if (shareCallback != null) {
-                shareCallback.onSuccess();
+                shareCallback.onSuccess(activity.getString(R.string.share_wb_success), null);
             }
         }
 
         @Override
         public void onWbShareCancel() {
             if (shareCallback != null) {
-                shareCallback.onCancel();
+                shareCallback.onCancel(activity.getString(R.string.share_wb_cancel));
             }
         }
 
         @Override
         public void onWbShareFail() {
             if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_error));
+                shareCallback.onError(activity.getString(R.string.share_wb_error));
             }
         }
     };

@@ -82,7 +82,7 @@ public class ShareHelper {
             // 将文本数据复制到剪贴板
             clipboardManager.setText(shareDataBean.shareUrl);
             if (shareCallback != null) {
-                shareCallback.onSuccess();
+                shareCallback.onSuccess("复制成功", null);
             }
         } else {
             if (shareCallback != null) {

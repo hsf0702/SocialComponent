@@ -87,8 +87,8 @@ public class MainActivity extends Activity {
 
     IShareCallback shareCallback = new IShareCallback() {
         @Override
-        public void onSuccess() {
-            Toast.makeText(MainActivity.this, "onSuccess", Toast.LENGTH_SHORT).show();
+        public void onSuccess(String msg, String response) {
+            Toast.makeText(MainActivity.this, "onSuccess, msg =" + msg + ", response = " + response, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -97,8 +97,8 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public void onCancel() {
-            Toast.makeText(MainActivity.this, "onCancel", Toast.LENGTH_SHORT).show();
+        public void onCancel(String msg) {
+            Toast.makeText(MainActivity.this, "onCancel, msg = " + msg, Toast.LENGTH_SHORT).show();
         }
     };
 

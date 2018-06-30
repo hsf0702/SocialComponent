@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="share_cancel">已取消</string>
-    <string name="share_error">分享失败</string>
-    <string name="share_qq_uninstall">QQ未安装</string>
-    <string name="share_wx_uninstall">微信未安装</string>
-    <string name="share_wb_uninstall">微博未安装</string>
-    <string name="share_img_not_found">分享图片未找到</string>
-    <string name="share_wx_version_low_error">微信4.2以上才支持分享朋友圈，请升级微信</string>
+    <!-- 微信 -->
+    <string name="share_wx_success">微信分享成功</string>
+    <string name="share_wx_cancel">微信分享已取消</string>
+    <string name="share_wx_error">微信分享失败</string>
+    <string name="share_wx_error_uninstall">微信未安装</string>
+    <string name="share_wx_error_version_low">微信4.2以上才支持分享朋友圈，请升级微信</string>
+    <string name="share_wx_error_data">微信分享数据异常</string>
+    <!-- QQ -->
+    <string name="share_qq_success">QQ分享成功</string>
+    <string name="share_qq_cancel">QQ分享已取消</string>
+    <string name="share_qq_error">QQ分享失败</string>
+    <string name="share_qq_error_uninstall">QQ未安装</string>
+    <string name="share_qq_error_data">QQ分享数据异常</string>
+    <!-- 微博 -->
+    <string name="share_wb_success">微博分享成功</string>
+    <string name="share_wb_cancel">微博分享已取消</string>
+    <string name="share_wb_error">微博分享失败</string>
+    <string name="share_wb_error_uninstall">微博未安装</string>
+    <string name="share_wb_error_data">微博分享数据异常</string>
+    <!-- 微博 -->
+    <string name="share_sms_error_data">短信分享数据异常</string>
+    <!-- 通用 -->
+    <string name="share_error_image_not_found">分享图片未找到</string>
 </resources>

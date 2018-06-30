@@ -56,14 +56,14 @@ public class QQShareHelper {
         //判断数据源是否为空
         if (shareDataBean == null) {
             if (shareCallback != null) {
-                shareCallback.onError("shareDataBean == null");
+                shareCallback.onError(activity.getString(R.string.share_qq_error_data));
             }
             return;
         }
         //判断是否安装QQ
         if (!tencent.isQQInstalled(activity)) {
             if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_qq_uninstall));
+                shareCallback.onError(activity.getString(R.string.share_qq_error_uninstall));
             }
             return;
         }
@@ -72,7 +72,7 @@ public class QQShareHelper {
         if (shareDataBean.type == QQShareHelper.TYPE_IMAGE) {
             if (TextUtils.isEmpty(bundle.getString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL))) {
                 if (shareCallback != null) {
-                    shareCallback.onError(activity.getString(R.string.share_img_not_found));
+                    shareCallback.onError(activity.getString(R.string.share_error_image_not_found));
                 }
                 return;
             }
@@ -143,21 +143,24 @@ public class QQShareHelper {
         @Override
         public void onComplete(Object o) {
             if (shareCallback != null) {
-                shareCallback.onSuccess();
+                shareCallback.onSuccess(activity.getString(R.string.share_qq_success), o.toString());
             }
         }
 
         @Override
         public void onError(UiError uiError) {
             if (shareCallback != null && uiError != null) {
-                shareCallback.onError(uiError.errorMessage);
+                shareCallback.onError(activity.getString(R.string.share_qq_error)
+                        + ", 错误码：" + uiError.errorCode
+                        + ", 错误信息：" + uiError.errorMessage
+                        + ", 错误详情：" + uiError.errorDetail);
             }
         }
 
         @Override
         public void onCancel() {
             if (shareCallback != null) {
-                shareCallback.onCancel();
+                shareCallback.onCancel(activity.getString(R.string.share_qq_cancel));
             }
         }
     };
