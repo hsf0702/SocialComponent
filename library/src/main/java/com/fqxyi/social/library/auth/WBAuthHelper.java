@@ -15,6 +15,8 @@ import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
 /**
  * 授权帮助类
+ *
+ * 问题：微博授权21338问题，未通过审核或者是签名不一致
  */
 public class WBAuthHelper {
 
