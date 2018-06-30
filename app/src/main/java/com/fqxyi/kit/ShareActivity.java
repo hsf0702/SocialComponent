@@ -7,10 +7,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
 
-import com.fqxyi.kit.library.dialog.IShareType;
+import com.fqxyi.kit.library.dialog.ISocialType;
 import com.fqxyi.kit.library.dialog.ItemClickListener;
-import com.fqxyi.kit.library.dialog.ShareDialog;
-import com.fqxyi.kit.library.dialog.ShareTypeBean;
+import com.fqxyi.kit.library.dialog.SocialDialog;
+import com.fqxyi.kit.library.dialog.SocialTypeBean;
 import com.fqxyi.kit.library.share.IShareCallback;
 import com.fqxyi.kit.library.share.ShareDataBean;
 import com.fqxyi.kit.library.share.ShareHelper;
@@ -25,9 +25,9 @@ public class ShareActivity extends Activity {
     private static final String TAG = "ShareActivity";
 
     //分享弹框
-    ShareDialog shareDialog;
+    SocialDialog socialDialog;
     //数据源-分享类型
-    List<ShareTypeBean> shareTypeBeans;
+    List<SocialTypeBean> socialTypeBeans;
     //数据源-分享数据
     ShareDataBean shareDataBean;
     //分享入口类
@@ -39,19 +39,19 @@ public class ShareActivity extends Activity {
         setContentView(R.layout.activity_share);
 
         //初始化分享类型
-        shareTypeBeans = new ArrayList<>();
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_WECHAT));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_WECHATMOMENTS));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_SHORTMESSAGE));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_COPY));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_REFRESH));
-//        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_CUSTOM));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_QQ));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_SINA));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_WXMINIPROGRAM));
-//        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_ALIPAYMINPROGRAM));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_COLLECTION));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_SHOW_ALL));
+        socialTypeBeans = new ArrayList<>();
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WECHAT));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WECHATMOMENTS));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SHORTMESSAGE));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_COPY));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_REFRESH));
+//        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_CUSTOM));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SINA));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WXMINIPROGRAM));
+//        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAYMINPROGRAM));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_COLLECTION));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SHOW_ALL));
         //初始化分享数据
         shareDataBean = new ShareDataBean();
         shareDataBean.type = WBShareHelper.TYPE_IMAGE_TEXT;
@@ -72,17 +72,17 @@ public class ShareActivity extends Activity {
     }
 
     public void share(View view) {
-        if (shareDialog == null) {
-            shareDialog = new ShareDialog(this);
+        if (socialDialog == null) {
+            socialDialog = new SocialDialog(this);
         }
-        shareDialog.initShareType(shareTypeBeans);
-        shareDialog.setItemClickListener(new ItemClickListener() {
+        socialDialog.initSocialType(socialTypeBeans);
+        socialDialog.setItemClickListener(new ItemClickListener() {
             @Override
-            public void click(ShareTypeBean shareTypeBean, int position) {
-                initItemClick(shareTypeBean, shareCallback);
+            public void click(SocialTypeBean socialTypeBean, int position) {
+                initItemClick(socialTypeBean, shareCallback);
             }
         });
-        shareDialog.show();
+        socialDialog.show();
     }
 
     IShareCallback shareCallback = new IShareCallback() {
@@ -105,42 +105,42 @@ public class ShareActivity extends Activity {
     /**
      * 具体的item点击逻辑
      */
-    private void initItemClick(ShareTypeBean shareTypeBean, IShareCallback shareCallback) {
-        if (shareTypeBean == null) {
+    private void initItemClick(SocialTypeBean socialTypeBean, IShareCallback shareCallback) {
+        if (socialTypeBean == null) {
             return;
         }
-        switch (shareTypeBean.type) {
-            case IShareType.SHARE_WECHAT: //微信
+        switch (socialTypeBean.type) {
+            case ISocialType.SOCIAL_WECHAT: //微信
                 shareHelper.shareWX(this, false, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_WECHATMOMENTS: //朋友圈
+            case ISocialType.SOCIAL_WECHATMOMENTS: //朋友圈
                 shareHelper.shareWX(this, true, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_SHORTMESSAGE: //短信
+            case ISocialType.SOCIAL_SHORTMESSAGE: //短信
                 shareHelper.shareShortMessage(this, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_COPY: //复制
+            case ISocialType.SOCIAL_COPY: //复制
                 shareHelper.shareCopy(this, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_REFRESH: //刷新
+            case ISocialType.SOCIAL_REFRESH: //刷新
                 shareHelper.shareRefresh(this, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_QQ: //QQ
+            case ISocialType.SOCIAL_QQ: //QQ
                 shareHelper.shareQQ(this, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_SINA: //新浪微博
+            case ISocialType.SOCIAL_SINA: //新浪微博
                 shareHelper.shareWB(this, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_WXMINIPROGRAM: //微信小程序
+            case ISocialType.SOCIAL_WXMINIPROGRAM: //微信小程序
                 shareHelper.shareWxMiniProgram(this, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_ALIPAYMINPROGRAM: //支付宝小程序
+            case ISocialType.SOCIAL_ALIPAYMINPROGRAM: //支付宝小程序
                 shareHelper.shareAlipayMiniProgram(this, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_COLLECTION: //收藏
+            case ISocialType.SOCIAL_COLLECTION: //收藏
                 shareHelper.shareCollection(this, shareDataBean, shareCallback);
                 break;
-            case IShareType.SHARE_SHOW_ALL: //查看全部
+            case ISocialType.SOCIAL_SHOW_ALL: //查看全部
                 shareHelper.shareShowAll(this, shareDataBean, shareCallback);
                 break;
         }
@@ -165,7 +165,7 @@ public class ShareActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        shareDialog = null;
+        socialDialog = null;
         if (shareHelper != null) {
             shareHelper.onDestroy();
             shareHelper = null;

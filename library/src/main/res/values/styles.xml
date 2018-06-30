@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ShareDialogStyle" parent="@android:style/Theme.Dialog">
+    <style name="SocialDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <!-- 边框 -->
         <item name="android:windowIsFloating">false</item>
@@ -19,9 +19,9 @@
         <item name="android:backgroundDimAmount">0.35</item>
     </style>
 
-    <style name="ShareDialogAnim">
-        <item name="android:windowEnterAnimation">@anim/share_dialog_anim_in</item>
-        <item name="android:windowExitAnimation">@anim/share_dialog_anim_out</item>
+    <style name="SocialDialogAnim">
+        <item name="android:windowEnterAnimation">@anim/social_dialog_anim_in</item>
+        <item name="android:windowExitAnimation">@anim/social_dialog_anim_out</item>
     </style>
 
 </resources>

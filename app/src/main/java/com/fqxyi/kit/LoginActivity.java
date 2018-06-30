@@ -7,10 +7,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
 
-import com.fqxyi.kit.library.dialog.IShareType;
+import com.fqxyi.kit.library.dialog.ISocialType;
 import com.fqxyi.kit.library.dialog.ItemClickListener;
-import com.fqxyi.kit.library.dialog.ShareDialog;
-import com.fqxyi.kit.library.dialog.ShareTypeBean;
+import com.fqxyi.kit.library.dialog.SocialDialog;
+import com.fqxyi.kit.library.dialog.SocialTypeBean;
 import com.fqxyi.kit.library.login.ILoginCallback;
 import com.fqxyi.kit.library.login.LoginHelper;
 import com.fqxyi.kit.library.util.SocialUtil;
@@ -23,9 +23,9 @@ public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
 
     //登录弹框
-    ShareDialog shareDialog;
+    SocialDialog socialDialog;
     //数据源-登录类型
-    List<ShareTypeBean> shareTypeBeans;
+    List<SocialTypeBean> socialTypeBeans;
     //登录入口类
     LoginHelper loginHelper;
 
@@ -35,10 +35,10 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         //初始化登录类型
-        shareTypeBeans = new ArrayList<>();
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_WECHAT));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_QQ));
-        shareTypeBeans.add(new ShareTypeBean(IShareType.SHARE_SINA));
+        socialTypeBeans = new ArrayList<>();
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WECHAT));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SINA));
         //初始化数据
         SocialUtil.get().setQqAppId("1107001192")
                 .setWxAppId("")
@@ -50,17 +50,17 @@ public class LoginActivity extends Activity {
     }
 
     public void login(View view) {
-        if (shareDialog == null) {
-            shareDialog = new ShareDialog(this);
+        if (socialDialog == null) {
+            socialDialog = new SocialDialog(this);
         }
-        shareDialog.initShareType(shareTypeBeans);
-        shareDialog.setItemClickListener(new ItemClickListener() {
+        socialDialog.initSocialType(socialTypeBeans);
+        socialDialog.setItemClickListener(new ItemClickListener() {
             @Override
-            public void click(ShareTypeBean shareTypeBean, int position) {
-                initItemClick(shareTypeBean, loginCallback);
+            public void click(SocialTypeBean socialTypeBean, int position) {
+                initItemClick(socialTypeBean, loginCallback);
             }
         });
-        shareDialog.show();
+        socialDialog.show();
     }
 
     ILoginCallback loginCallback = new ILoginCallback() {
@@ -83,18 +83,18 @@ public class LoginActivity extends Activity {
     /**
      * 具体的item点击逻辑
      */
-    private void initItemClick(ShareTypeBean shareTypeBean, ILoginCallback loginCallback) {
-        if (shareTypeBean == null) {
+    private void initItemClick(SocialTypeBean socialTypeBean, ILoginCallback loginCallback) {
+        if (socialTypeBean == null) {
             return;
         }
-        switch (shareTypeBean.type) {
-            case IShareType.SHARE_WECHAT: //微信
+        switch (socialTypeBean.type) {
+            case ISocialType.SOCIAL_WECHAT: //微信
                 loginHelper.loginWX(this, loginCallback);
                 break;
-            case IShareType.SHARE_QQ: //QQ
+            case ISocialType.SOCIAL_QQ: //QQ
                 loginHelper.loginQQ(this, loginCallback);
                 break;
-            case IShareType.SHARE_SINA: //新浪微博
+            case ISocialType.SOCIAL_SINA: //新浪微博
                 loginHelper.loginWB(this, loginCallback);
                 break;
         }
@@ -119,7 +119,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        shareDialog = null;
+        socialDialog = null;
         if (loginHelper != null) {
             loginHelper.onDestroy();
             loginHelper = null;

@@ -19,30 +19,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 分享弹框
+ * 社会化弹框
  */
-public class ShareDialog extends Dialog {
+public class SocialDialog extends Dialog {
 
     //静态常量
-    private static final String TAG = "ShareDialog";
+    private static final String TAG = "SocialDialog";
     //上下文
     Context context;
     //view
-    private RecyclerView shareRecyclerView;
-    private Button shareCancel;
+    private RecyclerView socialRecyclerView;
+    private Button socialCancel;
     //adapter
-    ShareAdapter shareAdapter;
-    //数据源-分享类型
-    List<ShareTypeBean> shareTypeBeans;
+    SocialAdapter socialAdapter;
+    //数据源-社会化类型
+    List<SocialTypeBean> socialTypeBeans;
     //点击事件回调
     ItemClickListener itemClickListener;
 
-    public ShareDialog(Context context) {
-        super(context, R.style.ShareDialogStyle);
+    public SocialDialog(Context context) {
+        super(context, R.style.SocialDialogStyle);
         init(context);
     }
 
-    public ShareDialog(Context context, int themeResId) {
+    public SocialDialog(Context context, int themeResId) {
         super(context, themeResId);
         init(context);
     }
@@ -50,10 +50,10 @@ public class ShareDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.share_dialog);
+        setContentView(R.layout.social_dialog);
         //findView
-        shareRecyclerView = (RecyclerView) findViewById(R.id.share_recycler_view);
-        shareCancel = (Button) findViewById(R.id.share_cancel);
+        socialRecyclerView = (RecyclerView) findViewById(R.id.social_recycler_view);
+        socialCancel = (Button) findViewById(R.id.social_cancel);
         //初始化RecyclerView
         initRecyclerView();
         //事件初始化
@@ -61,24 +61,24 @@ public class ShareDialog extends Dialog {
     }
 
     private void initRecyclerView() {
-        shareRecyclerView.setLayoutManager(new GridLayoutManager(context, 4));
-        shareAdapter = new ShareAdapter(context);
-        shareAdapter.updateData(shareTypeBeans);
-        shareRecyclerView.setAdapter(shareAdapter);
+        socialRecyclerView.setLayoutManager(new GridLayoutManager(context, 4));
+        socialAdapter = new SocialAdapter(context);
+        socialAdapter.updateData(socialTypeBeans);
+        socialRecyclerView.setAdapter(socialAdapter);
     }
 
     private void initEvent() {
-        //share item icon 点击事件
-        shareAdapter.setItemClickListener(new ItemClickListener() {
+        //social item icon 点击事件
+        socialAdapter.setItemClickListener(new ItemClickListener() {
             @Override
-            public void click(ShareTypeBean shareTypeBean, int position) {
+            public void click(SocialTypeBean socialTypeBean, int position) {
                 if (itemClickListener != null) {
-                    itemClickListener.click(shareTypeBean, position);
+                    itemClickListener.click(socialTypeBean, position);
                 }
             }
         });
-        //share cancel 点击事件
-        shareCancel.setOnClickListener(new View.OnClickListener() {
+        //social cancel 点击事件
+        socialCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -87,15 +87,15 @@ public class ShareDialog extends Dialog {
     }
 
     /**
-     * 初始化分享类型
+     * 初始化社会化类型
      */
-    public void initShareType(List<ShareTypeBean> list) {
-        if (shareTypeBeans == null) {
-            shareTypeBeans = new ArrayList<>();
+    public void initSocialType(List<SocialTypeBean> list) {
+        if (socialTypeBeans == null) {
+            socialTypeBeans = new ArrayList<>();
         } else {
-            shareTypeBeans.clear();
+            socialTypeBeans.clear();
         }
-        shareTypeBeans.addAll(list);
+        socialTypeBeans.addAll(list);
     }
 
     /**
@@ -120,7 +120,7 @@ public class ShareDialog extends Dialog {
             return;
         }
         // 设置显示动画
-        window.setWindowAnimations(R.style.ShareDialogAnim);
+        window.setWindowAnimations(R.style.SocialDialogAnim);
         WindowManager.LayoutParams params = window.getAttributes();
         params.x = 0;
         if (((Activity) context).getWindowManager() != null &&
