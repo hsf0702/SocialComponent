@@ -11,6 +11,8 @@ import com.tencent.tauth.UiError;
 
 /**
  * QQ授权帮助类
+ *
+ * 问题：QQ授权100044问题，解决办法：本APP未上线，如果你申请的是“个人开发者”，请确保你创建APP所用的QQ帐号和你测试时用的登陆QQ号一致！
  */
 public class QQAuthHelper {
 
