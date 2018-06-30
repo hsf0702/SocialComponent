@@ -76,6 +76,9 @@ public class WXAuthHelper {
      */
     public void onDestroy() {
         if (activity != null) {
+            if (wxAuthReceiver != null) {
+                activity.unregisterReceiver(wxAuthReceiver);
+            }
             activity = null;
         }
     }
