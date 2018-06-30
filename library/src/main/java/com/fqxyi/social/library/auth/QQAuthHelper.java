@@ -1,4 +1,4 @@
-package com.fqxyi.social.library.login;
+package com.fqxyi.social.library.auth;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,21 +10,21 @@ import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 /**
- * QQ登录帮助类
+ * QQ授权帮助类
  */
-public class QQLoginHelper {
+public class QQAuthHelper {
 
     //上下文
     private Activity activity;
     //
     private Tencent tencent;
-    //登录结果回调
-    private ILoginCallback loginCallback;
+    //授权结果回调
+    private IAuthCallback authCallback;
 
     /**
      * 初始化QQ
      */
-    public QQLoginHelper(Activity activity, String appId) {
+    public QQAuthHelper(Activity activity, String appId) {
         this.activity = activity;
         if (TextUtils.isEmpty(appId)) {
             throw new RuntimeException("QQ's appId is empty!");
@@ -33,20 +33,20 @@ public class QQLoginHelper {
     }
 
     /**
-     * 具体的登录逻辑
+     * 具体的授权逻辑
      */
-    public void login(ILoginCallback loginCallback) {
-        this.loginCallback = loginCallback;
+    public void auth(IAuthCallback authCallback) {
+        this.authCallback = authCallback;
         //判断是否安装QQ
         if (!tencent.isQQInstalled(activity)) {
-            if (loginCallback != null) {
-                loginCallback.onError(activity.getString(R.string.login_qq_error_uninstall));
+            if (authCallback != null) {
+                authCallback.onError(activity.getString(R.string.auth_qq_error_uninstall));
             }
             return;
         }
-        //登录到QQ
+        //开始QQ授权
         if (!tencent.isSessionValid()) {
-            tencent.login(activity, "all", loginListener);
+            tencent.login(activity, "all", authListener);
         }
     }
 
@@ -54,7 +54,7 @@ public class QQLoginHelper {
      * QQ开放平台需要
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
+        Tencent.onActivityResultData(requestCode, resultCode, data, authListener);
     }
 
     /**
@@ -67,20 +67,20 @@ public class QQLoginHelper {
     }
 
     /**
-     * QQ的登录监听器
+     * QQ的授权监听器
      */
-    private IUiListener loginListener = new IUiListener() {
+    private IUiListener authListener = new IUiListener() {
         @Override
         public void onComplete(Object o) {
-            if (loginCallback != null) {
-                loginCallback.onSuccess(activity.getString(R.string.login_qq_success), o.toString());
+            if (authCallback != null) {
+                authCallback.onSuccess(activity.getString(R.string.auth_qq_success), o.toString());
             }
         }
 
         @Override
         public void onError(UiError uiError) {
-            if (loginCallback != null && uiError != null) {
-                loginCallback.onError(activity.getString(R.string.login_qq_error)
+            if (authCallback != null && uiError != null) {
+                authCallback.onError(activity.getString(R.string.auth_qq_error)
                         + ", 错误码：" + uiError.errorCode
                         + ", 错误信息：" + uiError.errorMessage
                         + ", 错误详情：" + uiError.errorDetail);
@@ -89,8 +89,8 @@ public class QQLoginHelper {
 
         @Override
         public void onCancel() {
-            if (loginCallback != null) {
-                loginCallback.onCancel(activity.getString(R.string.login_qq_cancel));
+            if (authCallback != null) {
+                authCallback.onCancel(activity.getString(R.string.auth_qq_cancel));
             }
         }
     };

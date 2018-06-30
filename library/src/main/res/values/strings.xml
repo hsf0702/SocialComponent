@@ -27,27 +27,27 @@
     <!-- 通用 -->
     <string name="share_error_image_not_found">分享图片未找到</string>
 
-    <!-- 登录 -->
+    <!-- 授权 -->
 
     <!-- 微信 -->
-    <string name="login_wx_success">微信登录成功</string>
-    <string name="login_wx_cancel">微信登录已取消</string>
-    <string name="login_wx_error">微信登录失败</string>
-    <string name="login_wx_error_uninstall">微信未安装</string>
-    <string name="login_wx_error_version_low">微信4.2以上才支持登录朋友圈，请升级微信</string>
-    <string name="login_wx_error_data">微信登录数据异常</string>
+    <string name="auth_wx_success">微信授权成功</string>
+    <string name="auth_wx_cancel">微信授权已取消</string>
+    <string name="auth_wx_error">微信授权失败</string>
+    <string name="auth_wx_error_uninstall">微信未安装</string>
+    <string name="auth_wx_error_version_low">微信4.2以上才支持授权朋友圈，请升级微信</string>
+    <string name="auth_wx_error_data">微信授权数据异常</string>
     <!-- QQ -->
-    <string name="login_qq_success">QQ登录成功</string>
-    <string name="login_qq_cancel">QQ登录已取消</string>
-    <string name="login_qq_error">QQ登录失败</string>
-    <string name="login_qq_error_uninstall">QQ未安装</string>
-    <string name="login_qq_error_data">QQ登录数据异常</string>
+    <string name="auth_qq_success">QQ授权成功</string>
+    <string name="auth_qq_cancel">QQ授权已取消</string>
+    <string name="auth_qq_error">QQ授权失败</string>
+    <string name="auth_qq_error_uninstall">QQ未安装</string>
+    <string name="auth_qq_error_data">QQ授权数据异常</string>
     <!-- 微博 -->
-    <string name="login_wb_success">微博登录成功</string>
-    <string name="login_wb_cancel">微博登录已取消</string>
-    <string name="login_wb_error">微博登录失败</string>
-    <string name="login_wb_error_uninstall">微博未安装</string>
-    <string name="login_wb_error_data">微博登录数据异常</string>
+    <string name="auth_wb_success">微博授权成功</string>
+    <string name="auth_wb_cancel">微博授权已取消</string>
+    <string name="auth_wb_error">微博授权失败</string>
+    <string name="auth_wb_error_uninstall">微博未安装</string>
+    <string name="auth_wb_error_data">微博授权数据异常</string>
     <!-- 微博 -->
-    <string name="login_sms_error_data">短信登录数据异常</string>
+    <string name="auth_sms_error_data">短信授权数据异常</string>
 </resources>

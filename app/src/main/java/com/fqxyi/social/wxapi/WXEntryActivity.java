@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
+import com.fqxyi.social.library.util.LogUtil;
 import com.fqxyi.social.library.util.SocialUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -16,6 +16,8 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
+
+    private static final String TAG = "WXEntryActivity";
 
     private IWXAPI wxapi;
 
@@ -44,14 +46,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp baseResp) {
-        Log.d("WXEntryActivity", baseResp.errCode + baseResp.errStr);
-        //微信登录
+        LogUtil.d(TAG, baseResp.errCode + baseResp.errStr);
+        //微信授权
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
                 String code = ((SendAuth.Resp) baseResp).code;
-                SocialUtil.get().getLoginHelper().sendLoginBroadcast(this, code);
+                SocialUtil.get().getAuthHelper().sendAuthBroadcast(this, code);
             } else {
-                SocialUtil.get().getLoginHelper().sendLoginBroadcast(this, null);
+                SocialUtil.get().getAuthHelper().sendAuthBroadcast(this, null);
             }
         }
         //微信分享

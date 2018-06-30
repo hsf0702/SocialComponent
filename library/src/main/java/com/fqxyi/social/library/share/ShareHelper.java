@@ -163,7 +163,7 @@ public class ShareHelper {
     }
 
     /**
-     * qq登录和分享以及微博登录都需要在其当前的activity的onActivityResult中调用该方法
+     * QQ授权和分享以及微博授权都需要在其当前的activity的onActivityResult中调用该方法
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (qqShareHelper != null) {

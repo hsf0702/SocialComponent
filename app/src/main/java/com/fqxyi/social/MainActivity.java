@@ -18,15 +18,15 @@ public class MainActivity extends Activity {
     /**
      * 分享
      */
-    public void jump2share(View view) {
+    public void jump2Share(View view) {
         startActivity(new Intent(this, ShareActivity.class));
     }
 
     /**
-     * 登录
+     * 授权
      */
-    public void jump2login(View view) {
-        startActivity(new Intent(this, LoginActivity.class));
+    public void jump2Auth(View view) {
+        startActivity(new Intent(this, AuthActivity.class));
     }
 
 }

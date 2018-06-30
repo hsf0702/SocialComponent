@@ -1,9 +1,9 @@
-package com.fqxyi.social.library.login;
+package com.fqxyi.social.library.auth;
 
 /**
- * 登录结果回调
+ * 授权结果回调
  */
-public interface ILoginCallback {
+public interface IAuthCallback {
 
     void onSuccess(String msg, String response);
     void onError(String msg);

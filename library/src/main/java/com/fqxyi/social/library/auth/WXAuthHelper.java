@@ -1,4 +1,4 @@
-package com.fqxyi.social.library.login;
+package com.fqxyi.social.library.auth;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -13,26 +13,26 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 /**
- * 微信登录帮助类
+ * 微信授权帮助类
  */
-public class WXLoginHelper {
+public class WXAuthHelper {
 
     //
-    public static final String ACTION_WX_LOGIN_RECEIVER = "ACTION_WX_LOGIN_RECEIVER";
-    public static final String KEY_WX_LOGIN_CODE = "KEY_WX_LOGIN_CODE";
-    public static final String KEY_WX_LOGIN_CODE_CANCEL = "KEY_WX_LOGIN_CODE_CANCEL";
+    public static final String ACTION_WX_AUTH_RECEIVER = "ACTION_WX_AUTH_RECEIVER";
+    public static final String KEY_WX_AUTH_CODE = "KEY_WX_AUTH_CODE";
+    public static final String KEY_WX_AUTH_CODE_CANCEL = "KEY_WX_AUTH_CODE_CANCEL";
 
     //上下文
     private Activity activity;
     //
     private IWXAPI wxapi;
-    //登录结果回调
-    private ILoginCallback loginCallback;
+    //授权结果回调
+    private IAuthCallback authCallback;
 
     /**
      * 初始化微信
      */
-    public WXLoginHelper(Activity activity, String appId, String appSecret) {
+    public WXAuthHelper(Activity activity, String appId, String appSecret) {
         this.activity = activity;
         if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(appSecret)) {
             throw new RuntimeException("Wechat's appId or appSecret is empty!");
@@ -40,22 +40,22 @@ public class WXLoginHelper {
         wxapi = WXAPIFactory.createWXAPI(activity, appId, true);
         wxapi.registerApp(appId);
         //
-        activity.registerReceiver(wxLoginReceiver, new IntentFilter(WXLoginHelper.ACTION_WX_LOGIN_RECEIVER));
+        activity.registerReceiver(wxAuthReceiver, new IntentFilter(WXAuthHelper.ACTION_WX_AUTH_RECEIVER));
     }
 
     /**
-     * 具体的登录逻辑
+     * 具体的授权逻辑
      */
-    public void login(ILoginCallback loginCallback) {
-        this.loginCallback = loginCallback;
+    public void auth(IAuthCallback authCallback) {
+        this.authCallback = authCallback;
         //判断是否安装微信
         if (!wxapi.isWXAppInstalled()) {
-            if (loginCallback != null) {
-                loginCallback.onError(activity.getString(R.string.login_wx_error_uninstall));
+            if (authCallback != null) {
+                authCallback.onError(activity.getString(R.string.auth_wx_error_uninstall));
             }
             return;
         }
-        //登录到微信
+        //开始微信授权
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = getAppStateName(activity) + "_app";
@@ -81,20 +81,20 @@ public class WXLoginHelper {
     }
 
     /**
-     * 微信的登录监听器
+     * 微信的授权监听器
      */
-    public BroadcastReceiver wxLoginReceiver = new BroadcastReceiver() {
+    public BroadcastReceiver wxAuthReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String code = intent.getStringExtra(WXLoginHelper.KEY_WX_LOGIN_CODE);
-            if (code.equals(WXLoginHelper.KEY_WX_LOGIN_CODE_CANCEL)) {
-                if (loginCallback != null && activity != null) {
-                    loginCallback.onError(activity.getString(R.string.login_wx_error));
+            String code = intent.getStringExtra(WXAuthHelper.KEY_WX_AUTH_CODE);
+            if (code.equals(WXAuthHelper.KEY_WX_AUTH_CODE_CANCEL)) {
+                if (authCallback != null && activity != null) {
+                    authCallback.onError(activity.getString(R.string.auth_wx_error));
                 }
                 return;
             }
-            if (loginCallback != null) {
-                loginCallback.onSuccess(activity.getString(R.string.login_wx_success), null);
+            if (authCallback != null) {
+                authCallback.onSuccess(activity.getString(R.string.auth_wx_success), null);
             }
         }
     };

@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ShareActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".AuthActivity" />
 
         <!--微信配置开始-->
         <activity

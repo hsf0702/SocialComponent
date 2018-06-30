@@ -1,4 +1,4 @@
-package com.fqxyi.social.library.login;
+package com.fqxyi.social.library.auth;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,21 +14,21 @@ import com.sina.weibo.sdk.auth.WbConnectErrorMessage;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
 /**
- * 新浪微博登录帮助类
+ * 授权帮助类
  */
-public class WBLoginHelper {
+public class WBAuthHelper {
 
     //上下文
     private Activity activity;
     //
     private SsoHandler ssoHandler;
-    //登录结果回调
-    private ILoginCallback loginCallback;
+    //授权结果回调
+    private IAuthCallback authCallback;
 
     /**
      * 初始化微博
      */
-    public WBLoginHelper(Activity activity, String appId, String redirectUrl) {
+    public WBAuthHelper(Activity activity, String appId, String redirectUrl) {
         this.activity = activity;
         if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(redirectUrl)) {
             throw new RuntimeException("WeBo's appId or redirectUrl is empty!");
@@ -37,18 +37,18 @@ public class WBLoginHelper {
     }
 
     /**
-     * 具体的登录逻辑
+     * 具体的授权逻辑
      */
-    public void login(ILoginCallback loginCallback) {
-        this.loginCallback = loginCallback;
+    public void auth(IAuthCallback authCallback) {
+        this.authCallback = authCallback;
         //判断是否安装新浪微博
         if (!WbSdk.isWbInstall(activity)) {
-            if (loginCallback != null) {
-                loginCallback.onError(activity.getString(R.string.login_wb_error_uninstall));
+            if (authCallback != null) {
+                authCallback.onError(activity.getString(R.string.auth_wb_error_uninstall));
             }
             return;
         }
-        //登录到微博
+        //开始微博授权
         if (ssoHandler == null) {
             ssoHandler = new SsoHandler(activity);
         }
@@ -74,34 +74,34 @@ public class WBLoginHelper {
     }
 
     /**
-     * 微博的登录监听器
+     * 微博的授权监听器
      */
     private WbAuthListener wbAuthCallback = new WbAuthListener() {
         @Override
         public void onSuccess(Oauth2AccessToken oauth2AccessToken) {
             if (oauth2AccessToken.isSessionValid()) {
                 AccessTokenKeeper.writeAccessToken(activity, oauth2AccessToken);
-                if (loginCallback != null) {
-                    loginCallback.onSuccess(activity.getString(R.string.login_wb_success), null);
+                if (authCallback != null) {
+                    authCallback.onSuccess(activity.getString(R.string.auth_wb_success), null);
                 }
             } else {
-                if (loginCallback != null) {
-                    loginCallback.onError(activity.getString(R.string.login_wb_error));
+                if (authCallback != null) {
+                    authCallback.onError(activity.getString(R.string.auth_wb_error));
                 }
             }
         }
 
         @Override
         public void cancel() {
-            if (loginCallback != null) {
-                loginCallback.onCancel(activity.getString(R.string.login_wb_cancel));
+            if (authCallback != null) {
+                authCallback.onCancel(activity.getString(R.string.auth_wb_cancel));
             }
         }
 
         @Override
         public void onFailure(WbConnectErrorMessage wbConnectErrorMessage) {
-            if (loginCallback != null) {
-                loginCallback.onError(activity.getString(R.string.login_wb_error)
+            if (authCallback != null) {
+                authCallback.onError(activity.getString(R.string.auth_wb_error)
                         + ", 错误码：" + wbConnectErrorMessage.getErrorCode()
                         + ", 错误信息：" + wbConnectErrorMessage.getErrorMessage());
             }

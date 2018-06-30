@@ -1,6 +1,6 @@
 package com.fqxyi.social.library.util;
 
-import com.fqxyi.social.library.login.LoginHelper;
+import com.fqxyi.social.library.auth.AuthHelper;
 import com.fqxyi.social.library.share.ShareHelper;
 
 /**
@@ -9,14 +9,14 @@ import com.fqxyi.social.library.share.ShareHelper;
 public class SocialUtil {
 
     private ShareHelper shareHelper;
-    private LoginHelper loginHelper;
+    private AuthHelper authHelper;
 
     //单例引用
     private volatile static SocialUtil INSTANCE;
     //构造函数私有化
     private SocialUtil() {
         shareHelper = new ShareHelper();
-        loginHelper = new LoginHelper();
+        authHelper = new AuthHelper();
     }
     //获取单例
     public static SocialUtil get() {
@@ -34,8 +34,8 @@ public class SocialUtil {
         return shareHelper;
     }
 
-    public LoginHelper getLoginHelper() {
-        return loginHelper;
+    public AuthHelper getAuthHelper() {
+        return authHelper;
     }
 
     private String qqAppId;
