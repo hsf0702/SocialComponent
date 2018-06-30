@@ -10,11 +10,11 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         //初始化数据
-        SocialUtil.get().setQqAppId("1107001192")
+        SocialUtil.get().setQqAppId("1107009250")
                 .setWxAppId("")
                 .setWxAppSecret("")
-                .setWbAppId("2474483531")
-                .setWbRedirectUrl("https://www.fqxyi.com/");
+                .setWbAppId("2214687859")
+                .setWbRedirectUrl("https://github.com/fengqingxiuyi");
     }
 
 }
