@@ -57,18 +57,12 @@ public class WXAuthHelper {
         }
         //开始微信授权
         SendAuth.Req req = new SendAuth.Req();
+        //应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），
+        // snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且，即使在未关注的情况下，只要用户授权，也能获取其信息）
         req.scope = "snsapi_userinfo";
-        req.state = getAppStateName(activity) + "_app";
+        //重定向后会带上state参数，开发者可以填写a-zA-Z0-9的参数值，最多128字节，该值会被微信原样返回，我们可以将其进行比对，防止别人的攻击。
+        req.state = activity.getPackageName();
         wxapi.sendReq(req);
-    }
-
-    private static String getAppStateName(Context context) {
-        String packageName = context.getPackageName();
-        int beginIndex = 0;
-        if (packageName.contains(".")) {
-            beginIndex = packageName.lastIndexOf(".");
-        }
-        return packageName.substring(beginIndex);
     }
 
     /**
