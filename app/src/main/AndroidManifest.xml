@@ -3,6 +3,7 @@
     package="com.fqxyi.social">
 
     <application
+        android:name=".base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,15 +17,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShareActivity"/>
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".ShareActivity" />
+        <activity android:name=".LoginActivity" />
 
         <!--微信配置开始-->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            />
+            android:label="@string/app_name" />
         <!--微信配置结束-->
     </application>
 

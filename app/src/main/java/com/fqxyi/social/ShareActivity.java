@@ -61,12 +61,6 @@ public class ShareActivity extends Activity {
         shareDataBean.shareUrl = "https://www.baidu.com/";
         shareDataBean.shareMiniAppId = "小程序的原始ID";
         shareDataBean.shareMiniPage = "小程序页面地址";
-        //初始化数据
-        SocialUtil.get().setQqAppId("1107001192")
-                .setWxAppId("")
-                .setWxAppSecret("")
-                .setWbAppId("2474483531")
-                .setWbRedirectUrl("https://www.fqxyi.com/");
         //创建分享入口类
         shareHelper = SocialUtil.get().getShareHelper();
     }

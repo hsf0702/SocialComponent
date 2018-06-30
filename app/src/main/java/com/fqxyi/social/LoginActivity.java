@@ -39,12 +39,6 @@ public class LoginActivity extends Activity {
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WECHAT));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SINA));
-        //初始化数据
-        SocialUtil.get().setQqAppId("1107001192")
-                .setWxAppId("")
-                .setWxAppSecret("")
-                .setWbAppId("2474483531")
-                .setWbRedirectUrl("https://www.fqxyi.com/");
         //创建登录入口类
         loginHelper = SocialUtil.get().getLoginHelper();
     }
