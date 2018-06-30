@@ -117,7 +117,7 @@ public class ShareHelper {
     }
 
     /**
-     * 分享到新浪微博
+     * 分享到微博
      */
     public void shareWB(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
         if (fixedThreadPool.isShutdown()) {

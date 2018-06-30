@@ -36,6 +36,6 @@ dependencies {
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     //QQsdk jar形式 http://wiki.open.qq.com/wiki/QQ%E7%99%BB%E5%BD%95%E5%92%8C%E6%B3%A8%E9%94%80
     //libs/open_sdk_r6008_lite.jar
-    //新浪微博sdk https://github.com/sinaweibosdk/weibo_android_sdk
+    //微博sdk https://github.com/sinaweibosdk/weibo_android_sdk
     api 'com.sina.weibo.sdk:core:4.2.7:openDefaultRelease@aar'
 }

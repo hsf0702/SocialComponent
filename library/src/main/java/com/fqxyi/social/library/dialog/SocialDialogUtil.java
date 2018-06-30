@@ -9,11 +9,11 @@ public class SocialDialogUtil {
 
     public static int getIcon(int type) {
         switch (type) {
-            case ISocialType.SOCIAL_WECHAT: //微信
+            case ISocialType.SOCIAL_WX_SESSION: //微信
                 return R.drawable.social_icon_wechat;
-            case ISocialType.SOCIAL_WECHATMOMENTS: //朋友圈
+            case ISocialType.SOCIAL_WX_TIMELINE: //朋友圈
                 return R.drawable.social_icon_wechatmoments;
-            case ISocialType.SOCIAL_SHORTMESSAGE: //短信
+            case ISocialType.SOCIAL_SMS: //短信
                 return R.drawable.social_icon_shortmessage;
             case ISocialType.SOCIAL_COPY: //复制
                 return R.drawable.social_icon_copy;
@@ -21,11 +21,11 @@ public class SocialDialogUtil {
                 return R.drawable.social_icon_refresh;
             case ISocialType.SOCIAL_QQ: //QQ
                 return R.drawable.social_icon_qq;
-            case ISocialType.SOCIAL_SINA: //新浪微博
+            case ISocialType.SOCIAL_WB: //微博
                 return R.drawable.social_icon_sina;
-            case ISocialType.SOCIAL_WXMINIPROGRAM: //微信小程序
+            case ISocialType.SOCIAL_WX_MINIPROGRAM: //微信小程序
                 return R.drawable.social_icon_wechat;
-            case ISocialType.SOCIAL_ALIPAYMINPROGRAM: //支付宝小程序
+            case ISocialType.SOCIAL_ALIPAY_MINIPROGRAM: //支付宝小程序
                 return R.drawable.social_icon_alipay;
             case ISocialType.SOCIAL_COLLECTION: //收藏
                 return R.drawable.social_icon_collection_normal;
@@ -37,11 +37,11 @@ public class SocialDialogUtil {
 
     public static String getName(int type) {
         switch (type) {
-            case ISocialType.SOCIAL_WECHAT: //微信好友
+            case ISocialType.SOCIAL_WX_SESSION: //微信好友
                 return "微信好友";
-            case ISocialType.SOCIAL_WECHATMOMENTS: //朋友圈
+            case ISocialType.SOCIAL_WX_TIMELINE: //朋友圈
                 return "朋友圈";
-            case ISocialType.SOCIAL_SHORTMESSAGE: //短信
+            case ISocialType.SOCIAL_SMS: //短信
                 return "短信";
             case ISocialType.SOCIAL_COPY: //复制
                 return "复制链接";
@@ -49,11 +49,11 @@ public class SocialDialogUtil {
                 return "刷新";
             case ISocialType.SOCIAL_QQ: //QQ
                 return "QQ";
-            case ISocialType.SOCIAL_SINA: //新浪微博
+            case ISocialType.SOCIAL_WB: //微博
                 return "微博";
-            case ISocialType.SOCIAL_WXMINIPROGRAM: //微信小程序
+            case ISocialType.SOCIAL_WX_MINIPROGRAM: //微信小程序
                 return "微信小程序";
-            case ISocialType.SOCIAL_ALIPAYMINPROGRAM: //支付宝小程序
+            case ISocialType.SOCIAL_ALIPAY_MINIPROGRAM: //支付宝小程序
                 return "支付宝小程序";
             case ISocialType.SOCIAL_COLLECTION: //收藏
                 return "收藏";

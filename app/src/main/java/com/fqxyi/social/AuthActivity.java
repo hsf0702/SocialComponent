@@ -36,9 +36,9 @@ public class AuthActivity extends Activity {
 
         //初始化授权类型
         socialTypeBeans = new ArrayList<>();
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WECHAT));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SINA));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WB));
         //创建授权入口类
         authHelper = SocialUtil.get().getAuthHelper();
     }
@@ -82,13 +82,13 @@ public class AuthActivity extends Activity {
             return;
         }
         switch (socialTypeBean.type) {
-            case ISocialType.SOCIAL_WECHAT: //微信
+            case ISocialType.SOCIAL_WX_SESSION: //微信
                 authHelper.authWX(this, authCallback);
                 break;
             case ISocialType.SOCIAL_QQ: //QQ
                 authHelper.authQQ(this, authCallback);
                 break;
-            case ISocialType.SOCIAL_SINA: //新浪微博
+            case ISocialType.SOCIAL_WB: //微博
                 authHelper.authWB(this, authCallback);
                 break;
         }

@@ -18,13 +18,13 @@ public class ShareDataBean {
     public String shareDesc;
     //分享图片（单张）（本地图片或网络图片）
     public String shareImage;
-    //分享图片（多张）（本地图片）- 新浪微博
+    //分享图片（多张）（本地图片）- 微博
     public List<String> shareImageList;
     //分享地址
     public String shareUrl;
     //分享音乐地址 - QQ
     public String shareMusicUrl;
-    //分享视频地址 - 新浪微博
+    //分享视频地址 - 微博
     public String shareVideoUrl;
     //小程序的原始ID
     public String shareMiniAppId;

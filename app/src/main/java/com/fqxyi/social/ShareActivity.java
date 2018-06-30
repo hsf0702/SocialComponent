@@ -40,16 +40,16 @@ public class ShareActivity extends Activity {
 
         //初始化分享类型
         socialTypeBeans = new ArrayList<>();
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WECHAT));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WECHATMOMENTS));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SHORTMESSAGE));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_TIMELINE));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SMS));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_COPY));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_REFRESH));
 //        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_CUSTOM));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SINA));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WXMINIPROGRAM));
-//        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAYMINPROGRAM));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WB));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_MINIPROGRAM));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAY_MINIPROGRAM));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_COLLECTION));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SHOW_ALL));
         //初始化分享数据
@@ -104,13 +104,13 @@ public class ShareActivity extends Activity {
             return;
         }
         switch (socialTypeBean.type) {
-            case ISocialType.SOCIAL_WECHAT: //微信
+            case ISocialType.SOCIAL_WX_SESSION: //微信
                 shareHelper.shareWX(this, false, shareDataBean, shareCallback);
                 break;
-            case ISocialType.SOCIAL_WECHATMOMENTS: //朋友圈
+            case ISocialType.SOCIAL_WX_TIMELINE: //朋友圈
                 shareHelper.shareWX(this, true, shareDataBean, shareCallback);
                 break;
-            case ISocialType.SOCIAL_SHORTMESSAGE: //短信
+            case ISocialType.SOCIAL_SMS: //短信
                 shareHelper.shareShortMessage(this, shareDataBean, shareCallback);
                 break;
             case ISocialType.SOCIAL_COPY: //复制
@@ -122,13 +122,13 @@ public class ShareActivity extends Activity {
             case ISocialType.SOCIAL_QQ: //QQ
                 shareHelper.shareQQ(this, shareDataBean, shareCallback);
                 break;
-            case ISocialType.SOCIAL_SINA: //新浪微博
+            case ISocialType.SOCIAL_WB: //微博
                 shareHelper.shareWB(this, shareDataBean, shareCallback);
                 break;
-            case ISocialType.SOCIAL_WXMINIPROGRAM: //微信小程序
+            case ISocialType.SOCIAL_WX_MINIPROGRAM: //微信小程序
                 shareHelper.shareWxMiniProgram(this, shareDataBean, shareCallback);
                 break;
-            case ISocialType.SOCIAL_ALIPAYMINPROGRAM: //支付宝小程序
+            case ISocialType.SOCIAL_ALIPAY_MINIPROGRAM: //支付宝小程序
                 shareHelper.shareAlipayMiniProgram(this, shareDataBean, shareCallback);
                 break;
             case ISocialType.SOCIAL_COLLECTION: //收藏

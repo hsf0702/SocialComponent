@@ -43,7 +43,7 @@ public class WBAuthHelper {
      */
     public void auth(IAuthCallback authCallback) {
         this.authCallback = authCallback;
-        //判断是否安装新浪微博
+        //判断是否安装微博
         if (!WbSdk.isWbInstall(activity)) {
             if (authCallback != null) {
                 authCallback.onError(activity.getString(R.string.auth_wb_error_uninstall));

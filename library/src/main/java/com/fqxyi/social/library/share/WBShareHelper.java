@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 新浪微博分享帮助类
+ * 微博分享帮助类
  */
 public class WBShareHelper {
 
@@ -49,7 +49,7 @@ public class WBShareHelper {
     private File parentDir;
 
     /**
-     * 初始化新浪微博
+     * 初始化微博
      */
     public WBShareHelper(Activity activity, String appId, String redirectUrl, File parentDir) {
         this.activity = activity;
@@ -74,14 +74,14 @@ public class WBShareHelper {
             }
             return;
         }
-        //判断是否安装新浪微博
+        //判断是否安装微博
         if (!WbSdk.isWbInstall(activity)) {
             if (shareCallback != null) {
                 shareCallback.onError(activity.getString(R.string.share_wb_error_uninstall));
             }
             return;
         }
-        //需要传递给新浪微博的分享数据
+        //需要传递给微博的分享数据
         WeiboMultiMessage weiboMultiMessage = getShareMessage(shareDataBean);
         if (weiboMultiMessage == null) {
             if (shareCallback != null) {
@@ -89,12 +89,12 @@ public class WBShareHelper {
             }
             return;
         }
-        //分享到新浪微博
+        //分享到微博
         wbShareHandler.shareMessage(weiboMultiMessage, false);
     }
 
     /**
-     * 需要传递给新浪微博的分享数据
+     * 需要传递给微博的分享数据
      */
     private WeiboMultiMessage getShareMessage(ShareDataBean shareDataBean) {
         WeiboMultiMessage msg = new WeiboMultiMessage();
@@ -211,7 +211,7 @@ public class WBShareHelper {
     }
 
     /**
-     * 新浪微博开放平台需要
+     * 微博开放平台需要
      */
     public void onNewIntent(Intent intent) {
         if (wbShareHandler != null) {
@@ -229,7 +229,7 @@ public class WBShareHelper {
     }
 
     /**
-     * 新浪微博的分享监听器
+     * 微博的分享监听器
      */
     private WbShareCallback wbShareCallback = new WbShareCallback() {
         @Override
