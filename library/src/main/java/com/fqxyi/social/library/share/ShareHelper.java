@@ -8,8 +8,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
-import com.fqxyi.social.library.dialog.ISocialType;
-import com.fqxyi.social.library.util.SocialUtil;
+import com.fqxyi.social.library.SocialHelper;
+import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.util.ActivityUtil;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -24,6 +25,8 @@ public class ShareHelper {
 
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
 
+    //上下文
+    private Activity activity;
     //图片缓存的父目录
     private File parentDir;
 
@@ -32,22 +35,12 @@ public class ShareHelper {
     private QQShareHelper qqShareHelper;
     private WBShareHelper wbShareHelper;
 
+    //分享结果回调
     private IShareCallback shareCallback;
-
-    private Handler shareHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg == null) {
-                return;
-            }
-            String errorMsg = (String) msg.obj;
-            int socialType = msg.arg1;
-            if (shareCallback != null) {
-                shareCallback.onError(socialType, errorMsg);
-            }
-        }
-    };
+    //解决有些错误回调在子线程的问题
+    private Handler shareHandler;
+    //是否需要finishActivity
+    private boolean needFinishActivity;
 
     public ShareHelper() {
         parentDir = new File(Environment.getExternalStorageDirectory(), "SocialComponent" + File.separator + "Share");
@@ -57,8 +50,13 @@ public class ShareHelper {
      * 分享到微信或朋友圈
      * @param isTimeLine true 朋友圈 false 微信
      */
-    public void shareWX(final Activity activity, final boolean isTimeLine, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+    public void shareWX(final Activity activity, final boolean isTimeLine, final ShareDataBean shareDataBean, final IShareCallback shareCallback, final boolean needFinishActivity) {
+        this.activity = activity;
         this.shareCallback = shareCallback;
+        this.needFinishActivity = needFinishActivity;
+        if (shareHandler == null) {
+            shareHandler = new ShareHandler();
+        }
         if (fixedThreadPool.isShutdown()) {
             return;
         }
@@ -66,9 +64,9 @@ public class ShareHelper {
             @Override
             public void run() {
                 if (wxShareHelper == null) {
-                    wxShareHelper = new WXShareHelper(activity, SocialUtil.get().getWxAppId(), SocialUtil.get().getWxAppSecret(), parentDir);
+                    wxShareHelper = new WXShareHelper(activity, SocialHelper.get().getWxAppId(), SocialHelper.get().getWxAppSecret(), parentDir);
                 }
-                wxShareHelper.share(isTimeLine, shareDataBean, shareCallback, shareHandler);
+                wxShareHelper.share(isTimeLine, shareDataBean, shareCallback, shareHandler, needFinishActivity);
             }
         });
     }
@@ -76,8 +74,13 @@ public class ShareHelper {
     /**
      * 分享到短信
      */
-    public void shareShortMessage(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+    public void shareShortMessage(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback, final boolean needFinishActivity) {
+        this.activity = activity;
         this.shareCallback = shareCallback;
+        this.needFinishActivity = needFinishActivity;
+        if (shareHandler == null) {
+            shareHandler = new ShareHandler();
+        }
         if (fixedThreadPool.isShutdown()) {
             return;
         }
@@ -87,7 +90,7 @@ public class ShareHelper {
                 if (smShareHelper == null) {
                     smShareHelper = new SMShareHelper(activity, parentDir);
                 }
-                smShareHelper.share(shareDataBean, shareCallback, shareHandler);
+                smShareHelper.share(shareDataBean, shareCallback, shareHandler, needFinishActivity);
             }
         });
     }
@@ -95,7 +98,7 @@ public class ShareHelper {
     /**
      * 复制
      */
-    public void shareCopy(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void shareCopy(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
         ClipboardManager clipboardManager = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboardManager != null) {
             // 将文本数据复制到剪贴板
@@ -108,20 +111,26 @@ public class ShareHelper {
                 shareCallback.onError(ISocialType.SOCIAL_COPY,"复制失败");
             }
         }
+        ActivityUtil.finish(activity, needFinishActivity);
     }
 
     /**
      * 刷新
      */
-    public void shareRefresh(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void shareRefresh(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
 
     }
 
     /**
      * 分享到QQ
      */
-    public void shareQQ(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+    public void shareQQ(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback, final boolean needFinishActivity) {
+        this.activity = activity;
         this.shareCallback = shareCallback;
+        this.needFinishActivity = needFinishActivity;
+        if (shareHandler == null) {
+            shareHandler = new ShareHandler();
+        }
         if (fixedThreadPool.isShutdown()) {
             return;
         }
@@ -129,9 +138,9 @@ public class ShareHelper {
             @Override
             public void run() {
                 if (qqShareHelper == null) {
-                    qqShareHelper = new QQShareHelper(activity, SocialUtil.get().getQqAppId(), parentDir);
+                    qqShareHelper = new QQShareHelper(activity, SocialHelper.get().getQqAppId(), parentDir);
                 }
-                qqShareHelper.share(shareDataBean, shareCallback, shareHandler);
+                qqShareHelper.share(shareDataBean, shareCallback, shareHandler, needFinishActivity);
             }
         });
     }
@@ -139,8 +148,13 @@ public class ShareHelper {
     /**
      * 分享到微博
      */
-    public void shareWB(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+    public void shareWB(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback, final boolean needFinishActivity) {
+        this.activity = activity;
         this.shareCallback = shareCallback;
+        this.needFinishActivity = needFinishActivity;
+        if (shareHandler == null) {
+            shareHandler = new ShareHandler();
+        }
         if (fixedThreadPool.isShutdown()) {
             return;
         }
@@ -148,9 +162,9 @@ public class ShareHelper {
             @Override
             public void run() {
                 if (wbShareHelper == null) {
-                    wbShareHelper = new WBShareHelper(activity, SocialUtil.get().getWbAppId(), SocialUtil.get().getWbRedirectUrl(), parentDir);
+                    wbShareHelper = new WBShareHelper(activity, SocialHelper.get().getWbAppId(), SocialHelper.get().getWbRedirectUrl(), parentDir);
                 }
-                wbShareHelper.share(shareDataBean, shareCallback, shareHandler);
+                wbShareHelper.share(shareDataBean, shareCallback, shareHandler, needFinishActivity);
             }
         });
     }
@@ -158,28 +172,28 @@ public class ShareHelper {
     /**
      * 分享到微信小程序
      */
-    public void shareWxMiniProgram(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void shareWxMiniProgram(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
 
     }
 
     /**
      * 分享到支付宝小程序
      */
-    public void shareAlipayMiniProgram(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void shareAlipayMiniProgram(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
 
     }
 
     /**
      * 收藏
      */
-    public void shareCollection(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void shareCollection(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
 
     }
 
     /**
      * 查看全部
      */
-    public void shareShowAll(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void shareShowAll(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
 
     }
 
@@ -231,6 +245,25 @@ public class ShareHelper {
         if (shareHandler != null) {
             shareHandler.removeCallbacksAndMessages(null);
             shareHandler = null;
+        }
+    }
+
+    /**
+     * 解决有些错误回调在子线程的问题
+     */
+    class ShareHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg == null) {
+                return;
+            }
+            String errorMsg = (String) msg.obj;
+            int socialType = msg.arg1;
+            if (shareCallback != null) {
+                shareCallback.onError(socialType, errorMsg);
+            }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
     }
 

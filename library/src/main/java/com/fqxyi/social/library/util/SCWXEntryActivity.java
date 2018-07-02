@@ -1,12 +1,11 @@
-package com.fqxyi.social.library.activity;
+package com.fqxyi.social.library.util;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.fqxyi.social.library.util.LogUtil;
-import com.fqxyi.social.library.util.SocialUtil;
+import com.fqxyi.social.library.SocialHelper;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -25,7 +24,7 @@ public class SCWXEntryActivity extends Activity implements IWXAPIEventHandler {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String wxAppId = SocialUtil.get().getWxAppId();
+        String wxAppId = SocialHelper.get().getWxAppId();
         wxapi = WXAPIFactory.createWXAPI(this, wxAppId, true);
         wxapi.registerApp(wxAppId);
 
@@ -51,17 +50,17 @@ public class SCWXEntryActivity extends Activity implements IWXAPIEventHandler {
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
                 String code = ((SendAuth.Resp) baseResp).code;
-                SocialUtil.get().getAuthHelper().sendAuthBroadcast(this, code);
+                SocialHelper.get().getAuthHelper().sendAuthBroadcast(this, code);
             } else {
-                SocialUtil.get().getAuthHelper().sendAuthBroadcast(this, null);
+                SocialHelper.get().getAuthHelper().sendAuthBroadcast(this, null);
             }
         }
         //微信分享
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                SocialUtil.get().getShareHelper().sendShareBroadcast(this, true);
+                SocialHelper.get().getShareHelper().sendShareBroadcast(this, true);
             } else {
-                SocialUtil.get().getShareHelper().sendShareBroadcast(this, false);
+                SocialHelper.get().getShareHelper().sendShareBroadcast(this, false);
             }
         }
         onBackPressed();

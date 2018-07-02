@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
-import com.fqxyi.social.library.dialog.ISocialType;
+import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.util.ActivityUtil;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.auth.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.AuthInfo;
@@ -27,6 +28,8 @@ public class WBAuthHelper {
     private SsoHandler ssoHandler;
     //授权结果回调
     private IAuthCallback authCallback;
+    //是否需要finishActivity
+    private boolean needFinishActivity;
 
     /**
      * 初始化微博
@@ -42,13 +45,15 @@ public class WBAuthHelper {
     /**
      * 具体的授权逻辑
      */
-    public void auth(IAuthCallback authCallback) {
+    public void auth(IAuthCallback authCallback, boolean needFinishActivity) {
         this.authCallback = authCallback;
+        this.needFinishActivity = needFinishActivity;
         //判断是否安装微博
         if (!WbSdk.isWbInstall(activity)) {
             if (authCallback != null) {
                 authCallback.onError(ISocialType.SOCIAL_WB, activity.getString(R.string.social_error_wb_uninstall));
             }
+            ActivityUtil.finish(activity, needFinishActivity);
             return;
         }
         //开始微博授权
@@ -92,6 +97,7 @@ public class WBAuthHelper {
                     authCallback.onError(ISocialType.SOCIAL_WB, null);
                 }
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -99,6 +105,7 @@ public class WBAuthHelper {
             if (authCallback != null) {
                 authCallback.onCancel(ISocialType.SOCIAL_WB);
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -108,6 +115,7 @@ public class WBAuthHelper {
                         "\n错误码：" + wbConnectErrorMessage.getErrorCode()
                         + "\n错误信息：" + wbConnectErrorMessage.getErrorMessage());
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
     };
 

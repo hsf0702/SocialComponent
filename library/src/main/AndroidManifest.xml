@@ -9,10 +9,10 @@
 
     <application>
         <activity
-            android:name=".activity.ShareActivity"
+            android:name=".share.ShareActivity"
             android:theme="@style/TranActivity" />
         <activity
-            android:name=".activity.AuthActivity"
+            android:name=".auth.AuthActivity"
             android:theme="@style/TranActivity" />
         <!--qq配置开始-->
         <activity

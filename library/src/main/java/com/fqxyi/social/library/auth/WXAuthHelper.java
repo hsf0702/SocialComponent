@@ -8,7 +8,8 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
-import com.fqxyi.social.library.dialog.ISocialType;
+import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.util.ActivityUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -29,6 +30,8 @@ public class WXAuthHelper {
     private IWXAPI wxapi;
     //授权结果回调
     private IAuthCallback authCallback;
+    //是否需要finishActivity
+    private boolean needFinishActivity;
 
     /**
      * 初始化微信
@@ -47,13 +50,15 @@ public class WXAuthHelper {
     /**
      * 具体的授权逻辑
      */
-    public void auth(IAuthCallback authCallback) {
+    public void auth(IAuthCallback authCallback, boolean needFinishActivity) {
         this.authCallback = authCallback;
+        this.needFinishActivity = needFinishActivity;
         //判断是否安装微信
         if (!wxapi.isWXAppInstalled()) {
             if (authCallback != null) {
                 authCallback.onError(ISocialType.SOCIAL_WX_SESSION, activity.getString(R.string.social_error_wx_uninstall));
             }
+            ActivityUtil.finish(activity, needFinishActivity);
             return;
         }
         //开始微信授权
@@ -86,14 +91,15 @@ public class WXAuthHelper {
         public void onReceive(Context context, Intent intent) {
             String code = intent.getStringExtra(WXAuthHelper.KEY_WX_AUTH_CODE);
             if (code.equals(WXAuthHelper.KEY_WX_AUTH_CODE_CANCEL)) {
-                if (authCallback != null && activity != null) {
+                if (authCallback != null) {
                     authCallback.onError(ISocialType.SOCIAL_WX_SESSION, null);
                 }
-                return;
+            } else {
+                if (authCallback != null) {
+                    authCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, null);
+                }
             }
-            if (authCallback != null) {
-                authCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, null);
-            }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
     };
 }

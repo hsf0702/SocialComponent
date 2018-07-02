@@ -8,7 +8,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
-import com.fqxyi.social.library.dialog.ISocialType;
+import com.fqxyi.social.library.ISocialType;
 
 import java.io.File;
 
@@ -23,6 +23,8 @@ public class SMShareHelper {
     private IShareCallback shareCallback;
     //图片缓存的父目录
     private File parentDir;
+    //是否需要finishActivity
+    private boolean needFinishActivity;
 
     /**
      * 初始化短信
@@ -35,8 +37,9 @@ public class SMShareHelper {
     /**
      * 具体的分享逻辑
      */
-    public void share(final ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler) {
+    public void share(final ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler, boolean needFinishActivity) {
         this.shareCallback = shareCallback;
+        this.needFinishActivity = needFinishActivity;
         //判断数据源是否为空
         if (shareDataBean == null) {
             Message msg = Message.obtain();

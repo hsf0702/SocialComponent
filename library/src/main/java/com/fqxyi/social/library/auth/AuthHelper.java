@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.fqxyi.social.library.util.SocialUtil;
+import com.fqxyi.social.library.SocialHelper;
 
 /**
  * 授权入口类
@@ -28,34 +28,34 @@ public class AuthHelper {
     /**
      * 微信授权
      */
-    public void authWX(Activity activity, IAuthCallback authCallback) {
+    public void authWX(Activity activity, IAuthCallback authCallback, boolean needFinishActivity) {
         currAuthType = TYPE_AUTH_WX;
         if (wxAuthHelper == null) {
-            wxAuthHelper = new WXAuthHelper(activity, SocialUtil.get().getWxAppId(), SocialUtil.get().getWxAppSecret());
+            wxAuthHelper = new WXAuthHelper(activity, SocialHelper.get().getWxAppId(), SocialHelper.get().getWxAppSecret());
         }
-        wxAuthHelper.auth(authCallback);
+        wxAuthHelper.auth(authCallback, needFinishActivity);
     }
 
     /**
      * QQ授权
      */
-    public void authQQ(Activity activity, IAuthCallback authCallback) {
+    public void authQQ(Activity activity, IAuthCallback authCallback, boolean needFinishActivity) {
         currAuthType = TYPE_AUTH_QQ;
         if (qqAuthHelper == null) {
-            qqAuthHelper = new QQAuthHelper(activity, SocialUtil.get().getQqAppId());
+            qqAuthHelper = new QQAuthHelper(activity, SocialHelper.get().getQqAppId());
         }
-        qqAuthHelper.auth(authCallback);
+        qqAuthHelper.auth(authCallback, needFinishActivity);
     }
 
     /**
      * 微博授权
      */
-    public void authWB(Activity activity, IAuthCallback authCallback) {
+    public void authWB(Activity activity, IAuthCallback authCallback, boolean needFinishActivity) {
         currAuthType = TYPE_AUTH_WB;
         if (wbAuthHelper == null) {
-            wbAuthHelper = new WBAuthHelper(activity, SocialUtil.get().getWbAppId(), SocialUtil.get().getWbRedirectUrl());
+            wbAuthHelper = new WBAuthHelper(activity, SocialHelper.get().getWbAppId(), SocialHelper.get().getWbRedirectUrl());
         }
-        wbAuthHelper.auth(authCallback);
+        wbAuthHelper.auth(authCallback, needFinishActivity);
     }
 
     /**

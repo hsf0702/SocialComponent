@@ -10,7 +10,8 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
-import com.fqxyi.social.library.dialog.ISocialType;
+import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.util.ActivityUtil;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -55,6 +56,8 @@ public class WXShareHelper {
     private boolean isTimeLine;
     //分享类型
     private int shareType;
+    //是否需要finishActivity
+    private boolean needFinishActivity;
 
     /**
      * 初始化微信
@@ -75,9 +78,10 @@ public class WXShareHelper {
      * 具体的分享逻辑
      * @param isTimeLine true 朋友圈 false 微信
      */
-    public void share(boolean isTimeLine, ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler) {
+    public void share(boolean isTimeLine, ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler, boolean needFinishActivity) {
         this.isTimeLine = isTimeLine;
         this.shareCallback = shareCallback;
+        this.needFinishActivity = needFinishActivity;
         //判断数据源是否为空
         if (shareDataBean == null) {
             Message msg = Message.obtain();
@@ -285,6 +289,7 @@ public class WXShareHelper {
                     }
                 }
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
     };
 }

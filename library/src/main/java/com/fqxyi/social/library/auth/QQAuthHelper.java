@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
-import com.fqxyi.social.library.dialog.ISocialType;
+import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.util.ActivityUtil;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
@@ -23,6 +24,8 @@ public class QQAuthHelper {
     private Tencent tencent;
     //授权结果回调
     private IAuthCallback authCallback;
+    //是否需要finishActivity
+    private boolean needFinishActivity;
 
     /**
      * 初始化QQ
@@ -38,13 +41,15 @@ public class QQAuthHelper {
     /**
      * 具体的授权逻辑
      */
-    public void auth(IAuthCallback authCallback) {
+    public void auth(IAuthCallback authCallback, boolean needFinishActivity) {
         this.authCallback = authCallback;
+        this.needFinishActivity = needFinishActivity;
         //判断是否安装QQ
         if (!tencent.isQQInstalled(activity)) {
             if (authCallback != null) {
                 authCallback.onError(ISocialType.SOCIAL_QQ, activity.getString(R.string.social_error_qq_uninstall));
             }
+            ActivityUtil.finish(activity, needFinishActivity);
             return;
         }
         //开始QQ授权
@@ -78,6 +83,7 @@ public class QQAuthHelper {
             if (authCallback != null) {
                 authCallback.onSuccess(ISocialType.SOCIAL_QQ, o.toString());
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -88,6 +94,7 @@ public class QQAuthHelper {
                         + "\n错误信息：" + uiError.errorMessage
                         + "\n错误详情：" + uiError.errorDetail);
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -95,6 +102,7 @@ public class QQAuthHelper {
             if (authCallback != null) {
                 authCallback.onCancel(ISocialType.SOCIAL_QQ);
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
     };
 

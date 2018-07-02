@@ -1,4 +1,4 @@
-package com.fqxyi.social.library.dialog;
+package com.fqxyi.social.library;
 
 /**
  * 社会化类型 静态常量

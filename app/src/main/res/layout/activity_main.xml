@@ -15,6 +15,14 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="分享到QQ"
+        android:onClick="jump2ShareQQ"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="授权"
         android:onClick="jump2Auth"
         android:textSize="16sp"

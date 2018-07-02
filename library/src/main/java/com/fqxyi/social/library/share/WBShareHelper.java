@@ -8,7 +8,8 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
-import com.fqxyi.social.library.dialog.ISocialType;
+import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.util.ActivityUtil;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.BaseMediaObject;
 import com.sina.weibo.sdk.api.ImageObject;
@@ -52,6 +53,8 @@ public class WBShareHelper {
     private File parentDir;
     //分享类型
     private int shareType;
+    //是否需要finishActivity
+    private boolean needFinishActivity;
 
     /**
      * 初始化微博
@@ -70,8 +73,9 @@ public class WBShareHelper {
     /**
      * 具体的分享逻辑
      */
-    public void share(ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler) {
+    public void share(ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler, boolean needFinishActivity) {
         this.shareCallback = shareCallback;
+        this.needFinishActivity = needFinishActivity;
         //判断数据源是否为空
         if (shareDataBean == null) {
             Message msg = Message.obtain();
@@ -251,6 +255,7 @@ public class WBShareHelper {
             if (shareCallback != null) {
                 shareCallback.onSuccess(ISocialType.SOCIAL_WB, null);
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -258,6 +263,7 @@ public class WBShareHelper {
             if (shareCallback != null) {
                 shareCallback.onCancel(ISocialType.SOCIAL_WB);
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -265,6 +271,7 @@ public class WBShareHelper {
             if (shareCallback != null) {
                 shareCallback.onError(ISocialType.SOCIAL_WB, null);
             }
+            ActivityUtil.finish(activity, needFinishActivity);
         }
     };
 

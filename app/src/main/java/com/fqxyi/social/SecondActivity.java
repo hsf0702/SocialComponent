@@ -6,14 +6,14 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
 
-import com.fqxyi.social.library.dialog.ISocialType;
+import com.fqxyi.social.library.ISocialType;
 import com.fqxyi.social.library.dialog.SocialTypeBean;
 import com.fqxyi.social.library.share.IShareCallback;
 import com.fqxyi.social.library.share.QQShareHelper;
 import com.fqxyi.social.library.share.ShareDataBean;
 import com.fqxyi.social.library.share.WBShareHelper;
 import com.fqxyi.social.library.share.WXShareHelper;
-import com.fqxyi.social.library.util.SocialUtil;
+import com.fqxyi.social.library.SocialHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class SecondActivity extends Activity {
         shareDataBean.shareMiniAppId = "小程序的原始ID";
         shareDataBean.shareMiniPage = "小程序页面地址";
 
-        SocialUtil.get().share(this, socialTypeBeans, shareDataBean, new IShareCallback() {
+        SocialHelper.get().share(this, socialTypeBeans, shareDataBean, new IShareCallback() {
             @Override
             public void onSuccess(int socialType, String msg) {
                 Toast.makeText(SecondActivity.this, "SecondActivity onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();

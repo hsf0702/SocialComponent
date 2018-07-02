@@ -1,5 +1,6 @@
 package com.fqxyi.social.library.dialog;
 
+import com.fqxyi.social.library.ISocialType;
 import com.fqxyi.social.library.R;
 
 /**
