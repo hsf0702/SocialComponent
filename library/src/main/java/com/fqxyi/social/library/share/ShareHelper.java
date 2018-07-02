@@ -48,7 +48,7 @@ public class ShareHelper {
     };
 
     public ShareHelper() {
-        parentDir = new File(Environment.getExternalStorageDirectory(), "kit" + File.separator + "share");
+        parentDir = new File(Environment.getExternalStorageDirectory(), "SocialComponent" + File.separator + "Share");
         if (!parentDir.exists()) {
             parentDir.mkdirs();
         }
