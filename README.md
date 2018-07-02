@@ -1,3 +1,3 @@
-# ShareKit
+# SocialComponent
 
-分享组件
+社会化组件
