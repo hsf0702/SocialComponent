@@ -2,6 +2,7 @@ package com.fqxyi.social;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -97,17 +98,17 @@ public class MainActivity extends Activity {
         SocialUtil.get().share(this, socialTypeBeans, shareDataBean, new IShareCallback() {
             @Override
             public void onSuccess(int socialType, String msg) {
-                Toast.makeText(MainActivity.this, "onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "MainActivity onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(int socialType, String msg) {
-                Toast.makeText(MainActivity.this, "onError, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "MainActivity onError, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancel(int socialType) {
-                Toast.makeText(MainActivity.this, "onCancel, socialType = " + socialType, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "MainActivity onCancel, socialType = " + socialType, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -139,4 +140,7 @@ public class MainActivity extends Activity {
         });
     }
 
+    public void jump2SecondActivity(View view) {
+        startActivity(new Intent(this, SecondActivity.class));
+    }
 }
