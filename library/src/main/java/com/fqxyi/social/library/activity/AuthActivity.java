@@ -1,4 +1,4 @@
-package com.fqxyi.social;
+package com.fqxyi.social.library.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,12 +7,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
 
+import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.auth.AuthHelper;
+import com.fqxyi.social.library.auth.IAuthCallback;
 import com.fqxyi.social.library.dialog.ISocialType;
 import com.fqxyi.social.library.dialog.ItemClickListener;
 import com.fqxyi.social.library.dialog.SocialDialog;
 import com.fqxyi.social.library.dialog.SocialTypeBean;
-import com.fqxyi.social.library.auth.IAuthCallback;
-import com.fqxyi.social.library.auth.AuthHelper;
 import com.fqxyi.social.library.util.SocialUtil;
 
 import java.util.ArrayList;
@@ -35,10 +36,7 @@ public class AuthActivity extends Activity {
         setContentView(R.layout.activity_auth);
 
         //初始化授权类型
-        socialTypeBeans = new ArrayList<>();
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WB));
+        socialTypeBeans = (ArrayList<SocialTypeBean>) getIntent().getSerializableExtra("SocialTypeBean");
         //创建授权入口类
         authHelper = SocialUtil.get().getAuthHelper();
     }

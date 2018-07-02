@@ -1,4 +1,4 @@
-package com.fqxyi.social;
+package com.fqxyi.social.library.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
 
+import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.dialog.ISocialType;
 import com.fqxyi.social.library.dialog.ItemClickListener;
 import com.fqxyi.social.library.dialog.SocialDialog;
@@ -39,28 +40,9 @@ public class ShareActivity extends Activity {
         setContentView(R.layout.activity_share);
 
         //初始化分享类型
-        socialTypeBeans = new ArrayList<>();
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_TIMELINE));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SMS));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_COPY));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_REFRESH));
-//        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_CUSTOM));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WB));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_MINIPROGRAM));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAY_MINIPROGRAM));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_COLLECTION));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SHOW_ALL));
+        socialTypeBeans = (ArrayList<SocialTypeBean>) getIntent().getSerializableExtra("SocialTypeBean");
         //初始化分享数据
-        shareDataBean = new ShareDataBean();
-        shareDataBean.type = WBShareHelper.TYPE_IMAGE_TEXT;
-        shareDataBean.shareTitle = "百度一下，你就知道";
-        shareDataBean.shareDesc = "全球最大的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求。百度超过千亿的中文网页数据库，可以瞬间找到相关的搜索结果。";
-        shareDataBean.shareImage = "https://www.baidu.com/img/bd_logo1.png";
-        shareDataBean.shareUrl = "https://www.baidu.com/";
-        shareDataBean.shareMiniAppId = "小程序的原始ID";
-        shareDataBean.shareMiniPage = "小程序页面地址";
+        shareDataBean = (ShareDataBean) getIntent().getSerializableExtra("ShareDataBean");
         //创建分享入口类
         shareHelper = SocialUtil.get().getShareHelper();
     }

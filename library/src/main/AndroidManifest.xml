@@ -8,6 +8,26 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application>
+        <activity android:name=".activity.ShareActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="socialcompenent" android:host="page.sh" android:path="/share"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.AuthActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="socialcompenent" android:host="page.sh" android:path="/auth"/>
+            </intent-filter>
+        </activity>
         <!--qq配置开始-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
