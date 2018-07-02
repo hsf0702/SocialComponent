@@ -1,6 +1,7 @@
 package com.fqxyi.social.library.share;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,11 +29,8 @@ public class ShareDataBean implements Serializable {
     public String shareMiniAppId;
     //小程序页面地址
     public String shareMiniPage;
-
-    public int type;
-
-    public ShareDataBean() {
-    }
+    //各模块分享类型
+    public HashMap<Integer, Integer> shareType;
 
     @Override
     public String toString() {

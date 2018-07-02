@@ -50,6 +50,8 @@ public class WBShareHelper {
     private IShareCallback shareCallback;
     //图片缓存的父目录
     private File parentDir;
+    //分享类型
+    private int shareType;
 
     /**
      * 初始化微博
@@ -86,6 +88,12 @@ public class WBShareHelper {
             handler.sendMessage(msg);
             return;
         }
+        //获取分享类型
+        if (shareDataBean.shareType == null) {
+            shareType = 0;
+        } else {
+            shareType = shareDataBean.shareType.get(ISocialType.SOCIAL_WB);
+        }
         //需要传递给微博的分享数据
         WeiboMultiMessage weiboMultiMessage = getShareMessage(shareDataBean);
         if (weiboMultiMessage == null) {
@@ -105,7 +113,7 @@ public class WBShareHelper {
     private WeiboMultiMessage getShareMessage(ShareDataBean shareDataBean) {
         WeiboMultiMessage msg = new WeiboMultiMessage();
         BaseMediaObject mediaObject = null;
-        switch (shareDataBean.type) {
+        switch (shareType) {
             case WBShareHelper.TYPE_TEXT:
                 msg.textObject = getTextObj(shareDataBean.shareDesc);
                 mediaObject = msg.textObject;

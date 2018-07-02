@@ -53,6 +53,8 @@ public class WXShareHelper {
     private File parentDir;
     //true 分享到朋友圈 false 分享到微信
     private boolean isTimeLine;
+    //分享类型
+    private int shareType;
 
     /**
      * 初始化微信
@@ -108,6 +110,12 @@ public class WXShareHelper {
             handler.sendMessage(msg);
             return;
         }
+        //获取分享类型
+        if (shareDataBean.shareType == null) {
+            shareType = 0;
+        } else {
+            shareType = shareDataBean.shareType.get(ISocialType.SOCIAL_WX_SESSION);
+        }
         //需要传递给微信的分享数据
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.message = getShareMessage(req, shareDataBean);
@@ -133,7 +141,7 @@ public class WXShareHelper {
     private WXMediaMessage getShareMessage(SendMessageToWX.Req req, ShareDataBean shareDataBean) {
         WXMediaMessage msg = new WXMediaMessage();
         boolean success = false;
-        switch (shareDataBean.type) {
+        switch (shareType) {
             case WXShareHelper.TYPE_TEXT:
                 success = addText(req, msg, shareDataBean.shareDesc);
                 break;

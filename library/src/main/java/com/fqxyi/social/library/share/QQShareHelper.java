@@ -38,6 +38,8 @@ public class QQShareHelper {
     private IShareCallback shareCallback;
     //图片缓存的父目录
     private File parentDir;
+    //分享类型
+    private int shareType;
 
     /**
      * 初始化QQ
@@ -72,9 +74,15 @@ public class QQShareHelper {
             handler.sendMessage(msg);
             return;
         }
+        //获取分享类型
+        if (shareDataBean.shareType == null) {
+            shareType = 0;
+        } else {
+            shareType = shareDataBean.shareType.get(ISocialType.SOCIAL_QQ);
+        }
         Bundle bundle = getShareData(shareDataBean);
         //特殊处理
-        if (shareDataBean.type == QQShareHelper.TYPE_IMAGE) {
+        if (shareType == QQShareHelper.TYPE_IMAGE) {
             if (TextUtils.isEmpty(bundle.getString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL))) {
                 Message msg = Message.obtain();
                 msg.obj = activity.getString(R.string.social_error_image_not_found);
@@ -92,7 +100,7 @@ public class QQShareHelper {
      */
     private Bundle getShareData(ShareDataBean shareDataBean) {
         Bundle bundle = new Bundle();
-        switch (shareDataBean.type) {
+        switch (shareType) {
             case QQShareHelper.TYPE_IMAGE_TEXT:
                 bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
                 bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, shareDataBean.appName);
