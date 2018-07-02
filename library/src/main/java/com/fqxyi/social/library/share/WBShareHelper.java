@@ -3,6 +3,8 @@ package com.fqxyi.social.library.share;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
@@ -65,28 +67,28 @@ public class WBShareHelper {
     /**
      * 具体的分享逻辑
      */
-    public void share(ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void share(ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler) {
         this.shareCallback = shareCallback;
         //判断数据源是否为空
         if (shareDataBean == null) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wb_error_data));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_wb_error_data);
+            handler.sendMessage(msg);
             return;
         }
         //判断是否安装微博
         if (!WbSdk.isWbInstall(activity)) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wb_error_uninstall));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_wb_error_uninstall);
+            handler.sendMessage(msg);
             return;
         }
         //需要传递给微博的分享数据
         WeiboMultiMessage weiboMultiMessage = getShareMessage(shareDataBean);
         if (weiboMultiMessage == null) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wb_error_data));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_wb_error_data);
+            handler.sendMessage(msg);
             return;
         }
         //分享到微博

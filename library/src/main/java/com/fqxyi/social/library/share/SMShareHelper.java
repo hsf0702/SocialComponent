@@ -3,6 +3,8 @@ package com.fqxyi.social.library.share;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
@@ -32,13 +34,13 @@ public class SMShareHelper {
     /**
      * 具体的分享逻辑
      */
-    public void share(final ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void share(final ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler) {
         this.shareCallback = shareCallback;
         //判断数据源是否为空
         if (shareDataBean == null) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_sms_error_data));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_sms_error_data);
+            handler.sendMessage(msg);
             return;
         }
         //分享到短信或彩信

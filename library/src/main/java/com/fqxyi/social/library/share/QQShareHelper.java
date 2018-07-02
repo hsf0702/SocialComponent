@@ -3,6 +3,8 @@ package com.fqxyi.social.library.share;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
@@ -51,29 +53,29 @@ public class QQShareHelper {
     /**
      * 具体的分享逻辑
      */
-    public void share(ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void share(ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler) {
         this.shareCallback = shareCallback;
         //判断数据源是否为空
         if (shareDataBean == null) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_qq_error_data));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_qq_error_data);
+            handler.sendMessage(msg);
             return;
         }
         //判断是否安装QQ
         if (!tencent.isQQInstalled(activity)) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_qq_error_uninstall));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_qq_error_uninstall);
+            handler.sendMessage(msg);
             return;
         }
         Bundle bundle = getShareData(shareDataBean);
         //特殊处理
         if (shareDataBean.type == QQShareHelper.TYPE_IMAGE) {
             if (TextUtils.isEmpty(bundle.getString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL))) {
-                if (shareCallback != null) {
-                    shareCallback.onError(activity.getString(R.string.share_error_image_not_found));
-                }
+                Message msg = Message.obtain();
+                msg.obj = activity.getString(R.string.share_error_image_not_found);
+                handler.sendMessage(msg);
                 return;
             }
         }

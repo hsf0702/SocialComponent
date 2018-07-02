@@ -5,6 +5,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 
 import com.fqxyi.social.library.util.SocialUtil;
 
@@ -21,13 +23,29 @@ public class ShareHelper {
 
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
 
+    //图片缓存的父目录
+    private File parentDir;
+
     private WXShareHelper wxShareHelper;
     private SMShareHelper smShareHelper;
     private QQShareHelper qqShareHelper;
     private WBShareHelper wbShareHelper;
 
-    //图片缓存的父目录
-    private File parentDir;
+    private IShareCallback shareCallback;
+
+    private Handler shareHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg == null) {
+                return;
+            }
+            String errorMsg = (String) msg.obj;
+            if (shareCallback != null) {
+                shareCallback.onError(errorMsg);
+            }
+        }
+    };
 
     public ShareHelper() {
         parentDir = new File(Environment.getExternalStorageDirectory(), "kit" + File.separator + "share");
@@ -41,6 +59,7 @@ public class ShareHelper {
      * @param isTimeLine true 朋友圈 false 微信
      */
     public void shareWX(final Activity activity, final boolean isTimeLine, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+        this.shareCallback = shareCallback;
         if (fixedThreadPool.isShutdown()) {
             return;
         }
@@ -50,7 +69,7 @@ public class ShareHelper {
                 if (wxShareHelper == null) {
                     wxShareHelper = new WXShareHelper(activity, SocialUtil.get().getWxAppId(), SocialUtil.get().getWxAppSecret(), parentDir);
                 }
-                wxShareHelper.share(isTimeLine, shareDataBean, shareCallback);
+                wxShareHelper.share(isTimeLine, shareDataBean, shareCallback, shareHandler);
             }
         });
     }
@@ -59,6 +78,7 @@ public class ShareHelper {
      * 分享到短信
      */
     public void shareShortMessage(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+        this.shareCallback = shareCallback;
         if (fixedThreadPool.isShutdown()) {
             return;
         }
@@ -68,7 +88,7 @@ public class ShareHelper {
                 if (smShareHelper == null) {
                     smShareHelper = new SMShareHelper(activity, parentDir);
                 }
-                smShareHelper.share(shareDataBean, shareCallback);
+                smShareHelper.share(shareDataBean, shareCallback, shareHandler);
             }
         });
     }
@@ -102,6 +122,7 @@ public class ShareHelper {
      * 分享到QQ
      */
     public void shareQQ(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+        this.shareCallback = shareCallback;
         if (fixedThreadPool.isShutdown()) {
             return;
         }
@@ -111,7 +132,7 @@ public class ShareHelper {
                 if (qqShareHelper == null) {
                     qqShareHelper = new QQShareHelper(activity, SocialUtil.get().getQqAppId(), parentDir);
                 }
-                qqShareHelper.share(shareDataBean, shareCallback);
+                qqShareHelper.share(shareDataBean, shareCallback, shareHandler);
             }
         });
     }
@@ -120,6 +141,7 @@ public class ShareHelper {
      * 分享到微博
      */
     public void shareWB(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback) {
+        this.shareCallback = shareCallback;
         if (fixedThreadPool.isShutdown()) {
             return;
         }
@@ -129,7 +151,7 @@ public class ShareHelper {
                 if (wbShareHelper == null) {
                     wbShareHelper = new WBShareHelper(activity, SocialUtil.get().getWbAppId(), SocialUtil.get().getWbRedirectUrl(), parentDir);
                 }
-                wbShareHelper.share(shareDataBean, shareCallback);
+                wbShareHelper.share(shareDataBean, shareCallback, shareHandler);
             }
         });
     }
@@ -206,6 +228,10 @@ public class ShareHelper {
         if (wbShareHelper != null) {
             wbShareHelper.onDestroy();
             wbShareHelper = null;
+        }
+        if (shareHandler != null) {
+            shareHandler.removeCallbacksAndMessages(null);
+            shareHandler = null;
         }
     }
 

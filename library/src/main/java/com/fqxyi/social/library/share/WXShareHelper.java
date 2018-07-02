@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
@@ -68,36 +70,36 @@ public class WXShareHelper {
      * 具体的分享逻辑
      * @param isTimeLine true 朋友圈 false 微信
      */
-    public void share(boolean isTimeLine, ShareDataBean shareDataBean, IShareCallback shareCallback) {
+    public void share(boolean isTimeLine, ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler) {
         this.shareCallback = shareCallback;
         //判断数据源是否为空
         if (shareDataBean == null) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wx_error_data));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_wx_error_data);
+            handler.sendMessage(msg);
             return;
         }
         //判断是否安装微信
         if (!wxapi.isWXAppInstalled()) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wx_error_uninstall));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_wx_error_uninstall);
+            handler.sendMessage(msg);
             return;
         }
         //是否分享到朋友圈，微信4.2以下不支持朋友圈
         if (isTimeLine && wxapi.getWXAppSupportAPI() < 0x21020001) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wx_error_version_low));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_wx_error_version_low);
+            handler.sendMessage(msg);
             return;
         }
         //需要传递给微信的分享数据
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.message = getShareMessage(req, shareDataBean);
         if (req.message == null) {
-            if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wx_error_data));
-            }
+            Message msg = Message.obtain();
+            msg.obj = activity.getString(R.string.share_wx_error_data);
+            handler.sendMessage(msg);
             return;
         }
         req.scene = isTimeLine ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;

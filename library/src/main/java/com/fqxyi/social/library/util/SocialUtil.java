@@ -20,10 +20,10 @@ import java.util.ArrayList;
 public class SocialUtil {
 
     private ShareHelper shareHelper;
-    private IShareCallback shareCallback;
-
     private AuthHelper authHelper;
-    private IAuthCallback iAuthCallback;
+
+    private IShareCallback shareCallback;
+    private IAuthCallback authCallback;
 
     //单例引用
     private volatile static SocialUtil INSTANCE;
@@ -48,34 +48,28 @@ public class SocialUtil {
         return shareHelper;
     }
 
-    public IShareCallback getShareCallback() {
-        return shareCallback;
-    }
-
-    public void setShareCallback(IShareCallback shareCallback) {
-        this.shareCallback = shareCallback;
-    }
-
     public AuthHelper getAuthHelper() {
         return authHelper;
     }
 
+    public IShareCallback getShareCallback() {
+        return shareCallback;
+    }
+
     public IAuthCallback getAuthCallback() {
-        return iAuthCallback;
+        return authCallback;
     }
 
-    public void setAuthCallback(IAuthCallback iAuthCallback) {
-        this.iAuthCallback = iAuthCallback;
-    }
-
-    public void share(Activity activity, ArrayList<SocialTypeBean>socialTypeBeans, ShareDataBean shareDataBean){
+    public void share(Activity activity, ArrayList<SocialTypeBean>socialTypeBeans, ShareDataBean shareDataBean, IShareCallback shareCallback){
+        this.shareCallback = shareCallback;
         Intent intent = new Intent(activity, ShareActivity.class);
         intent.putExtra("SocialTypeBean", socialTypeBeans);
         intent.putExtra("ShareDataBean", shareDataBean);
         activity.startActivity(intent);
     }
 
-    public void auth(Activity activity, ArrayList<SocialTypeBean>socialTypeBeans){
+    public void auth(Activity activity, ArrayList<SocialTypeBean>socialTypeBeans, IAuthCallback authCallback){
+        this.authCallback = authCallback;
         Intent intent = new Intent(activity, AuthActivity.class);
         intent.putExtra("SocialTypeBean", socialTypeBeans);
         activity.startActivity(intent);

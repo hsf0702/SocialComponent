@@ -59,9 +59,6 @@ public class AuthActivity extends Activity {
         socialDialog.show();
     }
 
-    public void auth(View view) {
-    }
-
     /**
      * 具体的item点击逻辑
      */
