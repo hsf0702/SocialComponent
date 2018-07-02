@@ -17,7 +17,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
  */
 public class WXAuthHelper {
 
-    //
+    //静态常量
     public static final String ACTION_WX_AUTH_RECEIVER = "ACTION_WX_AUTH_RECEIVER";
     public static final String KEY_WX_AUTH_CODE = "KEY_WX_AUTH_CODE";
     public static final String KEY_WX_AUTH_CODE_CANCEL = "KEY_WX_AUTH_CODE_CANCEL";

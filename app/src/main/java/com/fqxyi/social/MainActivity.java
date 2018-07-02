@@ -1,16 +1,17 @@
 package com.fqxyi.social;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
-import com.fqxyi.social.library.activity.ShareActivity;
+import com.fqxyi.social.library.auth.IAuthCallback;
 import com.fqxyi.social.library.dialog.ISocialType;
 import com.fqxyi.social.library.dialog.SocialTypeBean;
-import com.fqxyi.social.library.router.SCJump;
+import com.fqxyi.social.library.share.IShareCallback;
 import com.fqxyi.social.library.share.ShareDataBean;
 import com.fqxyi.social.library.share.WBShareHelper;
+import com.fqxyi.social.library.util.SocialUtil;
 
 import java.util.ArrayList;
 
@@ -50,7 +51,38 @@ public class MainActivity extends Activity {
         shareDataBean.shareMiniAppId = "小程序的原始ID";
         shareDataBean.shareMiniPage = "小程序页面地址";
 
-        SCJump.goToShare(this, socialTypeBeans, shareDataBean);
+        SocialUtil.get().setShareCallback(new IShareCallback() {
+            @Override
+            public void onSuccess(final String msg, final String response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "onSuccess, msg =" + msg + ", response = " + response, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final String msg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "onError, msg = " + msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancel(final String msg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "onCancel, msg = " + msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        SocialUtil.get().share(this, socialTypeBeans, shareDataBean);
     }
 
     /**
@@ -62,7 +94,38 @@ public class MainActivity extends Activity {
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WB));
 
-        SCJump.goToAuth(this, socialTypeBeans);
+        SocialUtil.get().setAuthCallback(new IAuthCallback() {
+            @Override
+            public void onSuccess(final String msg, final String response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "onSuccess, msg =" + msg + ", response = " + response, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final String msg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "onError, msg = " + msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancel(final String msg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "onCancel, msg = " + msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        SocialUtil.get().auth(this, socialTypeBeans);
     }
 
 }

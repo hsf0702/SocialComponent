@@ -1,13 +1,12 @@
 package com.fqxyi.social.library.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.Toast;
 
-import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.dialog.ISocialType;
 import com.fqxyi.social.library.dialog.ItemClickListener;
 import com.fqxyi.social.library.dialog.SocialDialog;
@@ -15,7 +14,6 @@ import com.fqxyi.social.library.dialog.SocialTypeBean;
 import com.fqxyi.social.library.share.IShareCallback;
 import com.fqxyi.social.library.share.ShareDataBean;
 import com.fqxyi.social.library.share.ShareHelper;
-import com.fqxyi.social.library.share.WBShareHelper;
 import com.fqxyi.social.library.util.SocialUtil;
 
 import java.util.ArrayList;
@@ -23,31 +21,33 @@ import java.util.List;
 
 public class ShareActivity extends Activity {
 
-    private static final String TAG = "ShareActivity";
-
     //分享弹框
-    SocialDialog socialDialog;
-    //数据源-分享类型
-    List<SocialTypeBean> socialTypeBeans;
+    private SocialDialog socialDialog;
     //数据源-分享数据
-    ShareDataBean shareDataBean;
+    private ShareDataBean shareDataBean;
     //分享入口类
-    ShareHelper shareHelper;
+    private ShareHelper shareHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share);
-
-        //初始化分享类型
-        socialTypeBeans = (ArrayList<SocialTypeBean>) getIntent().getSerializableExtra("SocialTypeBean");
+        //初始化社会化类型
+        ArrayList<SocialTypeBean> socialTypeBeans = (ArrayList<SocialTypeBean>) getIntent().getSerializableExtra("SocialTypeBean");
+        if (socialTypeBeans == null) {
+            Toast.makeText(this, "社会化类型为空", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         //初始化分享数据
         shareDataBean = (ShareDataBean) getIntent().getSerializableExtra("ShareDataBean");
+        if (shareDataBean == null) {
+            Toast.makeText(this, "分享数据为空", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         //创建分享入口类
         shareHelper = SocialUtil.get().getShareHelper();
-    }
-
-    public void share(View view) {
+        //显示分享弹框
         if (socialDialog == null) {
             socialDialog = new SocialDialog(this);
         }
@@ -55,28 +55,17 @@ public class ShareActivity extends Activity {
         socialDialog.setItemClickListener(new ItemClickListener() {
             @Override
             public void click(SocialTypeBean socialTypeBean, int position) {
-                initItemClick(socialTypeBean, shareCallback);
+                initItemClick(socialTypeBean, SocialUtil.get().getShareCallback());
+            }
+        });
+        socialDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                finish();
             }
         });
         socialDialog.show();
     }
-
-    IShareCallback shareCallback = new IShareCallback() {
-        @Override
-        public void onSuccess(String msg, String response) {
-            Toast.makeText(ShareActivity.this, "onSuccess, msg =" + msg + ", response = " + response, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onError(String msg) {
-            Toast.makeText(ShareActivity.this, "onError, msg = " + msg, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCancel(String msg) {
-            Toast.makeText(ShareActivity.this, "onCancel, msg = " + msg, Toast.LENGTH_SHORT).show();
-        }
-    };
 
     /**
      * 具体的item点击逻辑

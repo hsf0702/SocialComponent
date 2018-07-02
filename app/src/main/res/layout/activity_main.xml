@@ -7,7 +7,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="跳转到分享"
+        android:text="分享"
         android:onClick="jump2Share"
         android:textSize="16sp"
         android:textColor="@android:color/black"/>
@@ -15,7 +15,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="跳转到授权"
+        android:text="授权"
         android:onClick="jump2Auth"
         android:textSize="16sp"
         android:textColor="@android:color/black"/>

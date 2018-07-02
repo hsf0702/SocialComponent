@@ -1,10 +1,6 @@
 package com.fqxyi.social.library.share;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-
 import java.io.Serializable;
-import java.io.SerializablePermission;
 import java.util.List;
 
 /**

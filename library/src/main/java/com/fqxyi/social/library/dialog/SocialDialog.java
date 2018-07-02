@@ -26,16 +26,16 @@ public class SocialDialog extends Dialog {
     //静态常量
     private static final String TAG = "SocialDialog";
     //上下文
-    Context context;
+    private Context context;
     //view
     private RecyclerView socialRecyclerView;
     private Button socialCancel;
     //adapter
-    SocialAdapter socialAdapter;
+    private SocialAdapter socialAdapter;
     //数据源-社会化类型
-    List<SocialTypeBean> socialTypeBeans;
+    private List<SocialTypeBean> socialTypeBeans;
     //点击事件回调
-    ItemClickListener itemClickListener;
+    private ItemClickListener itemClickListener;
 
     public SocialDialog(Context context) {
         super(context, R.style.SocialDialogStyle);
@@ -90,6 +90,9 @@ public class SocialDialog extends Dialog {
      * 初始化社会化类型
      */
     public void initSocialType(List<SocialTypeBean> list) {
+        if (list == null) {
+            return;
+        }
         if (socialTypeBeans == null) {
             socialTypeBeans = new ArrayList<>();
         } else {

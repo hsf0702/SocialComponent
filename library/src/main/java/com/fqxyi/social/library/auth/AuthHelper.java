@@ -12,10 +12,12 @@ import com.fqxyi.social.library.util.SocialUtil;
  */
 public class AuthHelper {
 
+    //静态常量
     private static final int TYPE_AUTH_WX = 1;
     private static final int TYPE_AUTH_QQ = 2;
     private static final int TYPE_AUTH_WB = 3;
 
+    //各模块帮助类
     private WXAuthHelper wxAuthHelper;
     private QQAuthHelper qqAuthHelper;
     private WBAuthHelper wbAuthHelper;

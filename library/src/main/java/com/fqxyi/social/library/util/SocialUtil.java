@@ -1,7 +1,18 @@
 package com.fqxyi.social.library.util;
 
+import android.app.Activity;
+import android.content.Intent;
+
+import com.fqxyi.social.library.activity.AuthActivity;
+import com.fqxyi.social.library.activity.ShareActivity;
 import com.fqxyi.social.library.auth.AuthHelper;
+import com.fqxyi.social.library.auth.IAuthCallback;
+import com.fqxyi.social.library.dialog.SocialTypeBean;
+import com.fqxyi.social.library.share.IShareCallback;
+import com.fqxyi.social.library.share.ShareDataBean;
 import com.fqxyi.social.library.share.ShareHelper;
+
+import java.util.ArrayList;
 
 /**
  * 基本信息初始化工具类
@@ -9,7 +20,10 @@ import com.fqxyi.social.library.share.ShareHelper;
 public class SocialUtil {
 
     private ShareHelper shareHelper;
+    private IShareCallback shareCallback;
+
     private AuthHelper authHelper;
+    private IAuthCallback iAuthCallback;
 
     //单例引用
     private volatile static SocialUtil INSTANCE;
@@ -34,8 +48,37 @@ public class SocialUtil {
         return shareHelper;
     }
 
+    public IShareCallback getShareCallback() {
+        return shareCallback;
+    }
+
+    public void setShareCallback(IShareCallback shareCallback) {
+        this.shareCallback = shareCallback;
+    }
+
     public AuthHelper getAuthHelper() {
         return authHelper;
+    }
+
+    public IAuthCallback getAuthCallback() {
+        return iAuthCallback;
+    }
+
+    public void setAuthCallback(IAuthCallback iAuthCallback) {
+        this.iAuthCallback = iAuthCallback;
+    }
+
+    public void share(Activity activity, ArrayList<SocialTypeBean>socialTypeBeans, ShareDataBean shareDataBean){
+        Intent intent = new Intent(activity, ShareActivity.class);
+        intent.putExtra("SocialTypeBean", socialTypeBeans);
+        intent.putExtra("ShareDataBean", shareDataBean);
+        activity.startActivity(intent);
+    }
+
+    public void auth(Activity activity, ArrayList<SocialTypeBean>socialTypeBeans){
+        Intent intent = new Intent(activity, AuthActivity.class);
+        intent.putExtra("SocialTypeBean", socialTypeBeans);
+        activity.startActivity(intent);
     }
 
     private String qqAppId;

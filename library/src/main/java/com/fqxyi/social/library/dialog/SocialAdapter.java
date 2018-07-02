@@ -22,11 +22,11 @@ import java.util.List;
 public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialViewHolder> {
 
     //上下文
-    Context context;
+    private Context context;
     //数据源
-    List<SocialTypeBean> socialTypeBeans;
+    private List<SocialTypeBean> socialTypeBeans;
     //点击事件回调
-    ItemClickListener itemClickListener;
+    private ItemClickListener itemClickListener;
 
     public SocialAdapter(Context context) {
         this.context = context;
@@ -75,6 +75,9 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialView
      * 更新数据
      */
     public void updateData(List<SocialTypeBean> list) {
+        if (list == null) {
+            return;
+        }
         if (socialTypeBeans == null) {
             socialTypeBeans = new ArrayList<>();
         } else {

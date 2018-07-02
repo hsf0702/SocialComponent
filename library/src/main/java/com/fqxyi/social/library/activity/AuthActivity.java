@@ -1,6 +1,7 @@
 package com.fqxyi.social.library.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,27 +22,24 @@ import java.util.List;
 
 public class AuthActivity extends Activity {
 
-    private static final String TAG = "AuthActivity";
-
     //社会化弹框
-    SocialDialog socialDialog;
-    //数据源-社会化类型
-    List<SocialTypeBean> socialTypeBeans;
+    private SocialDialog socialDialog;
     //授权入口类
-    AuthHelper authHelper;
+    private AuthHelper authHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auth);
-
         //初始化授权类型
-        socialTypeBeans = (ArrayList<SocialTypeBean>) getIntent().getSerializableExtra("SocialTypeBean");
+        ArrayList<SocialTypeBean> socialTypeBeans = (ArrayList<SocialTypeBean>) getIntent().getSerializableExtra("SocialTypeBean");
+        if (socialTypeBeans == null) {
+            Toast.makeText(this, "社会化类型为空", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         //创建授权入口类
         authHelper = SocialUtil.get().getAuthHelper();
-    }
-
-    public void auth(View view) {
+        //显示授权弹框
         if (socialDialog == null) {
             socialDialog = new SocialDialog(this);
         }
@@ -49,28 +47,20 @@ public class AuthActivity extends Activity {
         socialDialog.setItemClickListener(new ItemClickListener() {
             @Override
             public void click(SocialTypeBean socialTypeBean, int position) {
-                initItemClick(socialTypeBean, authCallback);
+                initItemClick(socialTypeBean, SocialUtil.get().getAuthCallback());
+            }
+        });
+        socialDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                finish();
             }
         });
         socialDialog.show();
     }
 
-    IAuthCallback authCallback = new IAuthCallback() {
-        @Override
-        public void onSuccess(String msg, String response) {
-            Toast.makeText(AuthActivity.this, "onSuccess, msg =" + msg + ", response = " + response, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onError(String msg) {
-            Toast.makeText(AuthActivity.this, "onError, msg = " + msg, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCancel(String msg) {
-            Toast.makeText(AuthActivity.this, "onCancel, msg = " + msg, Toast.LENGTH_SHORT).show();
-        }
-    };
+    public void auth(View view) {
+    }
 
     /**
      * 具体的item点击逻辑
