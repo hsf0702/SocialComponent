@@ -31,6 +31,14 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="授权到QQ"
+        android:onClick="jump2AuthQQ"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="跳转到第二个Activity"
         android:onClick="jump2SecondActivity"
         android:textSize="16sp"

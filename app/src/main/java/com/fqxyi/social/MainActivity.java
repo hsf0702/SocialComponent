@@ -181,4 +181,26 @@ public class MainActivity extends Activity {
     public void jump2SecondActivity(View view) {
         startActivity(new Intent(this, SecondActivity.class));
     }
+
+    public void jump2AuthQQ(View view) {
+        SocialTypeBean socialTypeBean = new SocialTypeBean();
+        socialTypeBean.type = ISocialType.SOCIAL_QQ;
+
+        SocialHelper.get().auth(this, socialTypeBean, new IAuthCallback() {
+            @Override
+            public void onSuccess(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onError, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel(int socialType) {
+                Toast.makeText(MainActivity.this, "onCancel, socialType = " + socialType, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
