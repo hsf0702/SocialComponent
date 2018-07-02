@@ -53,18 +53,18 @@ public class MainActivity extends Activity {
 
         SocialUtil.get().share(this, socialTypeBeans, shareDataBean, new IShareCallback() {
             @Override
-            public void onSuccess(final String msg, final String response) {
-                Toast.makeText(MainActivity.this, "onSuccess, msg =" + msg + ", response = " + response, Toast.LENGTH_SHORT).show();
+            public void onSuccess(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onError(final String msg) {
-                Toast.makeText(MainActivity.this, "onError, msg = " + msg, Toast.LENGTH_SHORT).show();
+            public void onError(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onError, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onCancel(final String msg) {
-                Toast.makeText(MainActivity.this, "onCancel, msg = " + msg, Toast.LENGTH_SHORT).show();
+            public void onCancel(int socialType) {
+                Toast.makeText(MainActivity.this, "onCancel, socialType = " + socialType, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -80,18 +80,18 @@ public class MainActivity extends Activity {
 
         SocialUtil.get().auth(this, socialTypeBeans, new IAuthCallback() {
             @Override
-            public void onSuccess(final String msg, final String response) {
-                Toast.makeText(MainActivity.this, "onSuccess, msg =" + msg + ", response = " + response, Toast.LENGTH_SHORT).show();
+            public void onSuccess(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onError(final String msg) {
-                Toast.makeText(MainActivity.this, "onError, msg = " + msg, Toast.LENGTH_SHORT).show();
+            public void onError(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onError, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onCancel(final String msg) {
-                Toast.makeText(MainActivity.this, "onCancel, msg = " + msg, Toast.LENGTH_SHORT).show();
+            public void onCancel(int socialType) {
+                Toast.makeText(MainActivity.this, "onCancel, socialType = " + socialType, Toast.LENGTH_SHORT).show();
             }
         });
     }

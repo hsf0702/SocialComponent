@@ -8,6 +8,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.dialog.ISocialType;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.BaseMediaObject;
 import com.sina.weibo.sdk.api.ImageObject;
@@ -72,14 +73,16 @@ public class WBShareHelper {
         //判断数据源是否为空
         if (shareDataBean == null) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_wb_error_data);
+            msg.obj = activity.getString(R.string.social_error_wb_share_data);
+            msg.arg1 = ISocialType.SOCIAL_WB;
             handler.sendMessage(msg);
             return;
         }
         //判断是否安装微博
         if (!WbSdk.isWbInstall(activity)) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_wb_error_uninstall);
+            msg.obj = activity.getString(R.string.social_error_wb_uninstall);
+            msg.arg1 = ISocialType.SOCIAL_WB;
             handler.sendMessage(msg);
             return;
         }
@@ -87,7 +90,8 @@ public class WBShareHelper {
         WeiboMultiMessage weiboMultiMessage = getShareMessage(shareDataBean);
         if (weiboMultiMessage == null) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_wb_error_data);
+            msg.obj = activity.getString(R.string.social_error_wb_share_data);
+            msg.arg1 = ISocialType.SOCIAL_WB;
             handler.sendMessage(msg);
             return;
         }
@@ -237,21 +241,21 @@ public class WBShareHelper {
         @Override
         public void onWbShareSuccess() {
             if (shareCallback != null) {
-                shareCallback.onSuccess(activity.getString(R.string.share_wb_success), null);
+                shareCallback.onSuccess(ISocialType.SOCIAL_WB, null);
             }
         }
 
         @Override
         public void onWbShareCancel() {
             if (shareCallback != null) {
-                shareCallback.onCancel(activity.getString(R.string.share_wb_cancel));
+                shareCallback.onCancel(ISocialType.SOCIAL_WB);
             }
         }
 
         @Override
         public void onWbShareFail() {
             if (shareCallback != null) {
-                shareCallback.onError(activity.getString(R.string.share_wb_error));
+                shareCallback.onError(ISocialType.SOCIAL_WB, null);
             }
         }
     };

@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
+import com.fqxyi.social.library.dialog.ISocialType;
 import com.fqxyi.social.library.util.SocialUtil;
 
 import java.io.File;
@@ -41,17 +42,15 @@ public class ShareHelper {
                 return;
             }
             String errorMsg = (String) msg.obj;
+            int socialType = msg.arg1;
             if (shareCallback != null) {
-                shareCallback.onError(errorMsg);
+                shareCallback.onError(socialType, errorMsg);
             }
         }
     };
 
     public ShareHelper() {
         parentDir = new File(Environment.getExternalStorageDirectory(), "SocialComponent" + File.separator + "Share");
-        if (!parentDir.exists()) {
-            parentDir.mkdirs();
-        }
     }
 
     /**
@@ -102,11 +101,11 @@ public class ShareHelper {
             // 将文本数据复制到剪贴板
             clipboardManager.setText(shareDataBean.shareUrl);
             if (shareCallback != null) {
-                shareCallback.onSuccess("复制成功", null);
+                shareCallback.onSuccess(ISocialType.SOCIAL_COPY, "复制成功");
             }
         } else {
             if (shareCallback != null) {
-                shareCallback.onError("clipboardManager == null");
+                shareCallback.onError(ISocialType.SOCIAL_COPY,"复制失败");
             }
         }
     }

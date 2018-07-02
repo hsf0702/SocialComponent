@@ -8,6 +8,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.dialog.ISocialType;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
@@ -58,14 +59,16 @@ public class QQShareHelper {
         //判断数据源是否为空
         if (shareDataBean == null) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_qq_error_data);
+            msg.obj = activity.getString(R.string.social_error_qq_share_data);
+            msg.arg1 = ISocialType.SOCIAL_QQ;
             handler.sendMessage(msg);
             return;
         }
         //判断是否安装QQ
         if (!tencent.isQQInstalled(activity)) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_qq_error_uninstall);
+            msg.obj = activity.getString(R.string.social_error_qq_uninstall);
+            msg.arg1 = ISocialType.SOCIAL_QQ;
             handler.sendMessage(msg);
             return;
         }
@@ -74,7 +77,8 @@ public class QQShareHelper {
         if (shareDataBean.type == QQShareHelper.TYPE_IMAGE) {
             if (TextUtils.isEmpty(bundle.getString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL))) {
                 Message msg = Message.obtain();
-                msg.obj = activity.getString(R.string.share_error_image_not_found);
+                msg.obj = activity.getString(R.string.social_error_image_not_found);
+                msg.arg1 = ISocialType.SOCIAL_QQ;
                 handler.sendMessage(msg);
                 return;
             }
@@ -145,24 +149,24 @@ public class QQShareHelper {
         @Override
         public void onComplete(Object o) {
             if (shareCallback != null) {
-                shareCallback.onSuccess(activity.getString(R.string.share_qq_success), o.toString());
+                shareCallback.onSuccess(ISocialType.SOCIAL_QQ, o.toString());
             }
         }
 
         @Override
         public void onError(UiError uiError) {
             if (shareCallback != null && uiError != null) {
-                shareCallback.onError(activity.getString(R.string.share_qq_error)
-                        + ", 错误码：" + uiError.errorCode
-                        + ", 错误信息：" + uiError.errorMessage
-                        + ", 错误详情：" + uiError.errorDetail);
+                shareCallback.onError(ISocialType.SOCIAL_QQ,
+                        "错误码：" + uiError.errorCode
+                        + "\n错误信息：" + uiError.errorMessage
+                        + "\n错误详情：" + uiError.errorDetail);
             }
         }
 
         @Override
         public void onCancel() {
             if (shareCallback != null) {
-                shareCallback.onCancel(activity.getString(R.string.share_qq_cancel));
+                shareCallback.onCancel(ISocialType.SOCIAL_QQ);
             }
         }
     };

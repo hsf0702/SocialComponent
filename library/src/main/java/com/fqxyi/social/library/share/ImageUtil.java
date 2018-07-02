@@ -31,7 +31,21 @@ public class ImageUtil {
             if (TextUtils.isEmpty(fileName) || parentDir == null) {
                 return null;
             }
+            if (!parentDir.exists()) {
+                if (!parentDir.mkdirs()) {
+                    return null;
+                }
+            }
             final File file = new File(parentDir, fileName);
+            if (!file.exists()) {
+                try {
+                    if (!file.createNewFile()) {
+                        return null;
+                    }
+                } catch (IOException e) {
+                    return null;
+                }
+            }
             boolean success = downloadImage(file, image);
             if (success) {
                 return file.getAbsolutePath();
@@ -52,11 +66,6 @@ public class ImageUtil {
     public static boolean downloadImage(File file, String imageUrl) {
         if (file == null || TextUtils.isEmpty(imageUrl)) {
             return false;
-        }
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
-                return false;
-            }
         }
         HttpURLConnection conn = null;
         InputStream is = null;

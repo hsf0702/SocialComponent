@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.dialog.ISocialType;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -51,7 +52,7 @@ public class WXAuthHelper {
         //判断是否安装微信
         if (!wxapi.isWXAppInstalled()) {
             if (authCallback != null) {
-                authCallback.onError(activity.getString(R.string.auth_wx_error_uninstall));
+                authCallback.onError(ISocialType.SOCIAL_WX_SESSION, activity.getString(R.string.social_error_wx_uninstall));
             }
             return;
         }
@@ -86,12 +87,12 @@ public class WXAuthHelper {
             String code = intent.getStringExtra(WXAuthHelper.KEY_WX_AUTH_CODE);
             if (code.equals(WXAuthHelper.KEY_WX_AUTH_CODE_CANCEL)) {
                 if (authCallback != null && activity != null) {
-                    authCallback.onError(activity.getString(R.string.auth_wx_error));
+                    authCallback.onError(ISocialType.SOCIAL_WX_SESSION, null);
                 }
                 return;
             }
             if (authCallback != null) {
-                authCallback.onSuccess(activity.getString(R.string.auth_wx_success), null);
+                authCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, null);
             }
         }
     };

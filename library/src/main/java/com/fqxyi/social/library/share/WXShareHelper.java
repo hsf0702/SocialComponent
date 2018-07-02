@@ -10,6 +10,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.dialog.ISocialType;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -50,6 +51,8 @@ public class WXShareHelper {
     private IShareCallback shareCallback;
     //图片缓存的父目录
     private File parentDir;
+    //true 分享到朋友圈 false 分享到微信
+    private boolean isTimeLine;
 
     /**
      * 初始化微信
@@ -71,25 +74,37 @@ public class WXShareHelper {
      * @param isTimeLine true 朋友圈 false 微信
      */
     public void share(boolean isTimeLine, ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler) {
+        this.isTimeLine = isTimeLine;
         this.shareCallback = shareCallback;
         //判断数据源是否为空
         if (shareDataBean == null) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_wx_error_data);
+            msg.obj = activity.getString(R.string.social_error_wx_share_data);
+            if (isTimeLine) {
+                msg.arg1 = ISocialType.SOCIAL_WX_SESSION;
+            } else {
+                msg.arg1 = ISocialType.SOCIAL_WX_TIMELINE;
+            }
             handler.sendMessage(msg);
             return;
         }
         //判断是否安装微信
         if (!wxapi.isWXAppInstalled()) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_wx_error_uninstall);
+            msg.obj = activity.getString(R.string.social_error_wx_uninstall);
+            if (isTimeLine) {
+                msg.arg1 = ISocialType.SOCIAL_WX_SESSION;
+            } else {
+                msg.arg1 = ISocialType.SOCIAL_WX_TIMELINE;
+            }
             handler.sendMessage(msg);
             return;
         }
         //是否分享到朋友圈，微信4.2以下不支持朋友圈
         if (isTimeLine && wxapi.getWXAppSupportAPI() < 0x21020001) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_wx_error_version_low);
+            msg.obj = activity.getString(R.string.social_error_wx_version_low);
+            msg.arg1 = ISocialType.SOCIAL_WX_TIMELINE;
             handler.sendMessage(msg);
             return;
         }
@@ -98,7 +113,12 @@ public class WXShareHelper {
         req.message = getShareMessage(req, shareDataBean);
         if (req.message == null) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_wx_error_data);
+            msg.obj = activity.getString(R.string.social_error_wx_share_data);
+            if (isTimeLine) {
+                msg.arg1 = ISocialType.SOCIAL_WX_SESSION;
+            } else {
+                msg.arg1 = ISocialType.SOCIAL_WX_TIMELINE;
+            }
             handler.sendMessage(msg);
             return;
         }
@@ -244,9 +264,17 @@ public class WXShareHelper {
             boolean shareSuccess = intent.getBooleanExtra(WXShareHelper.KEY_WX_SHARE_CALLBACK, false);
             if (shareCallback != null) {
                 if (shareSuccess) {
-                    shareCallback.onSuccess(activity.getString(R.string.share_wx_success), null);
+                    if (isTimeLine) {
+                        shareCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, null);
+                    } else {
+                        shareCallback.onSuccess(ISocialType.SOCIAL_WX_TIMELINE, null);
+                    }
                 } else {
-                    shareCallback.onError(activity.getString(R.string.share_wx_error));
+                    if (isTimeLine) {
+                        shareCallback.onError(ISocialType.SOCIAL_WX_SESSION, null);
+                    } else {
+                        shareCallback.onError(ISocialType.SOCIAL_WX_TIMELINE, null);
+                    }
                 }
             }
         }

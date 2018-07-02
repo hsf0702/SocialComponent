@@ -8,6 +8,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.dialog.ISocialType;
 
 import java.io.File;
 
@@ -39,7 +40,8 @@ public class SMShareHelper {
         //判断数据源是否为空
         if (shareDataBean == null) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.share_sms_error_data);
+            msg.obj = activity.getString(R.string.social_error_sms_share_data);
+            msg.arg1 = ISocialType.SOCIAL_SMS;
             handler.sendMessage(msg);
             return;
         }

@@ -5,8 +5,8 @@ package com.fqxyi.social.library.share;
  */
 public interface IShareCallback {
 
-    void onSuccess(String msg, String response);
-    void onError(String msg);
-    void onCancel(String msg);
+    void onSuccess(int socialType, String msg);
+    void onError(int socialType, String msg);
+    void onCancel(int socialType);
 
 }

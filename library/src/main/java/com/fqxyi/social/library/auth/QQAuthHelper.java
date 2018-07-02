@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.dialog.ISocialType;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
@@ -42,7 +43,7 @@ public class QQAuthHelper {
         //判断是否安装QQ
         if (!tencent.isQQInstalled(activity)) {
             if (authCallback != null) {
-                authCallback.onError(activity.getString(R.string.auth_qq_error_uninstall));
+                authCallback.onError(ISocialType.SOCIAL_QQ, activity.getString(R.string.social_error_qq_uninstall));
             }
             return;
         }
@@ -75,24 +76,24 @@ public class QQAuthHelper {
         @Override
         public void onComplete(Object o) {
             if (authCallback != null) {
-                authCallback.onSuccess(activity.getString(R.string.auth_qq_success), o.toString());
+                authCallback.onSuccess(ISocialType.SOCIAL_QQ, o.toString());
             }
         }
 
         @Override
         public void onError(UiError uiError) {
             if (authCallback != null && uiError != null) {
-                authCallback.onError(activity.getString(R.string.auth_qq_error)
-                        + ", 错误码：" + uiError.errorCode
-                        + ", 错误信息：" + uiError.errorMessage
-                        + ", 错误详情：" + uiError.errorDetail);
+                authCallback.onError(ISocialType.SOCIAL_QQ,
+                        "\n错误码：" + uiError.errorCode
+                        + "\n错误信息：" + uiError.errorMessage
+                        + "\n错误详情：" + uiError.errorDetail);
             }
         }
 
         @Override
         public void onCancel() {
             if (authCallback != null) {
-                authCallback.onCancel(activity.getString(R.string.auth_qq_cancel));
+                authCallback.onCancel(ISocialType.SOCIAL_QQ);
             }
         }
     };

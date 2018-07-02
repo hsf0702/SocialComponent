@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.dialog.ISocialType;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.auth.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.AuthInfo;
@@ -46,7 +47,7 @@ public class WBAuthHelper {
         //判断是否安装微博
         if (!WbSdk.isWbInstall(activity)) {
             if (authCallback != null) {
-                authCallback.onError(activity.getString(R.string.auth_wb_error_uninstall));
+                authCallback.onError(ISocialType.SOCIAL_WB, activity.getString(R.string.social_error_wb_uninstall));
             }
             return;
         }
@@ -84,11 +85,11 @@ public class WBAuthHelper {
             if (oauth2AccessToken.isSessionValid()) {
                 AccessTokenKeeper.writeAccessToken(activity, oauth2AccessToken);
                 if (authCallback != null) {
-                    authCallback.onSuccess(activity.getString(R.string.auth_wb_success), null);
+                    authCallback.onSuccess(ISocialType.SOCIAL_WB, null);
                 }
             } else {
                 if (authCallback != null) {
-                    authCallback.onError(activity.getString(R.string.auth_wb_error));
+                    authCallback.onError(ISocialType.SOCIAL_WB, null);
                 }
             }
         }
@@ -96,16 +97,16 @@ public class WBAuthHelper {
         @Override
         public void cancel() {
             if (authCallback != null) {
-                authCallback.onCancel(activity.getString(R.string.auth_wb_cancel));
+                authCallback.onCancel(ISocialType.SOCIAL_WB);
             }
         }
 
         @Override
         public void onFailure(WbConnectErrorMessage wbConnectErrorMessage) {
             if (authCallback != null) {
-                authCallback.onError(activity.getString(R.string.auth_wb_error)
-                        + ", 错误码：" + wbConnectErrorMessage.getErrorCode()
-                        + ", 错误信息：" + wbConnectErrorMessage.getErrorMessage());
+                authCallback.onError(ISocialType.SOCIAL_WB,
+                        "\n错误码：" + wbConnectErrorMessage.getErrorCode()
+                        + "\n错误信息：" + wbConnectErrorMessage.getErrorMessage());
             }
         }
     };
