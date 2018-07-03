@@ -83,7 +83,7 @@ public class ShareActivity extends Activity {
      * 具体的item点击逻辑
      */
     private void initItemClick(SocialTypeBean socialTypeBean, IShareCallback shareCallback, boolean needFinishActivity) {
-        if (socialTypeBean == null || Utils.isFastClick()) {
+        if (socialTypeBean == null) {
             return;
         }
         switch (socialTypeBean.type) {

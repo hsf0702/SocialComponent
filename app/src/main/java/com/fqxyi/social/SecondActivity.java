@@ -7,13 +7,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.dialog.SocialTypeBean;
 import com.fqxyi.social.library.share.IShareCallback;
 import com.fqxyi.social.library.share.QQShareHelper;
 import com.fqxyi.social.library.share.ShareDataBean;
 import com.fqxyi.social.library.share.WBShareHelper;
 import com.fqxyi.social.library.share.WXShareHelper;
-import com.fqxyi.social.library.SocialHelper;
+import com.fqxyi.social.library.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,10 @@ public class SecondActivity extends Activity {
     }
 
     public void jump2Share(View view) {
+        if (Utils.isFastClick()) {
+            return;
+        }
+
         ArrayList<SocialTypeBean> socialTypeBeans = new ArrayList<>();
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_TIMELINE));
