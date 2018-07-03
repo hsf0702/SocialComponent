@@ -11,7 +11,7 @@ import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.ISocialType;
-import com.fqxyi.social.library.util.ActivityUtil;
+import com.fqxyi.social.library.util.Utils;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -289,7 +289,7 @@ public class WXShareHelper {
                     }
                 }
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
         }
     };
 }

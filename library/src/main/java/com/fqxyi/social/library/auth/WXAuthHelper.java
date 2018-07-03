@@ -9,7 +9,7 @@ import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.ISocialType;
-import com.fqxyi.social.library.util.ActivityUtil;
+import com.fqxyi.social.library.util.Utils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -58,7 +58,7 @@ public class WXAuthHelper {
             if (authCallback != null) {
                 authCallback.onError(ISocialType.SOCIAL_WX_SESSION, activity.getString(R.string.social_error_wx_uninstall));
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
             return;
         }
         //开始微信授权
@@ -99,7 +99,7 @@ public class WXAuthHelper {
                     authCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, null);
                 }
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
         }
     };
 }

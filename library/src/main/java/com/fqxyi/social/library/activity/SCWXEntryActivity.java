@@ -1,4 +1,4 @@
-package com.fqxyi.social.library.util;
+package com.fqxyi.social.library.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.fqxyi.social.library.SocialHelper;
+import com.fqxyi.social.library.util.LogUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;

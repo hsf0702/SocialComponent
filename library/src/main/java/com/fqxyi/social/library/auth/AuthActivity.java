@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.dialog.ItemClickListener;
 import com.fqxyi.social.library.dialog.SocialDialog;
 import com.fqxyi.social.library.dialog.SocialTypeBean;
-import com.fqxyi.social.library.SocialHelper;
-import com.fqxyi.social.library.util.ToastUtil;
+import com.fqxyi.social.library.util.Utils;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class AuthActivity extends Activity {
         //初始化授权类型
         Intent intent = getIntent();
         if (intent == null) {
-            ToastUtil.toast(this, "社会化类型为空");
+            Utils.toast(this, "社会化类型为空");
             finish();
             return;
         }
@@ -37,7 +37,7 @@ public class AuthActivity extends Activity {
         final boolean needFinishActivity = intent.getBooleanExtra("needFinishActivity", false);
         //NPE校验
         if ((socialTypeBeans == null || socialTypeBeans.size() == 0) && socialTypeBean == null) {
-            ToastUtil.toast(this, "社会化类型为空");
+            Utils.toast(this, "社会化类型为空");
             finish();
             return;
         }
@@ -65,7 +65,7 @@ public class AuthActivity extends Activity {
         } else if (socialTypeBean != null) {
             initItemClick(socialTypeBean, SocialHelper.get().getAuthCallback(), true);
         } else {
-            ToastUtil.toast(this, "分享初始化异常");
+            Utils.toast(this, "分享初始化异常");
             finish();
         }
     }
@@ -74,7 +74,7 @@ public class AuthActivity extends Activity {
      * 具体的item点击逻辑
      */
     private void initItemClick(SocialTypeBean socialTypeBean, IAuthCallback authCallback, boolean needFinishActivity) {
-        if (socialTypeBean == null) {
+        if (socialTypeBean == null || Utils.isFastClick()) {
             return;
         }
         switch (socialTypeBean.type) {

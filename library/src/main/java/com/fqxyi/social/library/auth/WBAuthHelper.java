@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.ISocialType;
-import com.fqxyi.social.library.util.ActivityUtil;
+import com.fqxyi.social.library.util.Utils;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.auth.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.AuthInfo;
@@ -53,7 +53,7 @@ public class WBAuthHelper {
             if (authCallback != null) {
                 authCallback.onError(ISocialType.SOCIAL_WB, activity.getString(R.string.social_error_wb_uninstall));
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
             return;
         }
         //开始微博授权
@@ -97,7 +97,7 @@ public class WBAuthHelper {
                     authCallback.onError(ISocialType.SOCIAL_WB, null);
                 }
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -105,7 +105,7 @@ public class WBAuthHelper {
             if (authCallback != null) {
                 authCallback.onCancel(ISocialType.SOCIAL_WB);
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -115,7 +115,7 @@ public class WBAuthHelper {
                         "\n错误码：" + wbConnectErrorMessage.getErrorCode()
                         + "\n错误信息：" + wbConnectErrorMessage.getErrorMessage());
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
         }
     };
 

@@ -10,7 +10,7 @@ import android.os.Message;
 
 import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.ISocialType;
-import com.fqxyi.social.library.util.ActivityUtil;
+import com.fqxyi.social.library.util.Utils;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -111,7 +111,7 @@ public class ShareHelper {
                 shareCallback.onError(ISocialType.SOCIAL_COPY,"复制失败");
             }
         }
-        ActivityUtil.finish(activity, needFinishActivity);
+        Utils.finish(activity, needFinishActivity);
     }
 
     /**
@@ -263,7 +263,7 @@ public class ShareHelper {
             if (shareCallback != null) {
                 shareCallback.onError(socialType, errorMsg);
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
         }
     }
 

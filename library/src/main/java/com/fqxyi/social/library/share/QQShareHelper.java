@@ -9,7 +9,7 @@ import android.text.TextUtils;
 
 import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.ISocialType;
-import com.fqxyi.social.library.util.ActivityUtil;
+import com.fqxyi.social.library.util.Utils;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
@@ -163,7 +163,7 @@ public class QQShareHelper {
             if (shareCallback != null) {
                 shareCallback.onSuccess(ISocialType.SOCIAL_QQ, o.toString());
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -174,7 +174,7 @@ public class QQShareHelper {
                         + "\n错误信息：" + uiError.errorMessage
                         + "\n错误详情：" + uiError.errorDetail);
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
         }
 
         @Override
@@ -182,7 +182,7 @@ public class QQShareHelper {
             if (shareCallback != null) {
                 shareCallback.onCancel(ISocialType.SOCIAL_QQ);
             }
-            ActivityUtil.finish(activity, needFinishActivity);
+            Utils.finish(activity, needFinishActivity);
         }
     };
 
