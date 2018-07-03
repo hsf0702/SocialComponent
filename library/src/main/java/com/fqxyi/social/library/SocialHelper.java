@@ -11,6 +11,7 @@ import com.fqxyi.social.library.share.IShareCallback;
 import com.fqxyi.social.library.share.ShareActivity;
 import com.fqxyi.social.library.share.ShareDataBean;
 import com.fqxyi.social.library.share.ShareHelper;
+import com.fqxyi.social.library.util.Utils;
 
 import java.util.ArrayList;
 
@@ -65,6 +66,9 @@ public class SocialHelper {
     }
 
     public void share(Activity activity, SocialTypeBean socialTypeBean, ShareDataBean shareDataBean, boolean needFinishActivity, IShareCallback shareCallback) {
+        if (Utils.isFastClick()) {
+            return;
+        }
         this.shareCallback = shareCallback;
         Intent intent = new Intent(activity, ShareActivity.class);
         intent.putExtra("SocialTypeBean", socialTypeBean);
@@ -78,6 +82,9 @@ public class SocialHelper {
     }
 
     public void share(Activity activity, ArrayList<SocialTypeBean> socialTypeBeans, ShareDataBean shareDataBean, boolean needFinishActivity, IShareCallback shareCallback) {
+        if (Utils.isFastClick()) {
+            return;
+        }
         this.shareCallback = shareCallback;
         Intent intent = new Intent(activity, ShareActivity.class);
         intent.putExtra("SocialTypeBeans", socialTypeBeans);
@@ -91,6 +98,9 @@ public class SocialHelper {
     }
 
     public void auth(Activity activity, SocialTypeBean socialTypeBean, boolean needFinishActivity, IAuthCallback authCallback) {
+        if (Utils.isFastClick()) {
+            return;
+        }
         this.authCallback = authCallback;
         Intent intent = new Intent(activity, AuthActivity.class);
         intent.putExtra("SocialTypeBean", socialTypeBean);
@@ -103,6 +113,9 @@ public class SocialHelper {
     }
 
     public void auth(Activity activity, ArrayList<SocialTypeBean> socialTypeBeans, boolean needFinishActivity, IAuthCallback authCallback) {
+        if (Utils.isFastClick()) {
+            return;
+        }
         this.authCallback = authCallback;
         Intent intent = new Intent(activity, AuthActivity.class);
         intent.putExtra("SocialTypeBeans", socialTypeBeans);

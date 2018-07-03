@@ -11,16 +11,15 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
 
-import com.fqxyi.social.library.auth.IAuthCallback;
 import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.SocialHelper;
+import com.fqxyi.social.library.auth.IAuthCallback;
 import com.fqxyi.social.library.dialog.SocialTypeBean;
 import com.fqxyi.social.library.share.IShareCallback;
 import com.fqxyi.social.library.share.QQShareHelper;
 import com.fqxyi.social.library.share.ShareDataBean;
 import com.fqxyi.social.library.share.WBShareHelper;
 import com.fqxyi.social.library.share.WXShareHelper;
-import com.fqxyi.social.library.SocialHelper;
-import com.fqxyi.social.library.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,10 +69,6 @@ public class MainActivity extends Activity {
      * 分享
      */
     public void jump2Share(View view) {
-        if (Utils.isFastClick()) {
-            return;
-        }
-
         ShareDataBean shareDataBean = new ShareDataBean();
         HashMap<Integer, Integer> shareTypeList = new HashMap<>();
         shareTypeList.put(ISocialType.SOCIAL_WX_SESSION, WXShareHelper.TYPE_TEXT);
@@ -122,10 +117,6 @@ public class MainActivity extends Activity {
      * 分享到QQ
      */
     public void jump2ShareQQ(View view) {
-        if (Utils.isFastClick()) {
-            return;
-        }
-
         ShareDataBean shareDataBean = new ShareDataBean();
         HashMap<Integer, Integer> shareTypeList = new HashMap<>();
         shareTypeList.put(ISocialType.SOCIAL_WX_SESSION, WXShareHelper.TYPE_TEXT);
@@ -164,10 +155,6 @@ public class MainActivity extends Activity {
      * 授权
      */
     public void jump2Auth(View view) {
-        if (Utils.isFastClick()) {
-            return;
-        }
-
         ArrayList<SocialTypeBean> socialTypeBeans = new ArrayList<>();
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
@@ -192,18 +179,10 @@ public class MainActivity extends Activity {
     }
 
     public void jump2SecondActivity(View view) {
-        if (Utils.isFastClick()) {
-            return;
-        }
-
         startActivity(new Intent(this, SecondActivity.class));
     }
 
     public void jump2AuthQQ(View view) {
-        if (Utils.isFastClick()) {
-            return;
-        }
-
         SocialTypeBean socialTypeBean = new SocialTypeBean();
         socialTypeBean.type = ISocialType.SOCIAL_QQ;
 
