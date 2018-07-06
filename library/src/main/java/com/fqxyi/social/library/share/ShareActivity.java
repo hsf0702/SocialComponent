@@ -88,10 +88,10 @@ public class ShareActivity extends Activity {
         }
         switch (socialTypeBean.type) {
             case ISocialType.SOCIAL_WX_SESSION: //微信
-                shareHelper.shareWX(this, false, shareDataBean, shareCallback, needFinishActivity);
+                shareHelper.shareWX(this, ISocialType.SOCIAL_WX_SESSION, shareDataBean, shareCallback, needFinishActivity);
                 break;
             case ISocialType.SOCIAL_WX_TIMELINE: //朋友圈
-                shareHelper.shareWX(this, true, shareDataBean, shareCallback, needFinishActivity);
+                shareHelper.shareWX(this, ISocialType.SOCIAL_WX_TIMELINE, shareDataBean, shareCallback, needFinishActivity);
                 break;
             case ISocialType.SOCIAL_SMS: //短信
                 shareHelper.shareShortMessage(this, shareDataBean, shareCallback, needFinishActivity);
@@ -109,7 +109,7 @@ public class ShareActivity extends Activity {
                 shareHelper.shareWB(this, shareDataBean, shareCallback, needFinishActivity);
                 break;
             case ISocialType.SOCIAL_WX_MINIPROGRAM: //微信小程序
-                shareHelper.shareWxMiniProgram(this, shareDataBean, shareCallback, needFinishActivity);
+                shareHelper.shareWX(this, ISocialType.SOCIAL_WX_MINIPROGRAM, shareDataBean, shareCallback, needFinishActivity);
                 break;
             case ISocialType.SOCIAL_ALIPAY_MINIPROGRAM: //支付宝小程序
                 shareHelper.shareAlipayMiniProgram(this, shareDataBean, shareCallback, needFinishActivity);

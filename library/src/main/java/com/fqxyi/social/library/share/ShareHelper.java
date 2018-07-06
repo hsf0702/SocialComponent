@@ -47,10 +47,9 @@ public class ShareHelper {
     }
 
     /**
-     * 分享到微信或朋友圈
-     * @param isTimeLine true 朋友圈 false 微信
+     * 分享到微信或朋友圈或小程序
      */
-    public void shareWX(final Activity activity, final boolean isTimeLine, final ShareDataBean shareDataBean, final IShareCallback shareCallback, final boolean needFinishActivity) {
+    public void shareWX(final Activity activity, final int socialType, final ShareDataBean shareDataBean, final IShareCallback shareCallback, final boolean needFinishActivity) {
         this.activity = activity;
         this.shareCallback = shareCallback;
         this.needFinishActivity = needFinishActivity;
@@ -66,7 +65,7 @@ public class ShareHelper {
                 if (wxShareHelper == null) {
                     wxShareHelper = new WXShareHelper(activity, SocialHelper.get().getWxAppId(), SocialHelper.get().getWxAppSecret(), parentDir);
                 }
-                wxShareHelper.share(isTimeLine, shareDataBean, shareCallback, shareHandler, needFinishActivity);
+                wxShareHelper.share(socialType, shareDataBean, shareCallback, shareHandler, needFinishActivity);
             }
         });
     }
@@ -167,13 +166,6 @@ public class ShareHelper {
                 wbShareHelper.share(shareDataBean, shareCallback, shareHandler, needFinishActivity);
             }
         });
-    }
-
-    /**
-     * 分享到微信小程序
-     */
-    public void shareWxMiniProgram(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
-
     }
 
     /**

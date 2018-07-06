@@ -71,7 +71,9 @@ public class MainActivity extends Activity {
     public void jump2Share(View view) {
         ShareDataBean shareDataBean = new ShareDataBean();
         HashMap<Integer, Integer> shareTypeList = new HashMap<>();
-        shareTypeList.put(ISocialType.SOCIAL_WX_SESSION, WXShareHelper.TYPE_TEXT);
+        shareTypeList.put(ISocialType.SOCIAL_WX_SESSION, WXShareHelper.TYPE_WEB);
+        shareTypeList.put(ISocialType.SOCIAL_WX_TIMELINE, WXShareHelper.TYPE_WEB);
+        shareTypeList.put(ISocialType.SOCIAL_WX_MINIPROGRAM, WXShareHelper.TYPE_MINIPROGRAM);
         shareTypeList.put(ISocialType.SOCIAL_QQ, QQShareHelper.TYPE_IMAGE_TEXT);
         shareTypeList.put(ISocialType.SOCIAL_WB, WBShareHelper.TYPE_TEXT);
         shareDataBean.shareType = shareTypeList;
@@ -79,7 +81,7 @@ public class MainActivity extends Activity {
         shareDataBean.shareDesc = "全球最大的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求。百度超过千亿的中文网页数据库，可以瞬间找到相关的搜索结果。";
         shareDataBean.shareImage = "https://www.baidu.com/img/bd_logo1.png";
         shareDataBean.shareUrl = "https://www.baidu.com/";
-        shareDataBean.shareMiniAppId = "小程序的原始ID";
+        shareDataBean.shareMiniType = 0;
         shareDataBean.shareMiniPage = "小程序页面地址";
 
         ArrayList<SocialTypeBean> socialTypeBeans = new ArrayList<>();
@@ -127,7 +129,7 @@ public class MainActivity extends Activity {
         shareDataBean.shareDesc = "全球最大的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求。百度超过千亿的中文网页数据库，可以瞬间找到相关的搜索结果。";
         shareDataBean.shareImage = "https://www.baidu.com/img/bd_logo1.png";
         shareDataBean.shareUrl = "https://www.baidu.com/";
-        shareDataBean.shareMiniAppId = "小程序的原始ID";
+        shareDataBean.shareMiniType = 0;
         shareDataBean.shareMiniPage = "小程序页面地址";
 
         SocialTypeBean socialTypeBean = new SocialTypeBean();

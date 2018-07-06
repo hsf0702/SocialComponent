@@ -55,7 +55,7 @@ public class SecondActivity extends Activity {
         shareDataBean.shareDesc = "全球最大的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求。百度超过千亿的中文网页数据库，可以瞬间找到相关的搜索结果。";
         shareDataBean.shareImage = "https://www.baidu.com/img/bd_logo1.png";
         shareDataBean.shareUrl = "https://www.baidu.com/";
-        shareDataBean.shareMiniAppId = "小程序的原始ID";
+        shareDataBean.shareMiniType = 0;
         shareDataBean.shareMiniPage = "小程序页面地址";
 
         SocialHelper.get().share(this, socialTypeBeans, shareDataBean, new IShareCallback() {

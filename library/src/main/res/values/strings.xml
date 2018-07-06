@@ -11,7 +11,7 @@
     <!-- 分享 -->
 
     <!-- 微信 -->
-    <string name="social_error_wx_share_data">微信分享数据异常</string>
+    <string name="social_error_wx_share_data">分享数据异常</string>
     <!-- QQ -->
     <string name="social_error_qq_share_data">QQ分享数据异常</string>
     <!-- 微博 -->

@@ -11,11 +11,13 @@ import android.text.TextUtils;
 
 import com.fqxyi.social.library.ISocialType;
 import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.auth.WXAuthHelper;
 import com.fqxyi.social.library.util.Utils;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
 import com.tencent.mm.opensdk.modelmsg.WXMusicObject;
 import com.tencent.mm.opensdk.modelmsg.WXTextObject;
 import com.tencent.mm.opensdk.modelmsg.WXVideoObject;
@@ -40,6 +42,8 @@ public class WXShareHelper {
     public static final int TYPE_VIDEO = 3;
     //分享网页
     public static final int TYPE_WEB = 4;
+    //分享小程序
+    public static final int TYPE_MINIPROGRAM = 5;
 
     //
     public static final String ACTION_WX_SHARE_RECEIVER = "ACTION_WX_SHARE_RECEIVER";
@@ -54,8 +58,8 @@ public class WXShareHelper {
     private IShareCallback shareCallback;
     //图片缓存的父目录
     private File parentDir;
-    //true 分享到朋友圈 false 分享到微信
-    private boolean isTimeLine;
+    //微信或朋友圈或小程序
+    private int socialType;
     //分享类型
     private int shareType;
     //是否需要finishActivity
@@ -78,21 +82,22 @@ public class WXShareHelper {
 
     /**
      * 具体的分享逻辑
-     * @param isTimeLine true 朋友圈 false 微信
      */
-    public void share(boolean isTimeLine, ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler, boolean needFinishActivity) {
-        this.isTimeLine = isTimeLine;
+    public void share(int socialType, ShareDataBean shareDataBean, IShareCallback shareCallback, Handler handler, boolean needFinishActivity) {
+        this.socialType = socialType;
         this.shareCallback = shareCallback;
         this.needFinishActivity = needFinishActivity;
         //判断数据源是否为空
         if (shareDataBean == null) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.social_error_wx_share_data);
-            if (isTimeLine) {
-                msg.arg1 = ISocialType.SOCIAL_WX_SESSION;
+            if (socialType == ISocialType.SOCIAL_WX_SESSION) {
+                msg.obj = "微信" + activity.getString(R.string.social_error_wx_share_data);
+            } else if (socialType == ISocialType.SOCIAL_WX_TIMELINE) {
+                msg.obj = "朋友圈" + activity.getString(R.string.social_error_wx_share_data);
             } else {
-                msg.arg1 = ISocialType.SOCIAL_WX_TIMELINE;
+                msg.obj = "小程序" + activity.getString(R.string.social_error_wx_share_data);
             }
+            msg.arg1 = socialType;
             handler.sendMessage(msg);
             return;
         }
@@ -100,19 +105,15 @@ public class WXShareHelper {
         if (!wxapi.isWXAppInstalled()) {
             Message msg = Message.obtain();
             msg.obj = activity.getString(R.string.social_error_wx_uninstall);
-            if (isTimeLine) {
-                msg.arg1 = ISocialType.SOCIAL_WX_SESSION;
-            } else {
-                msg.arg1 = ISocialType.SOCIAL_WX_TIMELINE;
-            }
+            msg.arg1 = socialType;
             handler.sendMessage(msg);
             return;
         }
         //是否分享到朋友圈，微信4.2以下不支持朋友圈
-        if (isTimeLine && wxapi.getWXAppSupportAPI() < 0x21020001) {
+        if (socialType == ISocialType.SOCIAL_WX_TIMELINE && wxapi.getWXAppSupportAPI() < 0x21020001) {
             Message msg = Message.obtain();
             msg.obj = activity.getString(R.string.social_error_wx_version_low);
-            msg.arg1 = ISocialType.SOCIAL_WX_TIMELINE;
+            msg.arg1 = socialType;
             handler.sendMessage(msg);
             return;
         }
@@ -120,24 +121,30 @@ public class WXShareHelper {
         if (shareDataBean.shareType == null) {
             shareType = 0;
         } else {
-            shareType = shareDataBean.shareType.get(ISocialType.SOCIAL_WX_SESSION);
+            shareType = shareDataBean.shareType.get(socialType);
         }
         //需要传递给微信的分享数据
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.message = getShareMessage(req, shareDataBean);
         if (req.message == null) {
             Message msg = Message.obtain();
-            msg.obj = activity.getString(R.string.social_error_wx_share_data);
-            if (isTimeLine) {
-                msg.arg1 = ISocialType.SOCIAL_WX_SESSION;
+            if (socialType == ISocialType.SOCIAL_WX_SESSION) {
+                msg.obj = "微信" + activity.getString(R.string.social_error_wx_share_data);
+            } else if (socialType == ISocialType.SOCIAL_WX_TIMELINE) {
+                msg.obj = "朋友圈" + activity.getString(R.string.social_error_wx_share_data);
             } else {
-                msg.arg1 = ISocialType.SOCIAL_WX_TIMELINE;
+                msg.obj = "小程序" + activity.getString(R.string.social_error_wx_share_data);
             }
+            msg.arg1 = socialType;
             handler.sendMessage(msg);
             return;
         }
-        req.scene = isTimeLine ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;
-        //分享到scene（微信或朋友圈）
+        if (socialType == ISocialType.SOCIAL_WX_TIMELINE) {
+            req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        } else {
+            req.scene = SendMessageToWX.Req.WXSceneSession;
+        }
+        //分享到scene（微信或朋友圈或小程序）
         wxapi.sendReq(req);
     }
 
@@ -162,6 +169,9 @@ public class WXShareHelper {
                 break;
             case WXShareHelper.TYPE_WEB:
                 success = addWeb(req, msg, shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage);
+                break;
+            case WXShareHelper.TYPE_MINIPROGRAM:
+                success = addMiniProgram(req, msg, shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage, shareDataBean.shareMiniType, shareDataBean.shareMiniPage);
                 break;
         }
         if (!success) {
@@ -236,17 +246,38 @@ public class WXShareHelper {
         return true;
     }
 
+    private boolean addMiniProgram(SendMessageToWX.Req req, WXMediaMessage msg, String url, String title, String desc, String image, int miniType, String miniPage) {
+        if (TextUtils.isEmpty(SocialHelper.get().getWxMiniAppId())) {
+            return false;
+        }
+        WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
+        miniProgramObj.webpageUrl = url; //兼容低版本的网页链接
+        miniProgramObj.miniprogramType = miniType; //正式版:0，测试版:1，体验版:2
+        miniProgramObj.userName = SocialHelper.get().getWxMiniAppId(); //小程序原始id
+        miniProgramObj.path = miniPage; //小程序页面路径
+
+        msg.mediaObject = miniProgramObj;
+        if (addTitleSummaryAndThumb(msg, title, desc, image, 131072)) return false;
+
+        req.transaction = buildTransaction("miniProgram");
+        return true;
+    }
+
+    private boolean addTitleSummaryAndThumb(WXMediaMessage msg, String title, String desc, String image) {
+        return addTitleSummaryAndThumb(msg, title, desc, image, 32768);
+    }
+
     /**
      * 当有设置缩略图但是找不到的时候阻止分享
      */
-    private boolean addTitleSummaryAndThumb(WXMediaMessage msg, String title, String desc, String image) {
-        msg.title = title;
-        msg.description = desc;
-        byte[] thumbData = ImageUtil.getImageByte(image, 32768);
+    private boolean addTitleSummaryAndThumb(WXMediaMessage msg, String title, String desc, String image, int maxSize) {
+        msg.title = title; //消息title
+        msg.description = desc; //消息desc
+        byte[] thumbData = ImageUtil.getImageByte(image, maxSize);
         if (thumbData == null) {
             return true;
         }
-        msg.thumbData = thumbData;
+        msg.thumbData = thumbData; //消息封面图片 小程序大小限制：128k，其它分享大小限制32k
         return false;
     }
 
@@ -282,16 +313,20 @@ public class WXShareHelper {
             String msg = intent.getStringExtra(WXAuthHelper.KEY_WX_AUTH_MSG);
             boolean success = intent.getBooleanExtra(WXShareHelper.KEY_WX_AUTH_RESULT, false);
             if (success) {
-                if (isTimeLine) {
-                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, "朋友圈" + msg);
-                } else {
+                if (socialType == ISocialType.SOCIAL_WX_SESSION) {
                     shareCallback.onSuccess(ISocialType.SOCIAL_WX_TIMELINE, "微信" + msg);
+                } else if (socialType == ISocialType.SOCIAL_WX_TIMELINE) {
+                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, "朋友圈" + msg);
+                } else if (socialType == ISocialType.SOCIAL_WX_MINIPROGRAM) {
+                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_MINIPROGRAM, "小程序" + msg);
                 }
             } else {
-                if (isTimeLine) {
-                    shareCallback.onError(ISocialType.SOCIAL_WX_SESSION, "朋友圈" + msg);
-                } else {
+                if (socialType == ISocialType.SOCIAL_WX_SESSION) {
                     shareCallback.onError(ISocialType.SOCIAL_WX_TIMELINE, "微信" + msg);
+                } else if (socialType == ISocialType.SOCIAL_WX_TIMELINE) {
+                    shareCallback.onError(ISocialType.SOCIAL_WX_SESSION, "朋友圈" + msg);
+                } else if (socialType == ISocialType.SOCIAL_WX_MINIPROGRAM) {
+                    shareCallback.onError(ISocialType.SOCIAL_WX_MINIPROGRAM, "小程序" + msg);
                 }
             }
             Utils.finish(activity, needFinishActivity);

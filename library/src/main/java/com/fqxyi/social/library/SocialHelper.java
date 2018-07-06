@@ -127,6 +127,7 @@ public class SocialHelper {
 
     private String wxAppId;
     private String wxAppSecret;
+    private String wxMiniAppId;
 
     private String wbAppId;
     private String wbRedirectUrl;
@@ -155,6 +156,15 @@ public class SocialHelper {
 
     public SocialHelper setWxAppSecret(String wxAppSecret) {
         this.wxAppSecret = wxAppSecret;
+        return this;
+    }
+
+    public String getWxMiniAppId() {
+        return wxMiniAppId;
+    }
+
+    public SocialHelper setWxMiniAppId(String wxMiniAppId) {
+        this.wxMiniAppId = wxMiniAppId;
         return this;
     }
 
