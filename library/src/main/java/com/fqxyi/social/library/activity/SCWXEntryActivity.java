@@ -88,7 +88,7 @@ public class SCWXEntryActivity extends Activity implements IWXAPIEventHandler {
             } else if (baseResp.errCode == BaseResp.ErrCode.ERR_UNSUPPORT) {
                 return prefix+"不支持错误";
             } else if (baseResp.errCode == BaseResp.ErrCode.ERR_BAN) {
-                return prefix+"错误";
+                return prefix+"签名错误";
             }
         } else {
             return baseResp.errStr;
