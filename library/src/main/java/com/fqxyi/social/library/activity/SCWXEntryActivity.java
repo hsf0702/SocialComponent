@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.util.LogUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -50,21 +50,50 @@ public class SCWXEntryActivity extends Activity implements IWXAPIEventHandler {
         //微信授权
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                String code = ((SendAuth.Resp) baseResp).code;
-                SocialHelper.get().getAuthHelper().sendAuthBroadcast(this, code);
+                SocialHelper.get().getAuthHelper().sendAuthBroadcast(this, true, getErrorMsg("授权", baseResp));
             } else {
-                SocialHelper.get().getAuthHelper().sendAuthBroadcast(this, null);
+                SocialHelper.get().getAuthHelper().sendAuthBroadcast(this, false, getErrorMsg("授权", baseResp));
             }
         }
         //微信分享
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                SocialHelper.get().getShareHelper().sendShareBroadcast(this, true);
+                SocialHelper.get().getShareHelper().sendShareBroadcast(this, true, getErrorMsg("分享", baseResp));
             } else {
-                SocialHelper.get().getShareHelper().sendShareBroadcast(this, false);
+                SocialHelper.get().getShareHelper().sendShareBroadcast(this, false, getErrorMsg("分享", baseResp));
             }
         }
+        //关闭页面
         onBackPressed();
+    }
+
+    /**
+     * https://open.yixin.im/resource/document/android_sdk_doc/im/yixin/sdk/api/BaseResp.ErrCode.html
+     */
+    private String getErrorMsg(String prefix, BaseResp baseResp) {
+        if (baseResp == null) {
+            return "";
+        }
+        if (TextUtils.isEmpty(baseResp.errStr)) {
+            if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
+                return prefix+"成功";
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_COMM) {
+                return prefix+"错误";
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_USER_CANCEL) {
+                return prefix+"取消";
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_SENT_FAILED) {
+                return prefix+"失败";
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_AUTH_DENIED) {
+                return prefix+"拒绝";
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_UNSUPPORT) {
+                return prefix+"不支持错误";
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_BAN) {
+                return prefix+"错误";
+            }
+        } else {
+            return baseResp.errStr;
+        }
+        return "";
     }
 
 }

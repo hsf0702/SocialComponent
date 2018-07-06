@@ -217,12 +217,13 @@ public class ShareHelper {
 
     /**
      * 微信分享，在微信回调到WXEntryActivity的onResp方法中调用
-     *
-     * @param success 表示是否分享成功
+     * @param success false表示失败，true表示成功
+     * @param msg 消息内容
      */
-    public void sendShareBroadcast(Context context, boolean success) {
+    public void sendShareBroadcast(Context context, boolean success, String msg) {
         Intent intent = new Intent(WXShareHelper.ACTION_WX_SHARE_RECEIVER);
-        intent.putExtra(WXShareHelper.KEY_WX_SHARE_CALLBACK, success);
+        intent.putExtra(WXShareHelper.KEY_WX_AUTH_RESULT, success);
+        intent.putExtra(WXShareHelper.KEY_WX_AUTH_MSG, msg);
         context.sendBroadcast(intent);
     }
 

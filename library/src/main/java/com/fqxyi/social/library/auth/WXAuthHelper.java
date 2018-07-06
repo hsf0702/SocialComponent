@@ -21,8 +21,8 @@ public class WXAuthHelper {
 
     //静态常量
     public static final String ACTION_WX_AUTH_RECEIVER = "ACTION_WX_AUTH_RECEIVER";
-    public static final String KEY_WX_AUTH_CODE = "KEY_WX_AUTH_CODE";
-    public static final String KEY_WX_AUTH_CODE_CANCEL = "KEY_WX_AUTH_CODE_CANCEL";
+    public static final String KEY_WX_AUTH_RESULT = "KEY_WX_AUTH_RESULT";
+    public static final String KEY_WX_AUTH_MSG = "KEY_WX_AUTH_MSG";
 
     //上下文
     private Activity activity;
@@ -89,15 +89,16 @@ public class WXAuthHelper {
     public BroadcastReceiver wxAuthReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String code = intent.getStringExtra(WXAuthHelper.KEY_WX_AUTH_CODE);
-            if (code.equals(WXAuthHelper.KEY_WX_AUTH_CODE_CANCEL)) {
-                if (authCallback != null) {
-                    authCallback.onError(ISocialType.SOCIAL_WX_SESSION, null);
-                }
+            if (authCallback == null) {
+                Utils.finish(activity, needFinishActivity);
+                return;
+            }
+            String msg = intent.getStringExtra(WXAuthHelper.KEY_WX_AUTH_MSG);
+            boolean success = intent.getBooleanExtra(WXAuthHelper.KEY_WX_AUTH_RESULT, false);
+            if (success) {
+                authCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, msg);
             } else {
-                if (authCallback != null) {
-                    authCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, null);
-                }
+                authCallback.onError(ISocialType.SOCIAL_WX_SESSION, msg);
             }
             Utils.finish(activity, needFinishActivity);
         }

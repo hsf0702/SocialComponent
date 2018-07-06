@@ -9,8 +9,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.auth.WXAuthHelper;
 import com.fqxyi.social.library.util.Utils;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
@@ -42,7 +43,8 @@ public class WXShareHelper {
 
     //
     public static final String ACTION_WX_SHARE_RECEIVER = "ACTION_WX_SHARE_RECEIVER";
-    public static final String KEY_WX_SHARE_CALLBACK = "KEY_WX_SHARE_CALLBACK";
+    public static final String KEY_WX_AUTH_RESULT = "KEY_WX_AUTH_RESULT";
+    public static final String KEY_WX_AUTH_MSG = "KEY_WX_AUTH_MSG";
 
     //上下文
     private Activity activity;
@@ -273,20 +275,23 @@ public class WXShareHelper {
     public BroadcastReceiver wxShareReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean shareSuccess = intent.getBooleanExtra(WXShareHelper.KEY_WX_SHARE_CALLBACK, false);
-            if (shareCallback != null) {
-                if (shareSuccess) {
-                    if (isTimeLine) {
-                        shareCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, null);
-                    } else {
-                        shareCallback.onSuccess(ISocialType.SOCIAL_WX_TIMELINE, null);
-                    }
+            if (shareCallback == null) {
+                Utils.finish(activity, needFinishActivity);
+                return;
+            }
+            String msg = intent.getStringExtra(WXAuthHelper.KEY_WX_AUTH_MSG);
+            boolean success = intent.getBooleanExtra(WXShareHelper.KEY_WX_AUTH_RESULT, false);
+            if (success) {
+                if (isTimeLine) {
+                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, "朋友圈" + msg);
                 } else {
-                    if (isTimeLine) {
-                        shareCallback.onError(ISocialType.SOCIAL_WX_SESSION, null);
-                    } else {
-                        shareCallback.onError(ISocialType.SOCIAL_WX_TIMELINE, null);
-                    }
+                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_TIMELINE, "微信" + msg);
+                }
+            } else {
+                if (isTimeLine) {
+                    shareCallback.onError(ISocialType.SOCIAL_WX_SESSION, "朋友圈" + msg);
+                } else {
+                    shareCallback.onError(ISocialType.SOCIAL_WX_TIMELINE, "微信" + msg);
                 }
             }
             Utils.finish(activity, needFinishActivity);

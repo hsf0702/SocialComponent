@@ -3,7 +3,6 @@ package com.fqxyi.social.library.auth;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 
 import com.fqxyi.social.library.SocialHelper;
 
@@ -60,14 +59,13 @@ public class AuthHelper {
 
     /**
      * 微信授权，在微信回调到WXEntryActivity的onResp方法中调用
-     * @param code 空表示失败，正常就是有值的
+     * @param success false表示失败，true表示成功
+     * @param msg 消息内容
      */
-    public void sendAuthBroadcast(Context context, String code) {
+    public void sendAuthBroadcast(Context context, boolean success, String msg) {
         Intent intent = new Intent(WXAuthHelper.ACTION_WX_AUTH_RECEIVER);
-        if (TextUtils.isEmpty(code)) {
-            code = WXAuthHelper.KEY_WX_AUTH_CODE_CANCEL;
-        }
-        intent.putExtra(WXAuthHelper.KEY_WX_AUTH_CODE, code);
+        intent.putExtra(WXAuthHelper.KEY_WX_AUTH_RESULT, success);
+        intent.putExtra(WXAuthHelper.KEY_WX_AUTH_MSG, msg);
         context.sendBroadcast(intent);
     }
 
