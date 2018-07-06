@@ -77,7 +77,7 @@ public class AuthActivity extends Activity {
         if (socialTypeBean == null) {
             return;
         }
-        switch (socialTypeBean.type) {
+        switch (socialTypeBean.socialType) {
             case ISocialType.SOCIAL_WX_SESSION: //微信
                 authHelper.authWX(this, authCallback, needFinishActivity);
                 break;

@@ -46,11 +46,11 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialView
         }
         final SocialTypeBean socialTypeBean = socialTypeBeans.get(position);
         //View展示
-        if (socialTypeBean.type != 5) {
-            holder.socialItemIcon.setImageResource(SocialDialogUtil.getIcon(socialTypeBean.type));
-            holder.socialItemName.setText(SocialDialogUtil.getName(socialTypeBean.type));
+        if (socialTypeBean.socialType != 5) {
+            holder.socialItemIcon.setImageResource(SocialDialogUtil.getIcon(socialTypeBean.socialType));
+            holder.socialItemName.setText(SocialDialogUtil.getName(socialTypeBean.socialType));
         } else {
-            if (!TextUtils.isEmpty(socialTypeBean.socialIcon)) { // todo 网络图片，目前无法显示
+            if (!TextUtils.isEmpty(socialTypeBean.socialIcon)) {
                 holder.socialItemIcon.setImageURI(Uri.parse(socialTypeBean.socialIcon));
             }
             holder.socialItemName.setText(socialTypeBean.socialName);

@@ -90,6 +90,7 @@ public class MainActivity extends Activity {
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SMS));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_COPY));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_REFRESH));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_CUSTOM, "https://img.ezprice.com.tw/is/c.rimg.com.tw/s1/4/7e/29/21628111029801_843_s.jpg", "自定义图标需要集成图片库"));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WB));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_MINIPROGRAM));
@@ -133,7 +134,7 @@ public class MainActivity extends Activity {
         shareDataBean.shareMiniPage = "小程序页面地址";
 
         SocialTypeBean socialTypeBean = new SocialTypeBean();
-        socialTypeBean.type = ISocialType.SOCIAL_QQ;
+        socialTypeBean.socialType = ISocialType.SOCIAL_QQ;
 
         SocialHelper.get().share(this, socialTypeBean, shareDataBean, new IShareCallback() {
             @Override
@@ -186,7 +187,7 @@ public class MainActivity extends Activity {
 
     public void jump2AuthQQ(View view) {
         SocialTypeBean socialTypeBean = new SocialTypeBean();
-        socialTypeBean.type = ISocialType.SOCIAL_QQ;
+        socialTypeBean.socialType = ISocialType.SOCIAL_QQ;
 
         SocialHelper.get().auth(this, socialTypeBean, new IAuthCallback() {
             @Override

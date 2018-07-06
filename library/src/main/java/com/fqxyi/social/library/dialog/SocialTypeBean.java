@@ -10,7 +10,7 @@ public class SocialTypeBean implements Serializable {
     /***
      * 0.微信 1.朋友圈 2.短信 3.复制 4.刷新 5.自定义 6 QQ 7 微博 8 微信小程序 9 支付宝小程序
      */
-    public int type;
+    public int socialType;
     /***
      * url地址,自定义有用
      */
@@ -24,8 +24,14 @@ public class SocialTypeBean implements Serializable {
 
     }
 
-    public SocialTypeBean(int type) {
-        this.type = type;
+    public SocialTypeBean(int socialType) {
+        this.socialType = socialType;
+    }
+
+    public SocialTypeBean(int socialType, String socialIcon, String socialName) {
+        this.socialType = socialType;
+        this.socialIcon = socialIcon;
+        this.socialName = socialName;
     }
 
 }

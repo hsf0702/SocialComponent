@@ -86,7 +86,7 @@ public class ShareActivity extends Activity {
         if (socialTypeBean == null) {
             return;
         }
-        switch (socialTypeBean.type) {
+        switch (socialTypeBean.socialType) {
             case ISocialType.SOCIAL_WX_SESSION: //微信
                 shareHelper.shareWX(this, ISocialType.SOCIAL_WX_SESSION, shareDataBean, shareCallback, needFinishActivity);
                 break;
