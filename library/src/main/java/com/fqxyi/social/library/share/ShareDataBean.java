@@ -27,6 +27,8 @@ public class ShareDataBean implements Serializable {
     public String shareVideoUrl;
     //小程序类型 - 正式版:0，测试版:1，体验版:2
     public int shareMiniType;
+    //小程序AppId
+    public String shareMiniAppId;
     //小程序页面地址
     public String shareMiniPage;
     //各模块分享类型

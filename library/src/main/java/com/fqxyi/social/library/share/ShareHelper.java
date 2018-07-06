@@ -121,6 +121,13 @@ public class ShareHelper {
     }
 
     /**
+     * 自定义
+     */
+    public void shareCustom(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
+
+    }
+
+    /**
      * 分享到QQ
      */
     public void shareQQ(final Activity activity, final ShareDataBean shareDataBean, final IShareCallback shareCallback, final boolean needFinishActivity) {

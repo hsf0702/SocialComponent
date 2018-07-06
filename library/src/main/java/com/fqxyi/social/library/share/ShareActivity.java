@@ -102,6 +102,9 @@ public class ShareActivity extends Activity {
             case ISocialType.SOCIAL_REFRESH: //刷新
                 shareHelper.shareRefresh(this, shareDataBean, shareCallback, needFinishActivity);
                 break;
+            case ISocialType.SOCIAL_CUSTOM: //刷新
+                shareHelper.shareCustom(this, shareDataBean, shareCallback, needFinishActivity);
+                break;
             case ISocialType.SOCIAL_QQ: //QQ
                 shareHelper.shareQQ(this, shareDataBean, shareCallback, needFinishActivity);
                 break;

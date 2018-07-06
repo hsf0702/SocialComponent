@@ -81,8 +81,9 @@ public class MainActivity extends Activity {
         shareDataBean.shareDesc = "全球最大的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求。百度超过千亿的中文网页数据库，可以瞬间找到相关的搜索结果。";
         shareDataBean.shareImage = "https://www.baidu.com/img/bd_logo1.png";
         shareDataBean.shareUrl = "https://www.baidu.com/";
-        shareDataBean.shareMiniType = 0;
-        shareDataBean.shareMiniPage = "小程序页面地址";
+        shareDataBean.shareMiniType = 0; //小程序类型 - 正式版:0，测试版:1，体验版:2
+        shareDataBean.shareMiniAppId = "gh_64c734bc4b8d"; //小程序AppId
+        shareDataBean.shareMiniPage = "pages/fitting-room/index"; //小程序页面地址
 
         ArrayList<SocialTypeBean> socialTypeBeans = new ArrayList<>();
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));

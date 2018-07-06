@@ -11,7 +11,6 @@ import android.text.TextUtils;
 
 import com.fqxyi.social.library.ISocialType;
 import com.fqxyi.social.library.R;
-import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.auth.WXAuthHelper;
 import com.fqxyi.social.library.util.Utils;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -171,7 +170,7 @@ public class WXShareHelper {
                 success = addWeb(req, msg, shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage);
                 break;
             case WXShareHelper.TYPE_MINIPROGRAM:
-                success = addMiniProgram(req, msg, shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage, shareDataBean.shareMiniType, shareDataBean.shareMiniPage);
+                success = addMiniProgram(req, msg, shareDataBean.shareUrl, shareDataBean.shareTitle, shareDataBean.shareDesc, shareDataBean.shareImage, shareDataBean.shareMiniType, shareDataBean.shareMiniAppId, shareDataBean.shareMiniPage);
                 break;
         }
         if (!success) {
@@ -246,14 +245,11 @@ public class WXShareHelper {
         return true;
     }
 
-    private boolean addMiniProgram(SendMessageToWX.Req req, WXMediaMessage msg, String url, String title, String desc, String image, int miniType, String miniPage) {
-        if (TextUtils.isEmpty(SocialHelper.get().getWxMiniAppId())) {
-            return false;
-        }
+    private boolean addMiniProgram(SendMessageToWX.Req req, WXMediaMessage msg, String url, String title, String desc, String image, int miniType, String miniAppId, String miniPage) {
         WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
         miniProgramObj.webpageUrl = url; //兼容低版本的网页链接
         miniProgramObj.miniprogramType = miniType; //正式版:0，测试版:1，体验版:2
-        miniProgramObj.userName = SocialHelper.get().getWxMiniAppId(); //小程序原始id
+        miniProgramObj.userName = miniAppId; //小程序原始id
         miniProgramObj.path = miniPage; //小程序页面路径
 
         msg.mediaObject = miniProgramObj;

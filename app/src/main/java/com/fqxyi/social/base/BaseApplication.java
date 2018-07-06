@@ -13,7 +13,6 @@ public class BaseApplication extends Application {
         SocialHelper.get().setQqAppId("1107009250")
                 .setWxAppId("wx2847b18acb41e535")
                 .setWxAppSecret("78f713b76c61a38242e63ccdb3a96d68")
-                .setWxMiniAppId("")
                 .setWbAppId("2214687859")
                 .setWbRedirectUrl("https://github.com/fengqingxiuyi");
     }
