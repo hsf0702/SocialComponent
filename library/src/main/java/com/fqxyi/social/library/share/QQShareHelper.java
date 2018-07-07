@@ -19,6 +19,9 @@ import java.io.File;
 
 /**
  * QQ分享帮助类
+ *
+ * 相关文档：
+ * 1、分享消息到QQ（定向分享） http://wiki.open.qq.com/wiki/%E5%88%86%E4%BA%AB%E6%B6%88%E6%81%AF%E5%88%B0QQ%EF%BC%88%E5%AE%9A%E5%90%91%E5%88%86%E4%BA%AB%EF%BC%89
  */
 public class QQShareHelper {
 

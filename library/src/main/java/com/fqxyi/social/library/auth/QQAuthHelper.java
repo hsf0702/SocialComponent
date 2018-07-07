@@ -14,6 +14,9 @@ import com.tencent.tauth.UiError;
 /**
  * QQ授权帮助类
  *
+ * 相关文档：
+ * 1、QQ登录和注销 http://wiki.open.qq.com/wiki/QQ%E7%99%BB%E5%BD%95%E5%92%8C%E6%B3%A8%E9%94%80
+ *
  * 问题：QQ授权100044问题，解决办法：本APP未上线，如果你申请的是“个人开发者”，请确保你创建APP所用的QQ帐号和你测试时用的登陆QQ号一致！
  */
 public class QQAuthHelper {
@@ -83,6 +86,7 @@ public class QQAuthHelper {
             if (authCallback != null) {
                 authCallback.onSuccess(ISocialType.SOCIAL_QQ, o.toString());
             }
+            logout();
             Utils.finish(activity, needFinishActivity);
         }
 
@@ -94,6 +98,7 @@ public class QQAuthHelper {
                         + "\n错误信息：" + uiError.errorMessage
                         + "\n错误详情：" + uiError.errorDetail);
             }
+            logout();
             Utils.finish(activity, needFinishActivity);
         }
 
@@ -102,8 +107,18 @@ public class QQAuthHelper {
             if (authCallback != null) {
                 authCallback.onCancel(ISocialType.SOCIAL_QQ);
             }
+            logout();
             Utils.finish(activity, needFinishActivity);
         }
     };
+
+    /**
+     * 调用QQ注销接口
+     */
+    private void logout() {
+        if (tencent != null) {
+            tencent.logout(activity);
+        }
+    }
 
 }

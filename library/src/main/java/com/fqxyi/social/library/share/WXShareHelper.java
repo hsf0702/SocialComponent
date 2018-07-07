@@ -27,6 +27,9 @@ import java.io.File;
 
 /**
  * 微信分享帮助类
+ *
+ * 相关文档：
+ * 1、分享与收藏功能开发文档（Android应用） https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419317340&token=&lang=zh_CN
  */
 public class WXShareHelper {
 

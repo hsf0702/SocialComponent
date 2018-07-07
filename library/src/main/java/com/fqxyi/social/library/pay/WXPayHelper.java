@@ -17,6 +17,11 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 /**
  * 微信支付帮助类
+ *
+ * 相关文档：
+ * 1、APP端开发步骤 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_5
+ * 2、调起支付接口 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12
+ * 3、Demo下载 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=11_1
  */
 public class WXPayHelper {
 

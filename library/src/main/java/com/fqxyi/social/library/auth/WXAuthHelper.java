@@ -16,6 +16,9 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 /**
  * 微信授权帮助类
+ *
+ * 相关文档：
+ * 1、移动应用微信登录开发指南 https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419317851&token=&lang=zh_CN
  */
 public class WXAuthHelper {
 
