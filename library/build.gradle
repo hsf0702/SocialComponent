@@ -27,7 +27,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(include: ['*.jar'], dir: 'libs')
     //support-v4 - QQ授权需要
     api 'com.android.support:support-v4:27.1.1'
     //recyclerView
