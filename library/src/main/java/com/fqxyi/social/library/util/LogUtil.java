@@ -17,7 +17,7 @@ public class LogUtil {
 
     private static boolean LOG_DEBUG = BuildConfig.DEBUG;
 
-    private static final String TAG = "mamhao";
+    private static final String TAG = "SocialComponent";
 
     private static int maxLength = 3000;
 
