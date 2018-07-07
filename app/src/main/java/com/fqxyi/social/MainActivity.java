@@ -16,6 +16,7 @@ import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.auth.IAuthCallback;
 import com.fqxyi.social.library.dialog.SocialTypeBean;
 import com.fqxyi.social.library.pay.IPayCallback;
+import com.fqxyi.social.library.pay.WXPayBean;
 import com.fqxyi.social.library.share.IShareCallback;
 import com.fqxyi.social.library.share.QQShareHelper;
 import com.fqxyi.social.library.share.ShareDataBean;
@@ -210,7 +211,15 @@ public class MainActivity extends Activity {
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAY));
 
-        SocialHelper.get().pay(this, socialTypeBeans, new IPayCallback() {
+        WXPayBean wxPayBean = new WXPayBean();
+        wxPayBean.partnerId = "1900000109";
+        wxPayBean.prepayId = "WX1217752501201407033233368018";
+        wxPayBean.nonceStr = "Sign=WXPay";
+        wxPayBean.timeStamp = "5K8264ILTKCH16CQ2502SI8ZNMTM67VS";
+        wxPayBean.packageValue = "1412000000";
+        wxPayBean.sign = "C380BEC2BFD727A4B6845133519F3AD6";
+
+        SocialHelper.get().pay(this, socialTypeBeans, wxPayBean, new IPayCallback() {
             @Override
             public void onSuccess(int socialType, String msg) {
                 Toast.makeText(MainActivity.this, "onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
@@ -232,7 +241,15 @@ public class MainActivity extends Activity {
         SocialTypeBean socialTypeBean = new SocialTypeBean();
         socialTypeBean.socialType = ISocialType.SOCIAL_WX_SESSION;
 
-        SocialHelper.get().pay(this, socialTypeBean, new IPayCallback() {
+        WXPayBean wxPayBean = new WXPayBean();
+        wxPayBean.partnerId = "1900000109";
+        wxPayBean.prepayId = "WX1217752501201407033233368018";
+        wxPayBean.nonceStr = "Sign=WXPay";
+        wxPayBean.timeStamp = "5K8264ILTKCH16CQ2502SI8ZNMTM67VS";
+        wxPayBean.packageValue = "1412000000";
+        wxPayBean.sign = "C380BEC2BFD727A4B6845133519F3AD6";
+
+        SocialHelper.get().pay(this, socialTypeBean, wxPayBean, new IPayCallback() {
             @Override
             public void onSuccess(int socialType, String msg) {
                 Toast.makeText(MainActivity.this, "onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();

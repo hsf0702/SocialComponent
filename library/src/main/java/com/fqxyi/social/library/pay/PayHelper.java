@@ -17,11 +17,11 @@ public class PayHelper {
     /**
      * 发起微信支付
      */
-    public void payWX(Activity activity, IPayCallback payCallback, boolean needFinishActivity) {
+    public void payWX(Activity activity, WXPayBean wxPayBean, IPayCallback payCallback, boolean needFinishActivity) {
         if (wxPayHelper == null) {
             wxPayHelper = new WXPayHelper(activity, SocialHelper.get().getWxAppId(), SocialHelper.get().getWxAppSecret());
         }
-        wxPayHelper.pay(payCallback, needFinishActivity);
+        wxPayHelper.pay(wxPayBean, payCallback, needFinishActivity);
     }
 
     /**

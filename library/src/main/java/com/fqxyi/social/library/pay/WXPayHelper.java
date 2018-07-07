@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.fqxyi.social.library.ISocialType;
 import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.util.Utils;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -50,9 +51,17 @@ public class WXPayHelper {
     /**
      * 具体的支付逻辑
      */
-    public void pay(IPayCallback payCallback, boolean needFinishActivity) {
+    public void pay(WXPayBean wxPayBean, IPayCallback payCallback, boolean needFinishActivity) {
         this.payCallback = payCallback;
         this.needFinishActivity = needFinishActivity;
+        //NPE校验
+        if (wxPayBean == null) {
+            if (payCallback != null) {
+                payCallback.onError(ISocialType.SOCIAL_WX_SESSION, activity.getString(R.string.social_error_wx_pay_data));
+            }
+            Utils.finish(activity, needFinishActivity);
+            return;
+        }
         //判断是否安装微信
         if (!wxapi.isWXAppInstalled()) {
             if (payCallback != null) {
@@ -63,13 +72,13 @@ public class WXPayHelper {
         }
         //开始微信支付
         PayReq request = new PayReq();
-        request.appId = "wxd930ea5d5a258f4f";
-        request.partnerId = "1900000109";
-        request.prepayId= "1101000000140415649af9fc314aa427";
-        request.packageValue = "Sign=WXPay";
-        request.nonceStr= "1101000000140429eb40476f8896f4c9";
-        request.timeStamp= "1398746574";
-        request.sign= "7FFECB600D7157C5AA49810D2D8F28BC2811827B";
+        request.appId = SocialHelper.get().getWxAppId();
+        request.partnerId = wxPayBean.partnerId;
+        request.prepayId= wxPayBean.prepayId;
+        request.packageValue = wxPayBean.packageValue;
+        request.nonceStr= wxPayBean.nonceStr;
+        request.timeStamp= wxPayBean.timeStamp;
+        request.sign= wxPayBean.sign;
         wxapi.sendReq(request);
     }
 
