@@ -138,11 +138,11 @@ public class SocialHelper {
         activity.startActivity(intent);
     }
 
-    public void pay(Activity activity, SocialTypeBean socialTypeBean, WXPayBean wxPayBean, IPayCallback payCallback) {
-        pay(activity, socialTypeBean, wxPayBean, false, payCallback);
+    public void pay(Activity activity, SocialTypeBean socialTypeBean, WXPayBean wxPayBean, String orderInfo, IPayCallback payCallback) {
+        pay(activity, socialTypeBean, wxPayBean, orderInfo, false, payCallback);
     }
 
-    public void pay(Activity activity, SocialTypeBean socialTypeBean, WXPayBean wxPayBean, boolean needFinishActivity, IPayCallback payCallback) {
+    public void pay(Activity activity, SocialTypeBean socialTypeBean, WXPayBean wxPayBean, String orderInfo, boolean needFinishActivity, IPayCallback payCallback) {
         if (Utils.isFastClick()) {
             return;
         }
@@ -150,15 +150,16 @@ public class SocialHelper {
         Intent intent = new Intent(activity, PayActivity.class);
         intent.putExtra("SocialTypeBean", socialTypeBean);
         intent.putExtra("WXPayBean", wxPayBean);
+        intent.putExtra("OrderInfo", orderInfo);
         intent.putExtra("needFinishActivity", needFinishActivity);
         activity.startActivity(intent);
     }
 
-    public void pay(Activity activity, ArrayList<SocialTypeBean> socialTypeBeans, WXPayBean wxPayBean, IPayCallback payCallback) {
-        pay(activity, socialTypeBeans, wxPayBean, false, payCallback);
+    public void pay(Activity activity, ArrayList<SocialTypeBean> socialTypeBeans, WXPayBean wxPayBean, String orderInfo, IPayCallback payCallback) {
+        pay(activity, socialTypeBeans, wxPayBean, orderInfo, false, payCallback);
     }
 
-    public void pay(Activity activity, ArrayList<SocialTypeBean> socialTypeBeans, WXPayBean wxPayBean, boolean needFinishActivity, IPayCallback payCallback) {
+    public void pay(Activity activity, ArrayList<SocialTypeBean> socialTypeBeans, WXPayBean wxPayBean, String orderInfo, boolean needFinishActivity, IPayCallback payCallback) {
         if (Utils.isFastClick()) {
             return;
         }
@@ -166,6 +167,7 @@ public class SocialHelper {
         Intent intent = new Intent(activity, PayActivity.class);
         intent.putExtra("SocialTypeBeans", socialTypeBeans);
         intent.putExtra("WXPayBean", wxPayBean);
+        intent.putExtra("OrderInfo", orderInfo);
         intent.putExtra("needFinishActivity", needFinishActivity);
         activity.startActivity(intent);
     }

@@ -35,6 +35,7 @@ public class PayActivity extends Activity {
         ArrayList<SocialTypeBean> socialTypeBeans = (ArrayList<SocialTypeBean>) intent.getSerializableExtra("SocialTypeBeans");
         SocialTypeBean socialTypeBean = (SocialTypeBean) intent.getSerializableExtra("SocialTypeBean");
         final WXPayBean wxPayBean = (WXPayBean) intent.getSerializableExtra("WXPayBean");
+        final String orderInfo = intent.getStringExtra("OrderInfo");
         final boolean needFinishActivity = intent.getBooleanExtra("needFinishActivity", false);
         //NPE校验
         if ((socialTypeBeans == null || socialTypeBeans.size() == 0) && socialTypeBean == null) {
@@ -53,7 +54,7 @@ public class PayActivity extends Activity {
             socialDialog.setItemClickListener(new ItemClickListener() {
                 @Override
                 public void click(SocialTypeBean socialTypeBean, int position) {
-                    initItemClick(socialTypeBean, wxPayBean, SocialHelper.get().getPayCallback(), needFinishActivity);
+                    initItemClick(socialTypeBean, wxPayBean, orderInfo, SocialHelper.get().getPayCallback(), needFinishActivity);
                 }
             });
             socialDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -64,7 +65,7 @@ public class PayActivity extends Activity {
             });
             socialDialog.show();
         } else if (socialTypeBean != null) {
-            initItemClick(socialTypeBean, wxPayBean, SocialHelper.get().getPayCallback(), true);
+            initItemClick(socialTypeBean, wxPayBean, orderInfo, SocialHelper.get().getPayCallback(), true);
         } else {
             Utils.toast(this, "分享初始化异常");
             finish();
@@ -74,7 +75,7 @@ public class PayActivity extends Activity {
     /**
      * 具体的item点击逻辑
      */
-    private void initItemClick(SocialTypeBean socialTypeBean, WXPayBean wxPayBean, IPayCallback payCallback, boolean needFinishActivity) {
+    private void initItemClick(SocialTypeBean socialTypeBean, WXPayBean wxPayBean, String orderInfo, IPayCallback payCallback, boolean needFinishActivity) {
         if (socialTypeBean == null) {
             return;
         }
@@ -83,7 +84,7 @@ public class PayActivity extends Activity {
                 payHelper.payWX(this, wxPayBean, payCallback, needFinishActivity);
                 break;
             case ISocialType.SOCIAL_ALIPAY: //支付宝
-                payHelper.payAlipay(this, payCallback, needFinishActivity);
+                payHelper.payAlipay(this, orderInfo, payCallback, needFinishActivity);
                 break;
         }
     }

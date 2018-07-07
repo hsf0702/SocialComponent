@@ -12,7 +12,7 @@ import com.fqxyi.social.library.SocialHelper;
 public class PayHelper {
 
     private WXPayHelper wxPayHelper;
-    private AlipayPayHelper alipayPayHelper;
+    private AliPayHelper aliPayHelper;
 
     /**
      * 发起微信支付
@@ -27,11 +27,11 @@ public class PayHelper {
     /**
      * 发起支付宝支付
      */
-    public void payAlipay(Activity activity, IPayCallback payCallback, boolean needFinishActivity) {
-        if (alipayPayHelper == null) {
-            alipayPayHelper = new AlipayPayHelper();
+    public void payAlipay(Activity activity, String orderInfo, IPayCallback payCallback, boolean needFinishActivity) {
+        if (aliPayHelper == null) {
+            aliPayHelper = new AliPayHelper(activity);
         }
-        alipayPayHelper.pay(activity, payCallback, needFinishActivity);
+        aliPayHelper.pay(orderInfo, payCallback, needFinishActivity);
     }
 
     /**
@@ -51,9 +51,9 @@ public class PayHelper {
             wxPayHelper.onDestroy();
             wxPayHelper = null;
         }
-        if (alipayPayHelper != null) {
-            alipayPayHelper.onDestroy();
-            alipayPayHelper = null;
+        if (aliPayHelper != null) {
+            aliPayHelper.onDestroy();
+            aliPayHelper = null;
         }
     }
 }

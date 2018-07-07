@@ -6,6 +6,8 @@
     <string name="social_error_wx_share_data">分享数据异常</string>
     <string name="social_error_wx_pay_data">微信支付数据异常</string>
 
+    <string name="social_error_ali_pay_data">支付宝支付数据异常</string>
+
     <string name="social_error_qq_uninstall">QQ未安装</string>
     <string name="social_error_image_not_found">分享图片未找到</string>
     <string name="social_error_qq_share_data">QQ分享数据异常</string>
