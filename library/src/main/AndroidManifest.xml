@@ -10,10 +10,13 @@
     <application>
         <activity
             android:name=".share.ShareActivity"
-            android:theme="@style/TranActivity" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".auth.AuthActivity"
-            android:theme="@style/TranActivity" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".pay.PayActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--qq配置开始-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"

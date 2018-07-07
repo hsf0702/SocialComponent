@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class SocialTypeBean implements Serializable {
 
     /***
-     * 0.微信 1.朋友圈 2.短信 3.复制 4.刷新 5.自定义 6 QQ 7 微博 8 微信小程序 9 支付宝小程序
+     * 0.微信 1.朋友圈 2.短信 3.复制 4.刷新 5.自定义 6 QQ 7 微博 8 微信小程序 9 支付宝
      */
     public int socialType;
     /***

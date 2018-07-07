@@ -41,7 +41,7 @@ public class SecondActivity extends Activity {
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WB));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_MINIPROGRAM));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAY_MINIPROGRAM));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAY));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_COLLECTION));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SHOW_ALL));
 

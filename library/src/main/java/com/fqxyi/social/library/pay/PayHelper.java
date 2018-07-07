@@ -1,0 +1,59 @@
+package com.fqxyi.social.library.pay;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+
+import com.fqxyi.social.library.SocialHelper;
+
+/**
+ * 支付入口类
+ */
+public class PayHelper {
+
+    private WXPayHelper wxPayHelper;
+    private AlipayPayHelper alipayPayHelper;
+
+    /**
+     * 发起微信支付
+     */
+    public void payWX(Activity activity, IPayCallback payCallback, boolean needFinishActivity) {
+        if (wxPayHelper == null) {
+            wxPayHelper = new WXPayHelper(activity, SocialHelper.get().getWxAppId(), SocialHelper.get().getWxAppSecret());
+        }
+        wxPayHelper.pay(payCallback, needFinishActivity);
+    }
+
+    /**
+     * 发起支付宝支付
+     */
+    public void payAlipay(Activity activity, IPayCallback payCallback, boolean needFinishActivity) {
+        if (alipayPayHelper == null) {
+            alipayPayHelper = new AlipayPayHelper();
+        }
+        alipayPayHelper.pay(activity, payCallback, needFinishActivity);
+    }
+
+    /**
+     * 微信授权，在微信回调到WXEntryActivity的onResp方法中调用
+     * @param success false表示失败，true表示成功
+     * @param msg 消息内容
+     */
+    public void sendPayBroadcast(Context context, boolean success, String msg) {
+        Intent intent = new Intent(WXPayHelper.ACTION_WX_PAY_RECEIVER);
+        intent.putExtra(WXPayHelper.KEY_WX_PAY_RESULT, success);
+        intent.putExtra(WXPayHelper.KEY_WX_PAY_MSG, msg);
+        context.sendBroadcast(intent);
+    }
+
+    public void onDestroy() {
+        if (wxPayHelper != null) {
+            wxPayHelper.onDestroy();
+            wxPayHelper = null;
+        }
+        if (alipayPayHelper != null) {
+            alipayPayHelper.onDestroy();
+            alipayPayHelper = null;
+        }
+    }
+}

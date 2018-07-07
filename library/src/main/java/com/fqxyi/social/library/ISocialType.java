@@ -14,7 +14,7 @@ public interface ISocialType {
     int SOCIAL_QQ = 6;// QQ
     int SOCIAL_WB = 7;// 微博
     int SOCIAL_WX_MINIPROGRAM = 8;// 微信小程序
-    int SOCIAL_ALIPAY_MINIPROGRAM = 9; //支付宝小程序
+    int SOCIAL_ALIPAY = 9; //支付宝
     int SOCIAL_COLLECTION = 10;//收藏
     int SOCIAL_SHOW_ALL = 11;//显示全部
 

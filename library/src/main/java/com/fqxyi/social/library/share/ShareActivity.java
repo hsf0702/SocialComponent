@@ -114,8 +114,8 @@ public class ShareActivity extends Activity {
             case ISocialType.SOCIAL_WX_MINIPROGRAM: //微信小程序
                 shareHelper.shareWX(this, ISocialType.SOCIAL_WX_MINIPROGRAM, shareDataBean, shareCallback, needFinishActivity);
                 break;
-            case ISocialType.SOCIAL_ALIPAY_MINIPROGRAM: //支付宝小程序
-                shareHelper.shareAlipayMiniProgram(this, shareDataBean, shareCallback, needFinishActivity);
+            case ISocialType.SOCIAL_ALIPAY: //支付宝
+                shareHelper.shareAlipay(this, shareDataBean, shareCallback, needFinishActivity);
                 break;
             case ISocialType.SOCIAL_COLLECTION: //收藏
                 shareHelper.shareCollection(this, shareDataBean, shareCallback, needFinishActivity);

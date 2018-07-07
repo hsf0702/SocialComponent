@@ -7,6 +7,9 @@ import com.fqxyi.social.library.auth.AuthActivity;
 import com.fqxyi.social.library.auth.AuthHelper;
 import com.fqxyi.social.library.auth.IAuthCallback;
 import com.fqxyi.social.library.dialog.SocialTypeBean;
+import com.fqxyi.social.library.pay.IPayCallback;
+import com.fqxyi.social.library.pay.PayActivity;
+import com.fqxyi.social.library.pay.PayHelper;
 import com.fqxyi.social.library.share.IShareCallback;
 import com.fqxyi.social.library.share.ShareActivity;
 import com.fqxyi.social.library.share.ShareDataBean;
@@ -22,9 +25,11 @@ public class SocialHelper {
 
     private ShareHelper shareHelper;
     private AuthHelper authHelper;
+    private PayHelper payHelper;
 
     private IShareCallback shareCallback;
     private IAuthCallback authCallback;
+    private IPayCallback payCallback;
 
     //单例引用
     private volatile static SocialHelper INSTANCE;
@@ -32,6 +37,7 @@ public class SocialHelper {
     private SocialHelper() {
         shareHelper = new ShareHelper();
         authHelper = new AuthHelper();
+        payHelper = new PayHelper();
     }
     //获取单例
     public static SocialHelper get() {
@@ -53,12 +59,20 @@ public class SocialHelper {
         return authHelper;
     }
 
+    public PayHelper getPayHelper() {
+        return payHelper;
+    }
+
     public IShareCallback getShareCallback() {
         return shareCallback;
     }
 
     public IAuthCallback getAuthCallback() {
         return authCallback;
+    }
+
+    public IPayCallback getPayCallback() {
+        return payCallback;
     }
 
     public void share(Activity activity, SocialTypeBean socialTypeBean, ShareDataBean shareDataBean, IShareCallback shareCallback) {
@@ -118,6 +132,36 @@ public class SocialHelper {
         }
         this.authCallback = authCallback;
         Intent intent = new Intent(activity, AuthActivity.class);
+        intent.putExtra("SocialTypeBeans", socialTypeBeans);
+        intent.putExtra("needFinishActivity", needFinishActivity);
+        activity.startActivity(intent);
+    }
+
+    public void pay(Activity activity, SocialTypeBean socialTypeBean, IPayCallback payCallback) {
+        pay(activity, socialTypeBean, false, payCallback);
+    }
+
+    public void pay(Activity activity, SocialTypeBean socialTypeBean, boolean needFinishActivity, IPayCallback payCallback) {
+        if (Utils.isFastClick()) {
+            return;
+        }
+        this.payCallback = payCallback;
+        Intent intent = new Intent(activity, PayActivity.class);
+        intent.putExtra("SocialTypeBean", socialTypeBean);
+        intent.putExtra("needFinishActivity", needFinishActivity);
+        activity.startActivity(intent);
+    }
+
+    public void pay(Activity activity, ArrayList<SocialTypeBean> socialTypeBeans, IPayCallback payCallback) {
+        pay(activity, socialTypeBeans, false, payCallback);
+    }
+
+    public void pay(Activity activity, ArrayList<SocialTypeBean> socialTypeBeans, boolean needFinishActivity, IPayCallback payCallback) {
+        if (Utils.isFastClick()) {
+            return;
+        }
+        this.payCallback = payCallback;
+        Intent intent = new Intent(activity, PayActivity.class);
         intent.putExtra("SocialTypeBeans", socialTypeBeans);
         intent.putExtra("needFinishActivity", needFinishActivity);
         activity.startActivity(intent);

@@ -176,9 +176,9 @@ public class ShareHelper {
     }
 
     /**
-     * 分享到支付宝小程序
+     * 分享到支付宝
      */
-    public void shareAlipayMiniProgram(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
+    public void shareAlipay(Activity activity, ShareDataBean shareDataBean, IShareCallback shareCallback, boolean needFinishActivity) {
 
     }
 
@@ -221,8 +221,8 @@ public class ShareHelper {
      */
     public void sendShareBroadcast(Context context, boolean success, String msg) {
         Intent intent = new Intent(WXShareHelper.ACTION_WX_SHARE_RECEIVER);
-        intent.putExtra(WXShareHelper.KEY_WX_AUTH_RESULT, success);
-        intent.putExtra(WXShareHelper.KEY_WX_AUTH_MSG, msg);
+        intent.putExtra(WXShareHelper.KEY_WX_SHARE_RESULT, success);
+        intent.putExtra(WXShareHelper.KEY_WX_SHARE_MSG, msg);
         context.sendBroadcast(intent);
     }
 

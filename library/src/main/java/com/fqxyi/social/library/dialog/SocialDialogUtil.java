@@ -26,7 +26,7 @@ public class SocialDialogUtil {
                 return R.drawable.social_icon_sina;
             case ISocialType.SOCIAL_WX_MINIPROGRAM: //微信小程序
                 return R.drawable.social_icon_wechat;
-            case ISocialType.SOCIAL_ALIPAY_MINIPROGRAM: //支付宝小程序
+            case ISocialType.SOCIAL_ALIPAY: //支付宝
                 return R.drawable.social_icon_alipay;
             case ISocialType.SOCIAL_COLLECTION: //收藏
                 return R.drawable.social_icon_collection_normal;
@@ -54,8 +54,8 @@ public class SocialDialogUtil {
                 return "微博";
             case ISocialType.SOCIAL_WX_MINIPROGRAM: //微信小程序
                 return "微信小程序";
-            case ISocialType.SOCIAL_ALIPAY_MINIPROGRAM: //支付宝小程序
-                return "支付宝小程序";
+            case ISocialType.SOCIAL_ALIPAY: //支付宝
+                return "支付宝";
             case ISocialType.SOCIAL_COLLECTION: //收藏
                 return "收藏";
             case ISocialType.SOCIAL_SHOW_ALL: //查看全部

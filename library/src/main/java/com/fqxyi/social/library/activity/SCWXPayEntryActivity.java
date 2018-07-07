@@ -15,9 +15,9 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-public class SCWXEntryActivity extends Activity implements IWXAPIEventHandler {
+public class SCWXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
-    private static final String TAG = "SCWXEntryActivity";
+    private static final String TAG = "SCWXPayEntryActivity";
 
     private IWXAPI wxapi;
 
@@ -45,20 +45,12 @@ public class SCWXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp baseResp) {
         LogUtil.d(TAG, baseResp.errCode + baseResp.errStr);
-        //微信授权
-        if (baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+        //微信支付
+        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                SocialHelper.get().getAuthHelper().sendAuthBroadcast(this, true, getErrorMsg("授权", baseResp));
+                SocialHelper.get().getPayHelper().sendPayBroadcast(this, true, getErrorMsg("支付", baseResp));
             } else {
-                SocialHelper.get().getAuthHelper().sendAuthBroadcast(this, false, getErrorMsg("授权", baseResp));
-            }
-        }
-        //微信分享
-        if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
-            if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                SocialHelper.get().getShareHelper().sendShareBroadcast(this, true, getErrorMsg("分享", baseResp));
-            } else {
-                SocialHelper.get().getShareHelper().sendShareBroadcast(this, false, getErrorMsg("分享", baseResp));
+                SocialHelper.get().getPayHelper().sendPayBroadcast(this, false, getErrorMsg("支付", baseResp));
             }
         }
         //关闭页面

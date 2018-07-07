@@ -11,7 +11,6 @@ import android.text.TextUtils;
 
 import com.fqxyi.social.library.ISocialType;
 import com.fqxyi.social.library.R;
-import com.fqxyi.social.library.auth.WXAuthHelper;
 import com.fqxyi.social.library.util.Utils;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
@@ -46,8 +45,8 @@ public class WXShareHelper {
 
     //
     public static final String ACTION_WX_SHARE_RECEIVER = "ACTION_WX_SHARE_RECEIVER";
-    public static final String KEY_WX_AUTH_RESULT = "KEY_WX_AUTH_RESULT";
-    public static final String KEY_WX_AUTH_MSG = "KEY_WX_AUTH_MSG";
+    public static final String KEY_WX_SHARE_RESULT = "KEY_WX_SHARE_RESULT";
+    public static final String KEY_WX_SHARE_MSG = "KEY_WX_SHARE_MSG";
 
     //上下文
     private Activity activity;
@@ -306,23 +305,23 @@ public class WXShareHelper {
                 Utils.finish(activity, needFinishActivity);
                 return;
             }
-            String msg = intent.getStringExtra(WXAuthHelper.KEY_WX_AUTH_MSG);
-            boolean success = intent.getBooleanExtra(WXShareHelper.KEY_WX_AUTH_RESULT, false);
+            String msg = intent.getStringExtra(WXShareHelper.KEY_WX_SHARE_MSG);
+            boolean success = intent.getBooleanExtra(WXShareHelper.KEY_WX_SHARE_RESULT, false);
             if (success) {
                 if (socialType == ISocialType.SOCIAL_WX_SESSION) {
-                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_TIMELINE, "微信" + msg);
+                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, TextUtils.isEmpty(msg) ? null : "微信" + msg);
                 } else if (socialType == ISocialType.SOCIAL_WX_TIMELINE) {
-                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, "朋友圈" + msg);
+                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_TIMELINE, TextUtils.isEmpty(msg) ? null : "朋友圈" + msg);
                 } else if (socialType == ISocialType.SOCIAL_WX_MINIPROGRAM) {
-                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_MINIPROGRAM, "小程序" + msg);
+                    shareCallback.onSuccess(ISocialType.SOCIAL_WX_MINIPROGRAM, TextUtils.isEmpty(msg) ? null : "小程序" + msg);
                 }
             } else {
                 if (socialType == ISocialType.SOCIAL_WX_SESSION) {
-                    shareCallback.onError(ISocialType.SOCIAL_WX_TIMELINE, "微信" + msg);
+                    shareCallback.onError(ISocialType.SOCIAL_WX_SESSION, TextUtils.isEmpty(msg) ? null : "微信" + msg);
                 } else if (socialType == ISocialType.SOCIAL_WX_TIMELINE) {
-                    shareCallback.onError(ISocialType.SOCIAL_WX_SESSION, "朋友圈" + msg);
+                    shareCallback.onError(ISocialType.SOCIAL_WX_TIMELINE, TextUtils.isEmpty(msg) ? null : "朋友圈" + msg);
                 } else if (socialType == ISocialType.SOCIAL_WX_MINIPROGRAM) {
-                    shareCallback.onError(ISocialType.SOCIAL_WX_MINIPROGRAM, "小程序" + msg);
+                    shareCallback.onError(ISocialType.SOCIAL_WX_MINIPROGRAM, TextUtils.isEmpty(msg) ? null : "小程序" + msg);
                 }
             }
             Utils.finish(activity, needFinishActivity);

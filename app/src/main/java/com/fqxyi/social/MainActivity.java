@@ -15,6 +15,7 @@ import com.fqxyi.social.library.ISocialType;
 import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.auth.IAuthCallback;
 import com.fqxyi.social.library.dialog.SocialTypeBean;
+import com.fqxyi.social.library.pay.IPayCallback;
 import com.fqxyi.social.library.share.IShareCallback;
 import com.fqxyi.social.library.share.QQShareHelper;
 import com.fqxyi.social.library.share.ShareDataBean;
@@ -95,7 +96,7 @@ public class MainActivity extends Activity {
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WB));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_MINIPROGRAM));
-        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAY_MINIPROGRAM));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAY));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_COLLECTION));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_SHOW_ALL));
 
@@ -182,10 +183,6 @@ public class MainActivity extends Activity {
         });
     }
 
-    public void jump2SecondActivity(View view) {
-        startActivity(new Intent(this, SecondActivity.class));
-    }
-
     public void jump2AuthQQ(View view) {
         SocialTypeBean socialTypeBean = new SocialTypeBean();
         socialTypeBean.socialType = ISocialType.SOCIAL_QQ;
@@ -206,5 +203,54 @@ public class MainActivity extends Activity {
                 Toast.makeText(MainActivity.this, "onCancel, socialType = " + socialType, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void jump2Pay(View view) {
+        ArrayList<SocialTypeBean> socialTypeBeans = new ArrayList<>();
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));
+        socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_ALIPAY));
+
+        SocialHelper.get().pay(this, socialTypeBeans, new IPayCallback() {
+            @Override
+            public void onSuccess(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onError, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel(int socialType) {
+                Toast.makeText(MainActivity.this, "onCancel, socialType = " + socialType, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void jump2PayWX(View view) {
+        SocialTypeBean socialTypeBean = new SocialTypeBean();
+        socialTypeBean.socialType = ISocialType.SOCIAL_WX_SESSION;
+
+        SocialHelper.get().pay(this, socialTypeBean, new IPayCallback() {
+            @Override
+            public void onSuccess(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(int socialType, String msg) {
+                Toast.makeText(MainActivity.this, "onError, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel(int socialType) {
+                Toast.makeText(MainActivity.this, "onCancel, socialType = " + socialType, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void jump2SecondActivity(View view) {
+        startActivity(new Intent(this, SecondActivity.class));
     }
 }
