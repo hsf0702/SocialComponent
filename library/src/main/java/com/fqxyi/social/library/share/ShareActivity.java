@@ -23,10 +23,13 @@ public class ShareActivity extends Activity {
     private ShareDataBean shareDataBean;
     //分享入口类
     private ShareHelper shareHelper;
+    //onResume的时候关闭activity使用
+    private boolean fromCreate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fromCreate = true;
         //初始化社会化类型
         Intent intent = getIntent();
         if (intent == null) {
@@ -140,6 +143,15 @@ public class ShareActivity extends Activity {
         if (shareHelper != null) {
             shareHelper.onNewIntent(intent);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!fromCreate) {
+            finish();
+        }
+        fromCreate = false;
     }
 
     @Override

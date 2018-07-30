@@ -21,10 +21,13 @@ public class AuthActivity extends Activity {
     private SocialDialog socialDialog;
     //授权入口类
     private AuthHelper authHelper;
+    //onResume的时候关闭activity使用
+    private boolean fromCreate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fromCreate = true;
         //初始化授权类型
         Intent intent = getIntent();
         if (intent == null) {
@@ -96,6 +99,15 @@ public class AuthActivity extends Activity {
         if (authHelper != null) {
             authHelper.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!fromCreate) {
+            finish();
+        }
+        fromCreate = false;
     }
 
     @Override

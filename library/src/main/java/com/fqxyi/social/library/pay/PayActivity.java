@@ -21,10 +21,13 @@ public class PayActivity extends Activity {
     private SocialDialog socialDialog;
     //支付入口类
     private PayHelper payHelper;
+    //onResume的时候关闭activity使用
+    private boolean fromCreate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fromCreate = true;
         //初始化授权类型
         Intent intent = getIntent();
         if (intent == null) {
@@ -87,6 +90,15 @@ public class PayActivity extends Activity {
                 payHelper.payAlipay(this, orderInfo, payCallback, needFinishActivity);
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!fromCreate) {
+            finish();
+        }
+        fromCreate = false;
     }
 
     @Override
