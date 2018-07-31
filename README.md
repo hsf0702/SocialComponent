@@ -84,7 +84,7 @@ SocialHelper.get().setQqAppId("1107009250")
 
 # 功能详情
 
-各功能使用详情，请参考[MainActivity.java](https://github.com/fengqingxiuyi/SocialComponent/blob/master/app/src/main/java/com/fqxyi/social/MainActivity.java)
+各功能使用详情，请参考[MainActivity.java](https://github.com/fengqingxiuyi/SocialComponent/blob/master/app/src/main/java/com/fqxyi/socialcomponent/MainActivity.java)
 
 例如：
 
