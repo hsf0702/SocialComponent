@@ -17,7 +17,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 /**
  * 微信支付帮助类
- *
+ * <p>
  * 相关文档：
  * 1、APP端开发步骤 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_5
  * 2、调起支付接口 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12
@@ -79,11 +79,11 @@ public class WXPayHelper {
         PayReq request = new PayReq();
         request.appId = SocialHelper.get().getWxAppId();
         request.partnerId = wxPayBean.partnerId;
-        request.prepayId= wxPayBean.prepayId;
+        request.prepayId = wxPayBean.prepayId;
         request.packageValue = wxPayBean.packageValue;
-        request.nonceStr= wxPayBean.nonceStr;
-        request.timeStamp= wxPayBean.timeStamp;
-        request.sign= wxPayBean.sign;
+        request.nonceStr = wxPayBean.nonceStr;
+        request.timeStamp = wxPayBean.timeStamp;
+        request.sign = wxPayBean.sign;
         wxapi.sendReq(request);
     }
 

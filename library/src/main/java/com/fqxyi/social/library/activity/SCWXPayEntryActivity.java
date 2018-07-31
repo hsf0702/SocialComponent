@@ -66,19 +66,19 @@ public class SCWXPayEntryActivity extends Activity implements IWXAPIEventHandler
         }
         if (TextUtils.isEmpty(baseResp.errStr)) {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                return prefix+"成功";
+                return prefix + "成功";
             } else if (baseResp.errCode == BaseResp.ErrCode.ERR_COMM) {
-                return prefix+"错误";
+                return prefix + "错误";
             } else if (baseResp.errCode == BaseResp.ErrCode.ERR_USER_CANCEL) {
-                return prefix+"取消";
+                return prefix + "取消";
             } else if (baseResp.errCode == BaseResp.ErrCode.ERR_SENT_FAILED) {
-                return prefix+"失败";
+                return prefix + "失败";
             } else if (baseResp.errCode == BaseResp.ErrCode.ERR_AUTH_DENIED) {
-                return prefix+"拒绝";
+                return prefix + "拒绝";
             } else if (baseResp.errCode == BaseResp.ErrCode.ERR_UNSUPPORT) {
-                return prefix+"不支持错误";
+                return prefix + "不支持错误";
             } else if (baseResp.errCode == BaseResp.ErrCode.ERR_BAN) {
-                return prefix+"签名错误";
+                return prefix + "签名错误";
             }
         } else {
             return baseResp.errStr;

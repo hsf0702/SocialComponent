@@ -36,8 +36,9 @@ public class PayHelper {
 
     /**
      * 微信授权，在微信回调到WXEntryActivity的onResp方法中调用
+     *
      * @param success false表示失败，true表示成功
-     * @param msg 消息内容
+     * @param msg     消息内容
      */
     public void sendPayBroadcast(Context context, boolean success, String msg) {
         Intent intent = new Intent(WXPayHelper.ACTION_WX_PAY_RECEIVER);

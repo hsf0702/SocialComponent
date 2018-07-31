@@ -8,8 +8,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
-import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.util.Utils;
 
 import java.io.File;
@@ -57,6 +58,10 @@ public class ShareHelper {
             shareHandler = new ShareHandler();
         }
         if (fixedThreadPool.isShutdown()) {
+            if (shareCallback != null) {
+                shareCallback.onError(socialType, activity.getString(R.string.social_error_thread_shutdown));
+            }
+            Utils.finish(activity, needFinishActivity);
             return;
         }
         fixedThreadPool.execute(new Runnable() {
@@ -81,6 +86,10 @@ public class ShareHelper {
             shareHandler = new ShareHandler();
         }
         if (fixedThreadPool.isShutdown()) {
+            if (shareCallback != null) {
+                shareCallback.onError(ISocialType.SOCIAL_SMS, activity.getString(R.string.social_error_thread_shutdown));
+            }
+            Utils.finish(activity, needFinishActivity);
             return;
         }
         fixedThreadPool.execute(new Runnable() {
@@ -107,7 +116,7 @@ public class ShareHelper {
             }
         } else {
             if (shareCallback != null) {
-                shareCallback.onError(ISocialType.SOCIAL_COPY,"复制失败");
+                shareCallback.onError(ISocialType.SOCIAL_COPY, "复制失败");
             }
         }
         Utils.finish(activity, needFinishActivity);
@@ -138,6 +147,10 @@ public class ShareHelper {
             shareHandler = new ShareHandler();
         }
         if (fixedThreadPool.isShutdown()) {
+            if (shareCallback != null) {
+                shareCallback.onError(ISocialType.SOCIAL_QQ, activity.getString(R.string.social_error_thread_shutdown));
+            }
+            Utils.finish(activity, needFinishActivity);
             return;
         }
         fixedThreadPool.execute(new Runnable() {
@@ -162,6 +175,10 @@ public class ShareHelper {
             shareHandler = new ShareHandler();
         }
         if (fixedThreadPool.isShutdown()) {
+            if (shareCallback != null) {
+                shareCallback.onError(ISocialType.SOCIAL_WB, activity.getString(R.string.social_error_thread_shutdown));
+            }
+            Utils.finish(activity, needFinishActivity);
             return;
         }
         fixedThreadPool.execute(new Runnable() {
@@ -216,8 +233,9 @@ public class ShareHelper {
 
     /**
      * 微信分享，在微信回调到WXEntryActivity的onResp方法中调用
+     *
      * @param success false表示失败，true表示成功
-     * @param msg 消息内容
+     * @param msg     消息内容
      */
     public void sendShareBroadcast(Context context, boolean success, String msg) {
         Intent intent = new Intent(WXShareHelper.ACTION_WX_SHARE_RECEIVER);
@@ -230,6 +248,14 @@ public class ShareHelper {
      * 销毁
      */
     public void onDestroy() {
+        if (fixedThreadPool != null) {
+            fixedThreadPool.shutdown();
+            fixedThreadPool = null;
+        }
+        if (shareHandler != null) {
+            shareHandler.removeCallbacksAndMessages(null);
+            shareHandler = null;
+        }
         if (wxShareHelper != null) {
             wxShareHelper.onDestroy();
             wxShareHelper = null;
@@ -242,22 +268,15 @@ public class ShareHelper {
             wbShareHelper.onDestroy();
             wbShareHelper = null;
         }
-        if (shareHandler != null) {
-            shareHandler.removeCallbacksAndMessages(null);
-            shareHandler = null;
-        }
     }
 
     /**
      * 解决有些错误回调在子线程的问题
      */
-    class ShareHandler extends Handler {
+    private class ShareHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg == null) {
-                return;
-            }
             String errorMsg = (String) msg.obj;
             int socialType = msg.arg1;
             if (shareCallback != null) {

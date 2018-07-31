@@ -59,7 +59,8 @@ public class ImageUtil {
 
     /**
      * 下载图片
-     * @param file 图片存放位置
+     *
+     * @param file     图片存放位置
      * @param imageUrl 图片地址
      * @return true 下载成功 false 下载失败
      */
@@ -115,6 +116,7 @@ public class ImageUtil {
 
     /**
      * 将图片地址转换为Bitmap
+     *
      * @param imageUrl 图片地址
      * @return Bitmap
      */
@@ -135,6 +137,7 @@ public class ImageUtil {
 
     /**
      * 将图片地址转换为byte[]
+     *
      * @param imageUrl 图片地址
      * @return byte[]
      */
@@ -155,6 +158,7 @@ public class ImageUtil {
 
     /**
      * 图片压缩
+     *
      * @param url 图片地址
      * @return Bitmap
      */
@@ -164,6 +168,7 @@ public class ImageUtil {
 
     /**
      * 图片压缩
+     *
      * @param url 图片地址
      * @return byte[]
      */
@@ -173,6 +178,7 @@ public class ImageUtil {
 
     /**
      * 尺寸压缩 限制图片的最大边长为200px
+     *
      * @param url 图片地址
      * @return Bitmap
      */
@@ -238,6 +244,7 @@ public class ImageUtil {
 
     /**
      * 质量压缩 压缩Bitmap到指定的大小范围内
+     *
      * @param maxSize Bitmap被允许占有的最大大小，单位为KB
      * @return Bitmap
      */
@@ -335,7 +342,7 @@ public class ImageUtil {
             if (target.length < prefix.length) {
                 return false;
             } else {
-                for(int i = 0; i < prefix.length; ++i) {
+                for (int i = 0; i < prefix.length; ++i) {
                     if (target[i] != prefix[i]) {
                         return false;
                     }

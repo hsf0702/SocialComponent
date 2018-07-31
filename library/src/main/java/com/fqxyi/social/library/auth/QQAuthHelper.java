@@ -4,19 +4,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.util.LogUtil;
 import com.fqxyi.social.library.util.Utils;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * QQ授权帮助类
- *
+ * <p>
  * 相关文档：
  * 1、QQ登录和注销 http://wiki.open.qq.com/wiki/QQ%E7%99%BB%E5%BD%95%E5%92%8C%E6%B3%A8%E9%94%80
- *
+ * <p>
  * 问题：QQ授权100044问题，解决办法：本APP未上线，如果你申请的是“个人开发者”，请确保你创建APP所用的QQ帐号和你测试时用的登陆QQ号一致！
  */
 public class QQAuthHelper {
@@ -92,11 +96,18 @@ public class QQAuthHelper {
 
         @Override
         public void onError(UiError uiError) {
-            if (authCallback != null && uiError != null) {
-                authCallback.onError(ISocialType.SOCIAL_QQ,
-                        "\n错误码：" + uiError.errorCode
-                        + "\n错误信息：" + uiError.errorMessage
-                        + "\n错误详情：" + uiError.errorDetail);
+            if (authCallback != null) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("errorCode", uiError.errorCode);
+                    jsonObject.put("errorMessage", uiError.errorMessage);
+                    jsonObject.put("errorDetail", uiError.errorDetail);
+                } catch (NullPointerException e) {
+                    LogUtil.e(e);
+                } catch (JSONException e) {
+                    LogUtil.e(e);
+                }
+                authCallback.onError(ISocialType.SOCIAL_QQ, jsonObject.toString());
             }
             logout();
             Utils.finish(activity, needFinishActivity);

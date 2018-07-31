@@ -6,7 +6,9 @@ package com.fqxyi.social.library.pay;
 public interface IPayCallback {
 
     void onSuccess(int socialType, String msg);
+
     void onError(int socialType, String msg);
+
     void onCancel(int socialType);
 
 }

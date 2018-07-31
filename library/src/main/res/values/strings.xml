@@ -17,4 +17,6 @@
 
     <string name="social_error_sms_share_data">短信分享数据异常</string>
 
+    <string name="social_error_thread_shutdown">线程池已关闭</string>
+
 </resources>

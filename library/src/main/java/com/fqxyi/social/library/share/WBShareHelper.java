@@ -7,8 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.util.Utils;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.BaseMediaObject;
@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * 微博分享帮助类
- *
+ * <p>
  * 相关文档
  * 1、移动客户端接入 http://open.weibo.com/wiki/%E7%A7%BB%E5%8A%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%85%A5#SDK.E6.8E.A5.E5.85.A5.E6.B5.81.E7.A8.8B
  * 2、微博SDK 4.1文档.pdf https://github.com/sinaweibosdk/weibo_android_sdk/blob/master/%E6%96%B0%E6%96%87%E6%A1%A3/%E5%BE%AE%E5%8D%9ASDK%204.1%E6%96%87%E6%A1%A3.pdf

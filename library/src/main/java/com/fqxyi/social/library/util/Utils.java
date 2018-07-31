@@ -2,7 +2,20 @@ package com.fqxyi.social.library.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Set;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * 简单的包装一下工具类，一个方法创建一个类，没必要
@@ -43,6 +56,84 @@ public class Utils {
      */
     public static void toast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 将bundle转换为json字符串
+     */
+    public static String parseBundle(Bundle bundle) {
+        if (bundle == null) {
+            return "";
+        }
+        Set<String> keySet = bundle.keySet();
+        if (keySet == null || keySet.size() == 0) {
+            return "";
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            for (String key : keySet) {
+                if (TextUtils.isEmpty(key)) {
+                    continue;
+                }
+                jsonObject.put(key, bundle.get(key));
+            }
+        } catch (JSONException e) {
+            LogUtil.e(e);
+        }
+        return jsonObject.toString();
+    }
+
+    /**
+     * 发起网络请求，获取json数据
+     *
+     * @param urlStr 请求地址
+     */
+    public static String get(String urlStr) throws IOException {
+        if (TextUtils.isEmpty(urlStr)) {
+            return "";
+        }
+        HttpsURLConnection conn = null;
+        InputStream is = null;
+        ByteArrayOutputStream os = null;
+        try {
+            // 构造URL
+            URL url = new URL(urlStr);
+            // 打开连接
+            conn = (HttpsURLConnection) url.openConnection();
+            // 输入流
+            is = conn.getInputStream();
+            // 1K的数据缓冲
+            byte[] b = new byte[1024];
+            // 读取到的数据长度
+            int len;
+            // 输出的文件流
+            os = new ByteArrayOutputStream();
+            // 开始读取
+            while ((len = is.read(b)) != -1) {
+                os.write(b, 0, len);
+                os.flush();
+            }
+            return os.toString("UTF-8");
+        } finally {
+            // 完毕，关闭所有链接
+            if (null != conn) {
+                conn.disconnect();
+            }
+            if (null != is) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    LogUtil.e(e);
+                }
+            }
+            if (null != os) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    LogUtil.e(e);
+                }
+            }
+        }
     }
 
 }

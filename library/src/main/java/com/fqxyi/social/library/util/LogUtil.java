@@ -24,19 +24,25 @@ public class LogUtil {
     private static final String SUFFIX = ".java";
 
     private static ErrorListener errorListener;
+
     interface ErrorListener {
         void error(Throwable e);
+
         void error(String error);
     }
+
     public static void setErrorListener(ErrorListener errorListener) {
         LogUtil.errorListener = errorListener;
     }
 
     private static LogListener logListener;
+
     interface LogListener {
         void log(Throwable e);
+
         void log(String error);
     }
+
     public static void setLogListener(LogListener logListener) {
         LogUtil.logListener = logListener;
     }

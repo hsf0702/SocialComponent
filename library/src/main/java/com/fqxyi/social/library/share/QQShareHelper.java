@@ -7,19 +7,23 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.R;
+import com.fqxyi.social.library.util.LogUtil;
 import com.fqxyi.social.library.util.Utils;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 
 /**
  * QQ分享帮助类
- *
+ * <p>
  * 相关文档：
  * 1、分享消息到QQ（定向分享） http://wiki.open.qq.com/wiki/%E5%88%86%E4%BA%AB%E6%B6%88%E6%81%AF%E5%88%B0QQ%EF%BC%88%E5%AE%9A%E5%90%91%E5%88%86%E4%BA%AB%EF%BC%89
  */
@@ -171,11 +175,18 @@ public class QQShareHelper {
 
         @Override
         public void onError(UiError uiError) {
-            if (shareCallback != null && uiError != null) {
-                shareCallback.onError(ISocialType.SOCIAL_QQ,
-                        "错误码：" + uiError.errorCode
-                        + "\n错误信息：" + uiError.errorMessage
-                        + "\n错误详情：" + uiError.errorDetail);
+            if (shareCallback != null) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("errorCode", uiError.errorCode);
+                    jsonObject.put("errorMessage", uiError.errorMessage);
+                    jsonObject.put("errorDetail", uiError.errorDetail);
+                } catch (NullPointerException e) {
+                    LogUtil.e(e);
+                } catch (JSONException e) {
+                    LogUtil.e(e);
+                }
+                shareCallback.onError(ISocialType.SOCIAL_QQ, jsonObject.toString());
             }
             Utils.finish(activity, needFinishActivity);
         }

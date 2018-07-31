@@ -6,7 +6,9 @@ package com.fqxyi.social.library.auth;
 public interface IAuthCallback {
 
     void onSuccess(int socialType, String msg);
+
     void onError(int socialType, String msg);
+
     void onCancel(int socialType);
 
 }

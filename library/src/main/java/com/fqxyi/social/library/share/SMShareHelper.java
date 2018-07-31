@@ -7,8 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.fqxyi.social.library.R;
 import com.fqxyi.social.library.ISocialType;
+import com.fqxyi.social.library.R;
 
 import java.io.File;
 
@@ -91,7 +91,7 @@ public class SMShareHelper {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_SUBJECT, shareDataBean.shareTitle);
         intent.putExtra("subject", shareDataBean.shareTitle);
-        intent.putExtra("sms_body",shareDataBean.shareTitle + "【" + shareDataBean.shareDesc + "】 链接 " + shareDataBean.shareUrl);
+        intent.putExtra("sms_body", shareDataBean.shareTitle + "【" + shareDataBean.shareDesc + "】 链接 " + shareDataBean.shareUrl);
         intent.putExtra(Intent.EXTRA_TEXT, shareDataBean.shareTitle + "【" + shareDataBean.shareDesc + "】 链接 " + shareDataBean.shareUrl);
         intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(localImageUrl));
         intent.setType("image/*");

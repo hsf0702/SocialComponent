@@ -3,13 +3,21 @@ package com.fqxyi.social.library.auth;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 
 import com.fqxyi.social.library.SocialHelper;
+import com.fqxyi.social.library.util.Utils;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 授权入口类
  */
 public class AuthHelper {
+
+    private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     //静态常量
     private static final int TYPE_AUTH_WX = 1;
@@ -21,18 +29,33 @@ public class AuthHelper {
     private QQAuthHelper qqAuthHelper;
     private WBAuthHelper wbAuthHelper;
 
+    //上下文
+    private Activity activity;
+    //授权结果回调
+    private IAuthCallback authCallback;
+    //是否需要finishActivity
+    private boolean needFinishActivity;
+
     //当前授权类型
     private int currAuthType;
+    //解决有些错误回调在子线程的问题
+    private Handler authHandler;
 
     /**
      * 微信授权
      */
     public void authWX(Activity activity, IAuthCallback authCallback, boolean needFinishActivity) {
+        this.activity = activity;
+        this.authCallback = authCallback;
+        this.needFinishActivity = needFinishActivity;
+        if (authHandler == null) {
+            authHandler = new AuthHandler();
+        }
         currAuthType = TYPE_AUTH_WX;
         if (wxAuthHelper == null) {
             wxAuthHelper = new WXAuthHelper(activity, SocialHelper.get().getWxAppId(), SocialHelper.get().getWxAppSecret());
         }
-        wxAuthHelper.auth(authCallback, needFinishActivity);
+        wxAuthHelper.auth(authCallback, needFinishActivity, executorService, authHandler);
     }
 
     /**
@@ -50,22 +73,30 @@ public class AuthHelper {
      * 微博授权
      */
     public void authWB(Activity activity, IAuthCallback authCallback, boolean needFinishActivity) {
+        this.activity = activity;
+        this.authCallback = authCallback;
+        this.needFinishActivity = needFinishActivity;
+        if (authHandler == null) {
+            authHandler = new AuthHandler();
+        }
         currAuthType = TYPE_AUTH_WB;
         if (wbAuthHelper == null) {
             wbAuthHelper = new WBAuthHelper(activity, SocialHelper.get().getWbAppId(), SocialHelper.get().getWbRedirectUrl());
         }
-        wbAuthHelper.auth(authCallback, needFinishActivity);
+        wbAuthHelper.auth(authCallback, needFinishActivity, executorService, authHandler);
     }
 
     /**
      * 微信授权，在微信回调到WXEntryActivity的onResp方法中调用
+     *
      * @param success false表示失败，true表示成功
-     * @param msg 消息内容
+     * @param msg     消息内容
      */
-    public void sendAuthBroadcast(Context context, boolean success, String msg) {
+    public void sendAuthBroadcast(Context context, boolean success, String msg, String code) {
         Intent intent = new Intent(WXAuthHelper.ACTION_WX_AUTH_RECEIVER);
         intent.putExtra(WXAuthHelper.KEY_WX_AUTH_RESULT, success);
         intent.putExtra(WXAuthHelper.KEY_WX_AUTH_MSG, msg);
+        intent.putExtra(WXAuthHelper.KEY_WX_AUTH_CODE, code);
         context.sendBroadcast(intent);
     }
 
@@ -82,6 +113,14 @@ public class AuthHelper {
     }
 
     public void onDestroy() {
+        if (executorService != null) {
+            executorService.shutdown();
+            executorService = null;
+        }
+        if (authHandler != null) {
+            authHandler.removeCallbacksAndMessages(null);
+            authHandler = null;
+        }
         if (wxAuthHelper != null) {
             wxAuthHelper.onDestroy();
             wxAuthHelper = null;
@@ -95,4 +134,20 @@ public class AuthHelper {
             wbAuthHelper = null;
         }
     }
+
+    /**
+     * 解决有些回调在子线程的问题
+     */
+    private class AuthHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String jsonStr = (String) msg.obj;
+            if (authCallback != null) {
+                authCallback.onSuccess(msg.arg1, jsonStr);
+            }
+            Utils.finish(activity, needFinishActivity);
+        }
+    }
+
 }

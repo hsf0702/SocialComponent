@@ -34,12 +34,14 @@ public class SocialHelper {
 
     //单例引用
     private volatile static SocialHelper INSTANCE;
+
     //构造函数私有化
     private SocialHelper() {
         shareHelper = new ShareHelper();
         authHelper = new AuthHelper();
         payHelper = new PayHelper();
     }
+
     //获取单例
     public static SocialHelper get() {
         if (INSTANCE == null) {
