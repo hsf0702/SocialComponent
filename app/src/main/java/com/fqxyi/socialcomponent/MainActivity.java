@@ -36,7 +36,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initPermission();
+    }
 
+    /**
+     * 6.0以上需要申请权限
+     */
+    private void initPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;
         }
@@ -66,11 +72,10 @@ public class MainActivity extends Activity {
                     0);
             return;
         }
-
     }
 
     /**
-     * 分享
+     * 通过分享弹框分享
      */
     public void jump2Share(View view) {
         ShareDataBean shareDataBean = new ShareDataBean();
@@ -122,7 +127,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * 分享到QQ
+     * 直接分享到QQ
      */
     public void jump2ShareQQ(View view) {
         ShareDataBean shareDataBean = new ShareDataBean();
@@ -160,7 +165,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * 授权
+     * 通过授权弹框授权
      */
     public void jump2Auth(View view) {
         ArrayList<SocialTypeBean> socialTypeBeans = new ArrayList<>();
@@ -186,6 +191,9 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * 直接授权到QQ
+     */
     public void jump2AuthQQ(View view) {
         SocialTypeBean socialTypeBean = new SocialTypeBean();
         socialTypeBean.socialType = ISocialType.SOCIAL_QQ;
@@ -248,6 +256,9 @@ public class MainActivity extends Activity {
             "7C8rKlwuAgMFMPkpA6MTNxZN2IxPRUoiJs3n9hher8cs16rj9ohHuw==";
     public static final String RSA_PRIVATE = "";
 
+    /**
+     * 通过支付弹框支付
+     */
     public void jump2Pay(View view) {
         ArrayList<SocialTypeBean> socialTypeBeans = new ArrayList<>();
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WX_SESSION));
@@ -294,6 +305,9 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * 直接支付到微信
+     */
     public void jump2PayWX(View view) {
         SocialTypeBean socialTypeBean = new SocialTypeBean();
         socialTypeBean.socialType = ISocialType.SOCIAL_WX_SESSION;
@@ -324,6 +338,9 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * 跳转到第二个Activity
+     */
     public void jump2SecondActivity(View view) {
         startActivity(new Intent(this, SecondActivity.class));
     }

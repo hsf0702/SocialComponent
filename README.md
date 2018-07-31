@@ -30,7 +30,7 @@ allprojects {
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name="com.fqxyi.social.MainActivity">
+    <activity android:name=".MainActivity">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
@@ -47,6 +47,25 @@ allprojects {
         android:name=".wxapi.WXPayEntryActivity"
         android:exported="true" />
     <!--微信配置结束-->
+    <!--qq配置开始-->
+    <activity
+        android:name="com.tencent.tauth.AuthActivity"
+        android:launchMode="singleTask"
+        android:noHistory="true">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <data android:scheme="tencent1107009250" />
+        </intent-filter>
+    </activity>
+    <activity
+        android:name="com.tencent.connect.common.AssistActivity"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    <!--qq配置结束-->
 </application>
 ```
 

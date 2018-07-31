@@ -27,6 +27,9 @@ public class SecondActivity extends Activity {
         setContentView(R.layout.activity_second);
     }
 
+    /**
+     * 通过分享弹框分享
+     */
     public void jump2Share(View view) {
         if (Utils.isFastClick()) {
             return;
