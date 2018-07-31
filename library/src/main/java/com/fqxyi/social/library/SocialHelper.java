@@ -37,9 +37,6 @@ public class SocialHelper {
 
     //构造函数私有化
     private SocialHelper() {
-        shareHelper = new ShareHelper();
-        authHelper = new AuthHelper();
-        payHelper = new PayHelper();
     }
 
     //获取单例
@@ -55,14 +52,23 @@ public class SocialHelper {
     }
 
     public ShareHelper getShareHelper() {
+        if (shareHelper == null) {
+            shareHelper = new ShareHelper();
+        }
         return shareHelper;
     }
 
     public AuthHelper getAuthHelper() {
+        if (authHelper == null) {
+            authHelper = new AuthHelper();
+        }
         return authHelper;
     }
 
     public PayHelper getPayHelper() {
+        if (payHelper == null) {
+            payHelper = new PayHelper();
+        }
         return payHelper;
     }
 

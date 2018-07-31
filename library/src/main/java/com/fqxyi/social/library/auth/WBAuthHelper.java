@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 授权帮助类
@@ -111,7 +112,10 @@ public class WBAuthHelper {
                 Utils.finish(activity, needFinishActivity);
                 return;
             }
-            if (executorService == null || executorService.isShutdown()) {
+            if (executorService == null) {
+                executorService = Executors.newFixedThreadPool(1);
+            }
+            if (executorService.isShutdown()) {
                 if (authCallback != null) {
                     authCallback.onSuccess(ISocialType.SOCIAL_WB, null);
                 }

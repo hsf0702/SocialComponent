@@ -24,7 +24,8 @@ public class ShareHelper {
 
     private static final String TAG = "ShareHelper";
 
-    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
+    //线程池
+    private ExecutorService executorService;
 
     //上下文
     private Activity activity;
@@ -54,17 +55,20 @@ public class ShareHelper {
         this.activity = activity;
         this.shareCallback = shareCallback;
         this.needFinishActivity = needFinishActivity;
-        if (shareHandler == null) {
-            shareHandler = new ShareHandler();
+        if (executorService == null) {
+            executorService = Executors.newFixedThreadPool(1);
         }
-        if (fixedThreadPool.isShutdown()) {
+        if (executorService.isShutdown()) {
             if (shareCallback != null) {
                 shareCallback.onError(socialType, activity.getString(R.string.social_error_thread_shutdown));
             }
             Utils.finish(activity, needFinishActivity);
             return;
         }
-        fixedThreadPool.execute(new Runnable() {
+        if (shareHandler == null) {
+            shareHandler = new ShareHandler();
+        }
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
                 if (wxShareHelper == null) {
@@ -82,17 +86,20 @@ public class ShareHelper {
         this.activity = activity;
         this.shareCallback = shareCallback;
         this.needFinishActivity = needFinishActivity;
-        if (shareHandler == null) {
-            shareHandler = new ShareHandler();
+        if (executorService == null) {
+            executorService = Executors.newFixedThreadPool(1);
         }
-        if (fixedThreadPool.isShutdown()) {
+        if (executorService.isShutdown()) {
             if (shareCallback != null) {
                 shareCallback.onError(ISocialType.SOCIAL_SMS, activity.getString(R.string.social_error_thread_shutdown));
             }
             Utils.finish(activity, needFinishActivity);
             return;
         }
-        fixedThreadPool.execute(new Runnable() {
+        if (shareHandler == null) {
+            shareHandler = new ShareHandler();
+        }
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
                 if (smShareHelper == null) {
@@ -143,17 +150,20 @@ public class ShareHelper {
         this.activity = activity;
         this.shareCallback = shareCallback;
         this.needFinishActivity = needFinishActivity;
-        if (shareHandler == null) {
-            shareHandler = new ShareHandler();
+        if (executorService == null) {
+            executorService = Executors.newFixedThreadPool(1);
         }
-        if (fixedThreadPool.isShutdown()) {
+        if (executorService.isShutdown()) {
             if (shareCallback != null) {
                 shareCallback.onError(ISocialType.SOCIAL_QQ, activity.getString(R.string.social_error_thread_shutdown));
             }
             Utils.finish(activity, needFinishActivity);
             return;
         }
-        fixedThreadPool.execute(new Runnable() {
+        if (shareHandler == null) {
+            shareHandler = new ShareHandler();
+        }
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
                 if (qqShareHelper == null) {
@@ -171,17 +181,20 @@ public class ShareHelper {
         this.activity = activity;
         this.shareCallback = shareCallback;
         this.needFinishActivity = needFinishActivity;
-        if (shareHandler == null) {
-            shareHandler = new ShareHandler();
+        if (executorService == null) {
+            executorService = Executors.newFixedThreadPool(1);
         }
-        if (fixedThreadPool.isShutdown()) {
+        if (executorService.isShutdown()) {
             if (shareCallback != null) {
                 shareCallback.onError(ISocialType.SOCIAL_WB, activity.getString(R.string.social_error_thread_shutdown));
             }
             Utils.finish(activity, needFinishActivity);
             return;
         }
-        fixedThreadPool.execute(new Runnable() {
+        if (shareHandler == null) {
+            shareHandler = new ShareHandler();
+        }
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
                 if (wbShareHelper == null) {
@@ -248,9 +261,9 @@ public class ShareHelper {
      * 销毁
      */
     public void onDestroy() {
-        if (fixedThreadPool != null) {
-            fixedThreadPool.shutdown();
-            fixedThreadPool = null;
+        if (executorService != null) {
+            executorService.shutdown();
+            executorService = null;
         }
         if (shareHandler != null) {
             shareHandler.removeCallbacksAndMessages(null);

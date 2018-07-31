@@ -10,14 +10,14 @@ import com.fqxyi.social.library.SocialHelper;
 import com.fqxyi.social.library.util.Utils;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 授权入口类
  */
 public class AuthHelper {
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(1);
+    //线程池
+    private ExecutorService executorService;
 
     //静态常量
     private static final int TYPE_AUTH_WX = 1;

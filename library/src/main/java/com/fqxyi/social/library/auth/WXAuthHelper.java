@@ -20,6 +20,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 微信授权帮助类
@@ -142,7 +143,10 @@ public class WXAuthHelper {
      * }
      */
     private void getAccessToken(final String code) {
-        if (executorService == null || executorService.isShutdown()) {
+        if (executorService == null) {
+            executorService = Executors.newFixedThreadPool(1);
+        }
+        if (executorService.isShutdown()) {
             authCallback.onSuccess(ISocialType.SOCIAL_WX_SESSION, null);
             Utils.finish(activity, needFinishActivity);
             return;
