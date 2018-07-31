@@ -2,18 +2,13 @@ package com.fqxyi.social.library.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -56,31 +51,6 @@ public class Utils {
      */
     public static void toast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * 将bundle转换为json字符串
-     */
-    public static String parseBundle(Bundle bundle) {
-        if (bundle == null) {
-            return "";
-        }
-        Set<String> keySet = bundle.keySet();
-        if (keySet == null || keySet.size() == 0) {
-            return "";
-        }
-        JSONObject jsonObject = new JSONObject();
-        try {
-            for (String key : keySet) {
-                if (TextUtils.isEmpty(key)) {
-                    continue;
-                }
-                jsonObject.put(key, bundle.get(key));
-            }
-        } catch (JSONException e) {
-            LogUtil.e(e);
-        }
-        return jsonObject.toString();
     }
 
     /**

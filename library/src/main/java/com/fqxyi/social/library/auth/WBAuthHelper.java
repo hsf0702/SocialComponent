@@ -146,10 +146,6 @@ public class WBAuthHelper {
                     }
                 }
             });
-            if (authCallback != null) {
-                authCallback.onSuccess(ISocialType.SOCIAL_WB, Utils.parseBundle(oauth2AccessToken.getBundle()));
-            }
-            Utils.finish(activity, needFinishActivity);
         }
 
         @Override

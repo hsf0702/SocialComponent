@@ -95,7 +95,7 @@ public class PayActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!fromCreate) {
+        if (!fromCreate && socialDialog == null) {
             finish();
         }
         fromCreate = false;
@@ -104,7 +104,10 @@ public class PayActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socialDialog = null;
+        if (socialDialog != null) {
+            socialDialog.dismiss();
+            socialDialog = null;
+        }
         if (payHelper != null) {
             payHelper.onDestroy();
             payHelper = null;

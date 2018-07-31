@@ -168,7 +168,7 @@ public class MainActivity extends Activity {
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_QQ));
         socialTypeBeans.add(new SocialTypeBean(ISocialType.SOCIAL_WB));
 
-        SocialHelper.get().auth(this, socialTypeBeans, new IAuthCallback() {
+        SocialHelper.get().auth(this, socialTypeBeans, true, new IAuthCallback() {
             @Override
             public void onSuccess(int socialType, String msg) {
                 Toast.makeText(MainActivity.this, "onSuccess, socialType = " + socialType +", msg = " + msg, Toast.LENGTH_SHORT).show();
