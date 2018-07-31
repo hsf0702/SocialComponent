@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.fqxyi.social"
+        applicationId "com.fqxyi.socialcomponent"
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
@@ -34,5 +34,5 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api project(':library')
+    implementation project(':library')
 }
