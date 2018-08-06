@@ -63,10 +63,16 @@ public class AuthHelper {
      */
     public void authQQ(Activity activity, IAuthCallback authCallback, boolean needFinishActivity) {
         currAuthType = TYPE_AUTH_QQ;
+        this.authCallback = authCallback;
+        this.needFinishActivity = needFinishActivity;
+        if (authHandler == null) {
+            authHandler = new AuthHandler();
+        }
+        currAuthType = TYPE_AUTH_QQ;
         if (qqAuthHelper == null) {
             qqAuthHelper = new QQAuthHelper(activity, SocialHelper.get().getQqAppId());
         }
-        qqAuthHelper.auth(authCallback, needFinishActivity);
+        qqAuthHelper.auth(authCallback, needFinishActivity, executorService, authHandler);
     }
 
     /**
